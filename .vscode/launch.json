@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "1. Depurar Juego (Genesis Engine / Frontend)",
+      "type": "msedge",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "neu",
+      "runtimeArgs": [
+        "run",
+        "--frontend-debugging"
+      ],
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "2. Depurar Extensión (Discord RPC / Node)",
+      "type": "node",
+      "request": "attach",
+      "processId": "${command:PickProcess}",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    }
+  ]
+}

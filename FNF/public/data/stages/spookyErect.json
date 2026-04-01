@@ -1,0 +1,136 @@
+{
+  "pathName": "spooky",
+  "background": "#242336",
+  "stage": [
+    {
+      "type": "spritesheet",
+      "layer": 2,
+      "scale": 1,
+      "namePath": "erect/bgtrees",
+      "visible": true,
+      "opacity": 1,
+      "position": [200, 50],
+      "origin": [0, 0],
+      "flip_x": false,
+      "flip_y": false,
+      "scrollFactor": 0.8,
+      "animation": {
+        "play_list": {
+          "bgtrees": {
+            "prefix": "bgtrees"
+          }
+        },
+        "play_mode": "Loop",
+        "frameRate": 5,
+        "offsets": {},
+        "beat": [1]
+      },
+      "script": [
+        {
+          "type": "lua",
+          "path": "arbolesDeFondo"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "layer": 3,
+      "scale": 1,
+      "namePath": "erect/bgDark",
+      "visible": true,
+      "opacity": 1,
+      "position": [-560, -220],
+      "origin": [0, 0],
+      "flip_x": false,
+      "flip_y": false,
+      "scrollFactor": 1
+    },
+    {
+      "type": "image",
+      "layer": 4,
+      "scale": 1,
+      "namePath": "erect/bgLight",
+      "visible": true,
+      "opacity": 1,
+      "position": [-560, -220],
+      "origin": [0, 0],
+      "flip_x": false,
+      "flip_y": false,
+      "scrollFactor": 1
+    },
+    {
+      "playergf": {
+        "type": "character",
+        "layer": 5,
+        "scale": 1,
+        "visible": true,
+        "opacity": 1,
+        "position": [821.5, 800],
+        "camera_Offset": [0, 0],
+        "flip_x": false,
+        "flip_y": false,
+        "scrollFactor": 1
+      }
+    },
+    {
+      "player": {
+        "type": "character",
+        "layer": 6,
+        "scale": 1,
+        "visible": true,
+        "opacity": 1,
+        "position": [1250, 885],
+        "camera_Offset": [-100, -100],
+        "flip_x": false,
+        "flip_y": false,
+        "scrollFactor": 1
+      }
+    },
+    {
+      "enemy": {
+        "type": "character",
+        "layer": 7,
+        "scale": 1,
+        "visible": true,
+        "opacity": 1,
+        "position": [382, 865],
+        "camera_Offset": [150, -100],
+        "flip_x": false,
+        "flip_y": false,
+        "scrollFactor": 1
+      }
+    },
+    {
+      "type": "image",
+      "layer": 8,
+      "scale": 1,
+      "namePath": "erect/stairsDark",
+      "visible": true,
+      "opacity": 1,
+      "position": [966, -225],
+      "origin": [0, 0],
+      "flip_x": false,
+      "flip_y": false,
+      "scrollFactor": 1
+    },
+    {
+      "type": "image",
+      "layer": 9,
+      "scale": 1,
+      "namePath": "erect/stairsLight",
+      "visible": false,
+      "opacity": 1,
+      "position": [966, -225],
+      "origin": [0, 0],
+      "flip_x": false,
+      "flip_y": false,
+      "scrollFactor": 1
+    }
+  ],
+  "script": [
+    {
+      "type": "lua",
+      "path": "lololol"
+    }
+  ]
+}

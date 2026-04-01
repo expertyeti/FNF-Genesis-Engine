@@ -1,0 +1,76 @@
+{
+	"tracks": ["darnell", "lit-up", "2hot", "blazin"],
+
+	"weekCharacters": {
+        "dad": {
+            "path": "darnell",
+            "offsets": [-130, 60],
+            "animations": {
+                "idle": {
+                    "prefix": "M darnell Idle",
+                    "loop": false,
+                    "visible": true,
+                    "alpha": 1,
+                    "flipX": false,
+                    "scale": [1.2, 1.2],
+                    "frames": 24
+                }
+			}
+        },
+        "bf": {
+            "path": "pico-player",
+            "offsets": [-50, 20],
+            "animations": {
+                "idle": {
+                    "prefix": "M pico-player Idle",
+                    "loop": false,
+                    "visible": true,
+                    "alpha": 1,
+                    "flipX": false,
+                    "scale": [1, 1],
+                    "frames": 24
+                },
+                "confirm": {
+                    "prefix": "M pico-player confirm",
+                    "loop": false,
+                    "visible": true,
+                    "alpha": 1,
+                    "flipX": false,
+                    "scale": [1, 1],
+                    "frames": 24
+                }
+            }
+        },
+        "gf": {
+            "path": "nene",
+            "offsets": [80, 40],
+            "animations": {
+                "danceLeft": {
+                    "prefix": "M nene Idle",
+                    "indices": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+                    "loop": false,
+                    "visible": true,
+                    "alpha": 1,
+                    "flipX": false,
+                    "scale": [1, 1],
+                    "frames": 24
+                },
+                "danceRight": {
+                    "prefix": "M nene Idle",
+                    "indices": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+                    "loop": false,
+                    "visible": true,
+                    "alpha": 1,
+                    "flipX": false,
+                    "scale": [1, 1],
+                    "frames": 24
+                }
+            }
+        }
+    },
+
+	"weekBackground": "#413cae",
+
+	"phrase": "DUE DEBTS",
+	"weekName": "weekend1"
+}

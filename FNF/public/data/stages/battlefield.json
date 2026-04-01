@@ -1,0 +1,519 @@
+{
+    "pathName": "battlefield",
+    "background": "#E3A26D",
+    "stage": [
+        {
+            "type": "image",
+            "layer": 2,
+            "scale": 3000,
+            "namePath": "tankSky",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -1000,
+                -400
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0
+        },
+        {
+            "type": "image",
+            "layer": 3,
+            "scale": 1.2,
+            "namePath": "mountains2",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -500,
+                -35
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.2
+        },
+        {
+            "type": "image",
+            "layer": 4,
+            "scale": 1,
+            "namePath": "tankClouds",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                0,
+                0
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.4
+        },
+        {
+            "type": "image",
+            "layer": 5,
+            "scale": 1.1,
+            "namePath": "tankBuildings",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -260,
+                -35
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.3
+        },
+        {
+            "type": "image",
+            "layer": 6,
+            "scale": 1.1,
+            "namePath": "cityruins2",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -200,
+                150
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.35
+        },
+        {
+            "type": "spritesheet",
+            "layer": 7,
+            "scale": 1,
+            "namePath": "smokeLeft",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -380,
+                -40
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.4,
+            "animation": {
+                "play_list": {
+                    "left": {
+                        "prefix": "SmokeBlurLeft"
+                    }
+                },
+                "play_mode": "Loop",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 8,
+            "scale": 1,
+            "namePath": "smokeRight",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1050,
+                -35
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.4,
+            "animation": {
+                "play_list": {
+                    "right": {
+                        "prefix": "SmokeRight"
+                    }
+                },
+                "play_mode": "Loop",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 9,
+            "scale": 0.85,
+            "namePath": "tankWatchtower",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -35,
+                110
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.5,
+            "animation": {
+                "play_list": {
+                    "idle": {
+                        "prefix": "watchtower gradient color"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 10,
+            "scale": 1,
+            "namePath": "tankRolling",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                300,
+                300
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.5,
+            "animation": {
+                "play_list": {
+                    "roll": {
+                        "prefix": "BG tank w lighting"
+                    }
+                },
+                "play_mode": "Loop",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "image",
+            "layer": 11,
+            "scale": 1.15,
+            "namePath": "tankGround",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -420,
+                -150
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1
+        },
+        {
+            "playergf": {
+                "type": "character",
+                "layer": 12,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    660.5,
+                    730
+                ],
+                "camera_Offset": [
+                    0,
+                    0
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "type": "image",
+            "layer": 13,
+            "scale": 1.15,
+            "namePath": "bricksGround",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                438,
+                715
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1
+        },
+        {
+            "player": {
+                "type": "character",
+                "layer": 14,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    1090.5,
+                    885
+                ],
+                "camera_Offset": [
+                    -220,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "enemy": {
+                "type": "character",
+                "layer": 15,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    230.5,
+                    885
+                ],
+                "camera_Offset": [
+                    250,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 16,
+            "scale": 1,
+            "namePath": "tank0",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -500,
+                650
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1.7,
+            "animation": {
+                "play_list": {
+                    "idle": {
+                        "prefix": "fg tankhead far right instance 1"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 17,
+            "scale": 1,
+            "namePath": "tank2",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                360,
+                980
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1.5,
+            "animation": {
+                "play_list": {
+                    "idle": {
+                        "prefix": "foreground man 3 instance 1"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 18,
+            "scale": 1,
+            "namePath": "tank5",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1550,
+                700
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1.5,
+            "animation": {
+                "play_list": {
+                    "idle": {
+                        "prefix": "fg tankhead far right instance 1"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 19,
+            "scale": 1,
+            "namePath": "tank4",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1200,
+                900
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1.5,
+            "animation": {
+                "play_list": {
+                    "idle": {
+                        "prefix": "fg tankman bobbin 3 instance 1"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 20,
+            "scale": 1,
+            "namePath": "tank3",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1050,
+                1240
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": [3.5, 2.5],
+            "animation": {
+                "play_list": {
+                    "idle": {
+                        "prefix": "fg tankhead 4 instance 1"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 21,
+            "scale": 1,
+            "namePath": "tank1",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -300,
+                750
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": [2.0, 0.2],
+            "animation": {
+                "play_list": {
+                    "idle": {
+                        "prefix": "fg tankhead 5 instance 1"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,55 @@
+{
+  "animations": [
+    {
+      "loop": false,
+      "offsets": [0, 0],
+      "anim": "idle",
+      "fps": 24,
+      "name": "Angry Senpai Idle instance 1",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [6.6, 0],
+      "anim": "singLEFT",
+      "fps": 24,
+      "name": "Angry Senpai LEFT NOTE instance",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [2.33, 0],
+      "anim": "singDOWN",
+      "fps": 24,
+      "name": "Angry Senpai DOWN NOTE instance",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [0.83, 6.16],
+      "anim": "singUP",
+      "fps": 24,
+      "name": "Angry Senpai UP NOTE instance",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [0, 0],
+      "anim": "singRIGHT",
+      "fps": 24,
+      "name": "Angry Senpai RIGHT NOTE instance",
+      "indices": []
+    }
+  ],
+  "antialiasing": false,
+  "scale": 6,
+  "flip_x": false,
+  "health": {
+    "id": "senpai-angry",
+    "scale": 4,
+    "antialiasing": false,
+    "type": "legacy",
+    "offset": [0, 0]
+  },
+  "image": "characters/senpai"
+}

@@ -1,0 +1,55 @@
+{
+  "animations": [
+    {
+      "loop": false,
+      "offsets": [-36.66, -46.66],
+      "anim": "idle",
+      "fps": 24,
+      "name": "idle spirit_",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-33.33, -46.66],
+      "anim": "singLEFT",
+      "fps": 24,
+      "name": "left_",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-36.66, -46.66],
+      "anim": "singDOWN",
+      "fps": 24,
+      "name": "spirit down_",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-36.66, -40],
+      "anim": "singUP",
+      "fps": 24,
+      "name": "up_",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-36.66, -46.66],
+      "anim": "singRIGHT",
+      "fps": 24,
+      "name": "right_",
+      "indices": []
+    }
+  ],
+  "flip_x": false,
+  "antialiasing": false,
+  "scale": 6,
+  "health": {
+    "id": "spirit",
+    "scale": 4,
+    "antialiasing": false,
+    "type": "legacy",
+    "offset": [0, 0]
+  },
+  "image": "characters/spirit"
+}

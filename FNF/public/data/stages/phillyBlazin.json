@@ -1,0 +1,155 @@
+{
+    "pathName": "phillyBlazin",
+    "background": "#FFFFFF",
+    "stage": [
+        {
+            "type": "image",
+            "layer": 1,
+            "scale": 1.75,
+            "namePath": "skyBlur",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -600,
+                -175
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0
+        },
+        {
+            "type": "spritesheet",
+            "layer": 2,
+            "scale": 1.75,
+            "namePath": "lightning",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                50,
+                -300
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0,
+            "animation": {
+                "play_list": {
+                    "strike": {
+                        "prefix": "lightning0"
+                    }
+                },
+                "play_mode": "Loop",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "image",
+            "layer": 3,
+            "scale": 1.75,
+            "namePath": "streetBlur",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -600,
+                -175
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0
+        },
+        {
+            "type": "image",
+            "layer": 4,
+            "scale": 1.75,
+            "namePath": "streetBlur",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -600,
+                -175
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0
+        },
+        {
+            "playergf": {
+                "type": "character",
+                "layer": 6,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    1353,
+                    1125
+                ],
+                "camera_Offset": [
+                    0,
+                    20
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "player": {
+                "type": "character",
+                "layer": 7,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    -237,
+                    100
+                ],
+                "camera_Offset": [
+                    -350,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "enemy": {
+                "type": "character",
+                "layer": 8,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    -237,
+                    150
+                ],
+                "camera_Offset": [
+                    500,
+                    200
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        }
+    ]
+}

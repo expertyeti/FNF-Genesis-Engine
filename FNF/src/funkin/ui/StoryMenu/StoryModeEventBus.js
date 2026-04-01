@@ -1,0 +1,1 @@
+window.storyModeEventBus = new Phaser.Events.EventEmitter();

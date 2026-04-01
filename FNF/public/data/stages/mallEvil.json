@@ -1,0 +1,123 @@
+{
+    "pathName": "mall",
+    "background": "#23062D",
+    "stage": [
+        {
+            "type": "image",
+            "layer": 2,
+            "scale": 0.8,
+            "namePath": "evilBG",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -400,
+                -500
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.2
+        },
+        {
+            "type": "image",
+            "layer": 3,
+            "scale": 1,
+            "namePath": "evilTree",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                300,
+                -300
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.2
+        },
+        {
+            "type": "image",
+            "layer": 4,
+            "scale": 1,
+            "namePath": "evilSnow",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -200,
+                700
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1
+        },
+        {
+            "playergf": {
+                "type": "character",
+                "layer": 5,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    808.5,
+                    854
+                ],
+                "camera_Offset": [
+                    0,
+                    0
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "enemy": {
+                "type": "character",
+                "layer": 6,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    290.5,
+                    869
+                ],
+                "camera_Offset": [
+                    150,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "player": {
+                "type": "character",
+                "layer": 7,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    1297.5,
+                    871
+                ],
+                "camera_Offset": [
+                    -100,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        }
+    ]
+}

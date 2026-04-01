@@ -1,0 +1,94 @@
+{
+  "animations": [
+    {
+      "loop": false,
+      "offsets": [0, 0],
+      "anim": "idle",
+      "fps": 24,
+      "name": "monster idle",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [0, 0],
+      "anim": "idle-hold",
+      "fps": 24,
+      "name": "monster idle",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-30, 20],
+      "anim": "singLEFT",
+      "fps": 24,
+      "name": "Monster Right note",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-30, 20],
+      "anim": "singLEFT-hold",
+      "fps": 24,
+      "name": "Monster Right note",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-50, -80],
+      "anim": "singDOWN",
+      "fps": 24,
+      "name": "monster down",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-50, -80],
+      "anim": "singDOWN-hold",
+      "fps": 24,
+      "name": "monster down",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-20, 94],
+      "anim": "singUP",
+      "fps": 24,
+      "name": "monster up note",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-20, 94],
+      "anim": "singUP-hold",
+      "fps": 24,
+      "name": "monster up note",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-51, 30],
+      "anim": "singRIGHT",
+      "fps": 24,
+      "name": "Monster left note",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [-51, 30],
+      "anim": "singRIGHT-hold",
+      "fps": 24,
+      "name": "Monster left note",
+      "indices": []
+    }
+  ],
+  "flip_x": false,
+  "health": {
+    "id": "monster",
+    "scale": 1,
+    "antialiasing": true,
+    "type": "legacy",
+    "offset": [0, 0],
+    "color": [255, 255, 0]
+  },
+  "image": "characters/Monster_Assets"
+}

@@ -1,0 +1,256 @@
+{
+    "pathName": "sserafim",
+    "stage": [
+        {
+            "type": "image",
+            "layer": 2,
+            "scale": 1,
+            "namePath": "bg",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -1853,
+                -815
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.75
+        },
+        {
+            "type": "image",
+            "layer": 3,
+            "scale": 1,
+            "namePath": "floor",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -2030,
+                625
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.85
+        },
+        {
+            "type": "image",
+            "layer": 4,
+            "scale": 1,
+            "namePath": "back-tables",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -1857,
+                267
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.93
+        },
+        {
+            "type": "image",
+            "layer": 7,
+            "scale": 1,
+            "namePath": "back-stools",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -1357,
+                426
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.94
+        },
+        {
+            "type": "image",
+            "layer": 8,
+            "scale": 1,
+            "namePath": "back-light-color",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -1241,
+                -949
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.93
+        },
+        {
+            "type": "image",
+            "layer": 9,
+            "scale": 1,
+            "namePath": "back-light-white",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -771,
+                -599
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.93
+        },
+        {
+            "type": "image",
+            "layer": 10,
+            "scale": 1,
+            "namePath": "truck-stuff",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -983,
+                -707
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.95
+        },
+        {
+            "type": "image",
+            "layer": 11,
+            "scale": 1,
+            "namePath": "truck-door",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -980,
+                -173
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.95
+        },
+        {
+            "type": "image",
+            "layer": 12,
+            "scale": 1,
+            "namePath": "truck-light2",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -781,
+                -464
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.95
+        },
+        {
+            "type": "image",
+            "layer": 13,
+            "scale": 1,
+            "namePath": "truck-light1",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -962,
+                -607
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.95
+        },
+        {
+            "enemy": {
+                "type": "character",
+                "layer": 14,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    70,
+                    470
+                ],
+                "camera_Offset": [
+                    150,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "player": {
+                "type": "character",
+                "layer": 15,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    1530,
+                    970
+                ],
+                "camera_Offset": [
+                    -100,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "playergf": {
+                "type": "character",
+                "layer": 16,
+                "scale": 1,
+                "chromaKey": "#0000ff",
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    938.5,
+                    392
+                ],
+                "camera_Offset": [
+                    0,
+                    0
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        }
+    ]
+}

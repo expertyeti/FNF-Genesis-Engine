@@ -1,0 +1,203 @@
+{
+    "animations": [
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "idle",
+            "fps": 24,
+            "name": "Idle",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "pissed",
+            "fps": 24,
+            "name": "Pissed",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "cringe",
+            "fps": 24,
+            "name": "Cringe",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "fakeout",
+            "fps": 24,
+            "name": "Fake Hit",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "block",
+            "fps": 24,
+            "name": "Block",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "dodge",
+            "fps": 24,
+            "name": "Dodge",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "uppercutPrep",
+            "fps": 24,
+            "name": "Uppercut Prep",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "uppercut",
+            "fps": 24,
+            "name": "Uppercut Punch",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "uppercutHit",
+            "fps": 24,
+            "name": "Uppercut Hit",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "uppercut-hold",
+            "fps": 24,
+            "name": "Uppercut Punch Loop",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "punchHigh1",
+            "fps": 24,
+            "name": "Punch High 1",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "punchHigh2",
+            "fps": 24,
+            "name": "Punch High 2",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "punchLow1",
+            "fps": 24,
+            "name": "Punch Low 1",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "punchLow2",
+            "fps": 24,
+            "name": "Punch Low 2",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "hitHigh",
+            "fps": 24,
+            "name": "Hit High",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "hitLow",
+            "fps": 24,
+            "name": "Hit Low",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "hitSpin",
+            "fps": 24,
+            "name": "Hit Spin",
+            "indices": []
+        }
+    ],
+    "flip_x": false,
+    "health": {
+        "id": "darnell",
+        "scale": 1,
+        "antialiasing": true,
+        "type": "legacy",
+        "offset": [
+            0,
+            0
+        ]
+    },
+    "image": "characters/Darnell_Blazin"
+}

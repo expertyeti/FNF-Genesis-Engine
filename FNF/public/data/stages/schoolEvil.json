@@ -1,0 +1,146 @@
+{
+    "pathName": "school/evil",
+    "background" : "#000000",
+    "stage": [
+        {
+            "type": "image",
+            "layer": 2,
+            "scale": 6,
+            "namePath": "weebBackTrees",
+            "visible": true,
+            "antialiasing": false,
+            "opacity": 1,
+            "position": [
+                -842,
+                -80
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.5
+        },
+        {
+            "type": "image",
+            "layer": 3,
+            "scale": 6,
+            "namePath": "weebSchool",
+            "visible": true,
+            "antialiasing": false,
+            "opacity": 1,
+            "position": [
+                -816,
+                -38
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.75
+        },
+        {
+            "type": "image",
+            "layer": 4,
+            "scale": 6,
+            "namePath": "weebStreet",
+            "visible": true,
+            "antialiasing": false,
+            "opacity": 1,
+            "position": [
+                -662,
+                6
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1
+        },
+        {
+            "type": "image",
+            "layer": 5,
+            "scale": 6,
+            "namePath": "weebTrees",
+            "visible": true,
+            "antialiasing": false,
+            "opacity": 1,
+            "position": [
+                -662,
+                6
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1
+        },
+        {
+            "playergf": {
+                "type": "character",
+                "layer": 6,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    724,
+                    823
+                ],
+                "camera_Offset": [
+                    40,
+                    40
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "enemy": {
+                "type": "character",
+                "layer": 7,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    0,
+                    648
+                ],
+                "camera_Offset": [
+                    440,
+                    270
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "player": {
+                "type": "character",
+                "layer": 8,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    1168,
+                    900
+                ],
+                "camera_Offset": [
+                    -200,
+                    -94
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        }
+    ]
+}

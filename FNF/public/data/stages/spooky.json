@@ -1,0 +1,90 @@
+{
+    "pathName": "spooky",
+    "background": "#242336",
+    "stage": [
+        {
+            "type": "spritesheet",
+            "layer": 2,
+            "scale": 1,
+            "namePath": "halloween_bg",
+            "visible": true,
+            "opacity": 1,
+            "position": [-200, -100],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1,
+            "animation": {
+                "play_list": {
+                    "idle": {
+                        "prefix": "halloweem bg0"
+                    },
+                    "lightning": {
+                        "prefix": "halloweem bg lightning strike"
+                    }
+                },
+                "play_mode": "None",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "playergf": {
+                "type": "character",
+                "layer": 3,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    751.5, 787],
+                "camera_Offset": [
+                    0,
+                    0
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "player": {
+                "type": "character",
+                "layer": 4,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [989.5, 885],
+                "camera_Offset": [
+                    -100,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "enemy": {
+                "type": "character",
+                "layer": 5,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [382, 865],
+                "camera_Offset": [
+                    150,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        }
+    ]
+}

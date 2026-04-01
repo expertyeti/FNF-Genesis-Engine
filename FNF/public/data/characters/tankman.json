@@ -1,0 +1,131 @@
+{
+    "animations": [
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "idle",
+            "fps": 24,
+            "name": "Tankman Idle Dance instance 1",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                90,
+                -13
+            ],
+            "anim": "singLEFT",
+            "fps": 24,
+            "name": "Tankman Right Note instance 1",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                63,
+                -105
+            ],
+            "anim": "singDOWN",
+            "fps": 24,
+            "name": "Tankman DOWN note instance 1",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                48,
+                54
+            ],
+            "anim": "singUP",
+            "fps": 24,
+            "name": "Tankman UP note instance 1",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -22,
+                -28
+            ],
+            "anim": "singRIGHT",
+            "fps": 24,
+            "name": "Tankman Note Left instance 1",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -2,
+                15
+            ],
+            "anim": "hehPrettyGood",
+            "fps": 24,
+            "name": "PRETTY GOOD tankman instance 1",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -16,
+                -9
+            ],
+            "anim": "ugh",
+            "fps": 24,
+            "name": "TANKMAN UGH instance 1",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -18,
+                10
+            ],
+            "anim": "laugh",
+            "fps": 24,
+            "name": "tankman laugh",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                90,
+                -9
+            ],
+            "anim": "beat it",
+            "fps": 24,
+            "name": "tankman beat it",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                52,
+                -6
+            ],
+            "anim": "augh",
+            "fps": 24,
+            "name": "tankman ARGH",
+            "indices": []
+        }
+    ],
+    "flip_x": true,
+    "health": {
+        "id": "tankman",
+        "scale": 1,
+        "antialiasing": true,
+        "type": "legacy",
+        "offset": [
+            0,
+            0
+        ],
+        "color": [
+            255,
+            0,
+            0
+        ]
+    },
+    "image": "characters/tankmanCaptain"
+}

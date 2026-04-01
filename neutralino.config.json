@@ -1,0 +1,84 @@
+{
+  "applicationId": "com.genesis.js",
+  "version": "1.0.0",
+  "defaultMode": "window",
+  "port": 0,
+  "documentRoot": "/FNF/",
+  "url": "/",
+  "enableServer": true,
+  "enableNativeAPI": true,
+  "enableExtensions": true,
+  "tokenSecurity": "one-time",
+  "singleInstance": true,
+  "logging": {
+    "enabled": true,
+    "writeToLogFile": true
+  },
+  "nativeAllowList": [
+    "app.*",
+    "os.*",
+    "window.*",
+    "events.*",
+    "filesystem.*",
+    "extensions.*",
+    "storage.*"
+  ],
+  "globalVariables": {
+    "TEST1": "Hello",
+    "TEST2": [2, 4, 5],
+    "TEST3": {
+      "value1": 10,
+      "value2": {}
+    }
+  },
+  "modes": {
+    "window": {
+      "title": "Genesis Engine",
+      "width": 1280,
+      "height": 720,
+      "minWidth": 400,
+      "minHeight": 200,
+      "center": true,
+      "fullScreen": false,
+      "alwaysOnTop": false,
+      "icon": "/FNF/icons/icon.png",
+      "enableInspector": true,
+      "borderless": false,
+      "maximize": false,
+      "hidden": false,
+      "resizable": true,
+      "exitProcessOnClose": true,
+      "webviewArgs": "--autoplay-policy=no-user-gesture-required --disable-features=PreloadMediaEngagementData,MediaEngagementBypassAutoplayPolicies"
+    },
+    "browser": {
+      "globalVariables": {
+        "TEST": "Test value browser"
+      },
+      "nativeBlockList": ["filesystem.*"]
+    },
+    "cloud": {
+      "url": "/resources/#cloud",
+      "nativeAllowList": ["app.*"]
+    },
+    "chrome": {
+      "width": 800,
+      "height": 500,
+      "args": "--user-agent=\"Neutralinojs chrome mode\" --autoplay-policy=no-user-gesture-required --disable-features=PreloadMediaEngagementData,MediaEngagementBypassAutoplayPolicies --disable-frame-rate-limit --disable-gpu-vsync",
+      "nativeBlockList": ["filesystem.*", "os.*"]
+    }
+  },
+  "extensions": [
+    {
+      "id": "js.neutralino.discordrpc",
+      "command": "node extensions/index.js"
+    }
+  ],
+  "cli": {
+    "binaryName": "Genesis Engine",
+    "resourcesPath": "/FNF/",
+    "extensionsPath": "/extensions/",
+    "clientLibrary": "/FNF/js/neutralino.js",
+    "binaryVersion": "6.5.0",
+    "clientVersion": "6.5.0"
+  }
+}

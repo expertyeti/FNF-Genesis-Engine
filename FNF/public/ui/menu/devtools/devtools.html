@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'vrc';
+            src: url('/fonts/vrc.ttf'); 
+        }
+
+        /* Transparencia nativa requerida por Neutralino */
+        html, body {
+            background-color: transparent !important; 
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* El contenedor visual con semitransparencia */
+        #app-wrapper {
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #FFFFFF;
+            font-family: 'vrc', monospace;
+            border: 1px solid #FFFFFF; 
+            border-radius: 4px; 
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 2px); 
+            box-sizing: border-box;
+            margin: 1px;
+        }
+
+        #genesis-title-bar {
+            background-color: #000000;
+            border-bottom: 1px solid #FFFFFF;
+            display: flex;
+            justify-content: flex-end; 
+            align-items: center;
+            padding: 2px 5px;
+            user-select: none;
+            cursor: move; 
+            -webkit-app-region: drag;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 10px;
+            -webkit-app-region: no-drag;
+        }
+
+        .window-controls i { cursor: pointer; font-size: 10px; color: #FFFFFF; }
+        .window-controls i:hover { color: #ff4c4c; }
+
+        #content-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        #fpsText { font-weight: bold; font-size: 16px; text-shadow: 1px 1px 0 #000; margin: 0; }
+        #memText { font-size: 10px; text-shadow: 1px 1px 0 #000; margin: 0; color: #CCCCCC; }
+    </style>
+
+    <script>
+        var hashString = window.location.hash.substring(1);
+        var params = new URLSearchParams(hashString);
+        window.NL_PORT = params.get('NL_PORT') || window.NL_PORT;
+        window.NL_TOKEN = params.get('NL_TOKEN') || window.NL_TOKEN;
+    </script>
+
+    <script src="/js/neutralino.js"></script>
+</head>
+<body>
+    <div id="app-wrapper">
+        <div id="genesis-title-bar">
+            <div class="window-controls">
+                <i class="fas fa-times" id="btn-close"></i>
+            </div>
+        </div>
+
+        <div id="content-wrapper">
+            <div id="fpsText">FPS: 0</div>
+            <div id="memText">0 MB</div>
+        </div>
+    </div>
+
+    <script>
+        Neutralino.init();
+
+        const titleBar = document.getElementById('genesis-title-bar');
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        titleBar.addEventListener('mousedown', (e) => {
+            if (e.target.tagName === 'I') return;
+            isDragging = true;
+            offsetX = e.clientX;
+            offsetY = e.clientY;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging) Neutralino.window.move(e.screenX - offsetX, e.screenY - offsetY).catch(()=>{});
+        });
+
+        window.addEventListener('mouseup', () => { isDragging = false; });
+
+        // Cierre Total del Proceso (Auto-kill) y Restauración de DOM
+        document.getElementById('btn-close').addEventListener('click', async () => {
+            try {
+                // 1. Avisar a la ventana principal para que restaure el DOM (await garantiza la entrega)
+                await Neutralino.events.broadcast('restore_devtools');
+                // 2. Destruir y matar el subproceso de esta ventana nativa
+                await Neutralino.window.close(); 
+            } catch (err) {
+                console.error("Error cerrando ventana:", err);
+                window.close(); // Respaldo de emergencia
+            }
+        });
+
+        const fpsText = document.getElementById('fpsText');
+        const memText = document.getElementById('memText');
+
+        Neutralino.events.on('update_devtools_data', (evt) => {
+            const data = evt.detail;
+            fpsText.innerText = `FPS: ${data.fps}`;
+            memText.innerText = `${data.usedMB} MB`;
+        });
+        
+        Neutralino.events.on('close_devtools_popup', async () => {
+            await Neutralino.window.close();
+        });
+    </script>
+</body>
+</html>

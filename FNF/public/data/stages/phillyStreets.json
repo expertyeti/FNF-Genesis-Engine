@@ -1,0 +1,393 @@
+{
+    "pathName": "philly/streets",
+    "background": "#8E9191",
+    "stage": [
+        {
+            "type": "image",
+            "layer": 1,
+            "scale": 1,
+            "namePath": "phillySkybox",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -545,
+                -273
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.1
+        },
+        {
+            "type": "image",
+            "layer": 2,
+            "scale": 1,
+            "namePath": "phillySkyline",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -545,
+                -273
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.2
+        },
+        {
+            "type": "image",
+            "layer": 3,
+            "scale": 1,
+            "namePath": "phillyForegroundCity",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1865,
+                220
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.3
+        },
+        {
+            "type": "image",
+            "layer": 4,
+            "scale": 1,
+            "namePath": "phillyConstruction",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1800,
+                364
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.7
+        },
+        {
+            "type": "image",
+            "layer": 5,
+            "scale": 1,
+            "namePath": "phillyHighwayLights",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                122,
+                201
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.8
+        },
+        {
+            "type": "image",
+            "layer": 6,
+            "scale": 1,
+            "namePath": "phillyHighwayLights_lightmap",
+            "visible": true,
+            "chromaKey": "#00000",
+            "opacity": 0.7,
+            "position": [
+                122,
+                201
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.8
+        },
+        {
+            "type": "image",
+            "layer": 7,
+            "scale": 1,
+            "namePath": "phillyHighway",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -23,
+                105
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.8
+        },
+        {
+            "type": "image",
+            "layer": 8,
+            "scale": 1,
+            "namePath": "phillySmog",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -6,
+                305
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.8
+        },
+        {
+            "type": "spritesheet",
+            "layer": 9,
+            "scale": 1,
+            "namePath": "phillyCars",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1200,
+                818
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.9,
+            "animation": {
+                "play_list": {
+                    "car1": {
+                        "prefix": "car1"
+                    },
+                    "car2": {
+                        "prefix": "car2"
+                    },
+                    "car3": {
+                        "prefix": "car3"
+                    },
+                    "car4": {
+                        "prefix": "car4"
+                    }
+                },
+                "play_mode": "Loop",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 10,
+            "scale": 1,
+            "namePath": "phillyCars",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1200,
+                818
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.9,
+            "animation": {
+                "play_list": {
+                    "car1": {
+                        "prefix": "car1"
+                    },
+                    "car2": {
+                        "prefix": "car2"
+                    },
+                    "car3": {
+                        "prefix": "car3"
+                    },
+                    "car4": {
+                        "prefix": "car4"
+                    }
+                },
+                "play_mode": "Loop",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 11,
+            "scale": 1,
+            "namePath": "phillyTraffic",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1840,
+                608
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.9,
+            "animation": {
+                "play_list": {
+                    "togreen": {
+                        "prefix": "redtogreen"
+                    },
+                    "tored": {
+                        "prefix": "greentored"
+                    }
+                },
+                "play_mode": "Loop",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "image",
+            "layer": 12,
+            "scale": 1,
+            "namePath": "phillyTraffic_lightmap",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1840,
+                608
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.9
+        },
+        {
+            "type": "image",
+            "layer": 13,
+            "scale": 1,
+            "namePath": "phillyForeground",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                88,
+                317
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1
+        },
+        {
+            "playergf": {
+                "type": "character",
+                "layer": 14,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    1453,
+                    1100
+                ],
+                "camera_Offset": [
+                    0,
+                    0
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "enemy": {
+                "type": "character",
+                "layer": 15,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    920,
+                    1310
+                ],
+                "camera_Offset": [
+                    500,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "player": {
+                "type": "character",
+                "layer": 16,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    2151,
+                    1228
+                ],
+                "camera_Offset": [
+                    -350,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "type": "image",
+            "layer": 17,
+            "scale": 1,
+            "namePath": "SpraycanPile",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                920,
+                1045
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1
+        }
+    ]
+}

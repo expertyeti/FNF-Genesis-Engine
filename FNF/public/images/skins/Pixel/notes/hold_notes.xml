@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="hold_notes.png">
+	<!-- Created using the Spritesheet and XML generator -->
+	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
+	<SubTexture name="blue hold end0000" x="0" y="67" width="53" height="67" frameX="2" frameY="2" frameWidth="49" frameHeight="63"/>
+	<SubTexture name="blue hold piece0000" x="164" y="0" width="56" height="49" frameX="2" frameY="2" frameWidth="52" frameHeight="46"/>
+	<SubTexture name="green hold end0000" x="55" y="0" width="55" height="66" frameX="2" frameY="2" frameWidth="51" frameHeight="62"/>
+	<SubTexture name="green hold piece0000" x="164" y="49" width="55" height="49" frameX="2" frameY="2" frameWidth="51" frameHeight="45"/>
+	<SubTexture name="pruple end hold0000" x="110" y="0" width="54" height="66" frameX="2" frameY="2" frameWidth="50" frameHeight="62"/>
+	<SubTexture name="purple hold piece0000" x="53" y="67" width="57" height="49" frameX="2" frameY="2" frameWidth="53" frameHeight="45"/>
+	<SubTexture name="red hold end0000" x="0" y="0" width="55" height="67" frameX="2" frameY="2" frameWidth="51" frameHeight="63"/>
+	<SubTexture name="red hold piece0000" x="0" y="134" width="55" height="49" frameX="2" frameY="2" frameWidth="51" frameHeight="45"/>
+</TextureAtlas>

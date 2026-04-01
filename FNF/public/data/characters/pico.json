@@ -1,0 +1,71 @@
+{
+    "animations": [
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "idle",
+            "fps": 24,
+            "name": "Pico Idle Dance",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                61,
+                2
+            ],
+            "anim": "singRIGHT",
+            "fps": 24,
+            "name": "Pico NOTE LEFT0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -37,
+                -82
+            ],
+            "anim": "singDOWN",
+            "fps": 24,
+            "name": "Pico Down Note0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -37,
+                -82
+            ],
+            "anim": "singUP",
+            "fps": 24,
+            "name": "pico Up note0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                61,
+                2
+            ],
+            "anim": "singLEFT",
+            "fps": 24,
+            "name": "Pico Note Right0",
+            "indices": []
+        }
+    ],
+    "flip_x": true,
+    "health": {
+        "id": "pico",
+        "scale": 1,
+        "antialiasing": true,
+        "type": "legacy",
+        "offset": [
+            0,
+            0
+        ]
+    },
+    "image": "characters/Pico_Basic"
+}

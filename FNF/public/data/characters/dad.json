@@ -1,0 +1,126 @@
+{
+    "animations": [
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "idle",
+            "fps": 24,
+            "name": "idle",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "idle-hold",
+            "fps": 24,
+            "name": "idle",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -10,
+                10
+            ],
+            "anim": "singLEFT",
+            "fps": 24,
+            "name": "singLEFT",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -10,
+                10
+            ],
+            "anim": "singLEFT-hold",
+            "fps": 24,
+            "name": "singLEFT",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                -30
+            ],
+            "anim": "singDOWN",
+            "fps": 24,
+            "name": "singDOWN",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                -30
+            ],
+            "anim": "singDOWN-hold",
+            "fps": 24,
+            "name": "singDOWN",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -6,
+                50
+            ],
+            "anim": "singUP",
+            "fps": 24,
+            "name": "singUP",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -6,
+                50
+            ],
+            "anim": "singUP-hold",
+            "fps": 24,
+            "name": "singUP",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                27
+            ],
+            "anim": "singRIGHT",
+            "fps": 24,
+            "name": "singRIGHT",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                27
+            ],
+            "anim": "singRIGHT-hold",
+            "fps": 24,
+            "name": "singRIGHT",
+            "indices": []
+        }
+    ],
+    "flip_x": false,
+    "health": {
+        "id": "dad",
+        "scale": 1,
+        "antialiasing": true,
+        "type": "legacy",
+        "offset": [
+            0,
+            0
+        ]
+    },
+    "image": "characters/daddyDearest"
+}

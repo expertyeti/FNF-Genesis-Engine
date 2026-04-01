@@ -1,0 +1,50 @@
+#orientation-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw; 
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999999;
+    text-align: center;
+    font-family: 'vcr', Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+#orientation-overlay .icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+#orientation-overlay p {
+    font-size: 18px;
+    max-width: 600px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+#orientation-btn {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 15px 30px;
+    font-size: 20px;
+    font-family: 'vcr', Arial, sans-serif;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+#orientation-btn:active {
+    transform: scale(0.95);
+    background-color: #e0e0e0;
+}
