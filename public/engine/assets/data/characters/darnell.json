@@ -1,0 +1,186 @@
+{
+    "animations": [
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "idle",
+            "fps": 24,
+            "name": "Idle0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                1,
+                0
+            ],
+            "anim": "singLEFT",
+            "fps": 24,
+            "name": "Pose Left0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                1,
+                0
+            ],
+            "anim": "singLEFT-hold",
+            "fps": 24,
+            "name": "Left Flame Loop0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                -3
+            ],
+            "anim": "singDOWN",
+            "fps": 24,
+            "name": "Pose Down0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                -3
+            ],
+            "anim": "singDOWN-hold",
+            "fps": 24,
+            "name": "Down Flame Loop0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                8,
+                5
+            ],
+            "anim": "singUP",
+            "fps": 24,
+            "name": "Pose Up0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                8,
+                5
+            ],
+            "anim": "singUP-hold",
+            "fps": 24,
+            "name": "Up Flame Loop0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                4,
+                3
+            ],
+            "anim": "singRIGHT",
+            "fps": 24,
+            "name": "Pose Right0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                4,
+                3
+            ],
+            "anim": "singRIGHT-hold",
+            "fps": 24,
+            "name": "Right Flame Loop0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "laugh",
+            "fps": 24,
+            "name": "Laugh0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "laughCutscene",
+            "fps": 24,
+            "name": "Laugh0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                8,
+                1
+            ],
+            "anim": "lightCan",
+            "fps": 24,
+            "name": "Light Can0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                15,
+                9
+            ],
+            "anim": "kickCan",
+            "fps": 24,
+            "name": "Kick Up0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                7,
+                -1
+            ],
+            "anim": "kneeCan",
+            "fps": 24,
+            "name": "Knee Forward0",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "pissed",
+            "fps": 24,
+            "name": "Gets Pissed0",
+            "indices": []
+        }
+    ],
+    "flip_x": false,
+    "health": {
+        "id": "darnell",
+        "scale": 1,
+        "antialiasing": true,
+        "type": "legacy",
+        "offset": [
+            0,
+            0
+        ],
+        "color": [
+            255,
+            0,
+            0
+        ]
+    },
+    "image": "characters/darnell"
+}
