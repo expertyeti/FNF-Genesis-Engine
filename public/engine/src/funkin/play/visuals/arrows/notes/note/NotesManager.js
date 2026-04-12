@@ -1,5 +1,5 @@
 /**
- * @file NotesManager.js
+ * @file src/funkin/play/visuals/arrows/notes/note/NotesManager.js
  * Orquestador principal de las notas regulares.
  * Delega responsabilidades a módulos especializados para lógica, renderizado y api.
  */
@@ -12,12 +12,19 @@ class NotesManager {
 		this.lastSongPos = 0; 
 		this.globalYOffset = 0;
 
+		// Intentar leer scrollSpeed inicial del chart si está disponible
+		if (funkin.play && funkin.play.chart) {
+			const initialSpeed = funkin.play.chart.get("base.scrollSpeed") || funkin.play.chart.get("metadata.scrollSpeed") || funkin.play.chart.get("metadata.speed");
+			if (initialSpeed !== undefined && initialSpeed !== null) {
+				this.scrollSpeed = initialSpeed;
+			}
+		}
+
 		const notesNamespace = funkin.play.visuals.arrows.notes;
 
 		this.keyCount = notesNamespace.NoteDirection ? notesNamespace.NoteDirection.keyCount : 4;
 		
 		// Inicialización explícita y separada de las teclas de los jugadores 
-		// para evitar choques en processInputs.js
 		this.prevKeysP1 = new Array(this.keyCount).fill(false);
 		this.prevKeysP2 = new Array(this.keyCount).fill(false);
 
@@ -30,6 +37,11 @@ class NotesManager {
 	}
 
 	update(time, delta) {
+		const chartSpeed = funkin.play.chart ? (funkin.play.chart.get("base.scrollSpeed") || funkin.play.chart.get("metadata.scrollSpeed") || funkin.play.chart.get("metadata.speed")) : undefined;
+		if (chartSpeed !== undefined && chartSpeed !== null) {
+			this.scrollSpeed = chartSpeed;
+		}
+
 		this.logic.update(time, delta);
 	}
 

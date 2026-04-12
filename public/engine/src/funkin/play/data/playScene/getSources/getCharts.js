@@ -1,10 +1,24 @@
 /**
- * @file getCharts.js
- * Sistema para cargar y procesar los charts (archivos JSON de las canciones).
+ * @file src/funkin/play/data/playScene/getSources/getCharts.js
+ * Sistema para cargar y procesar los charts (archivos JSON limpios de las canciones).
  */
 class ChartManager {
   constructor() {
     this.chartData = null; 
+  }
+
+  _mergeMetadata(base, override) {
+    if (!override) return { ...base };
+    const result = { ...base };
+    
+    for (const key in override) {
+      if (override[key] !== null && typeof override[key] === 'object' && !Array.isArray(override[key])) {
+        result[key] = this._mergeMetadata(result[key] || {}, override[key]);
+      } else {
+        result[key] = override[key]; 
+      }
+    }
+    return result;
   }
 
   async loadChart(playData) {
@@ -13,87 +27,80 @@ class ChartManager {
       return false;
     }
 
-    const songName = playData.actuallyPlaying;
+    const songName = playData.actuallyPlaying.toLowerCase();
     const difficulty = (playData.difficulty || "normal").toLowerCase();
 
-    let fileName = `${songName}-${difficulty}.json`;
-    if (difficulty === "normal") {
-      fileName = `${songName}.json`;
-    }
-
-    const url = `${window.BASE_URL}assets/songs/${songName}/charts/${fileName}`;
+    const baseUrl = `${window.BASE_URL || ''}assets/songs/${songName}/charts/`;
+    // Actualizado para apuntar a extensiones .json estándar
+    const metaUrl = `${baseUrl}meta.json`;
+    const notesUrl = `${baseUrl}notes.json`;
 
     try {
-      console.log(`Cargando chart desde ${url}`);
-      const response = await fetch(url);
+      const [metaResponse, notesResponse] = await Promise.all([
+        fetch(metaUrl),
+        fetch(notesUrl)
+      ]);
 
-      if (!response.ok) {
-        throw new Error(`HTTP status ${response.status}`);
-      }
+      if (!metaResponse.ok) throw new Error(`HTTP status ${metaResponse.status} al cargar meta.json`);
+      if (!notesResponse.ok) throw new Error(`HTTP status ${notesResponse.status} al cargar notes.json`);
 
-      this.chartData = await response.json();
+      // Al ser JSON limpio, usamos directamente el parser nativo de la respuesta fetch
+      const metaData = await metaResponse.json();
+      const notesData = await notesResponse.json();
 
-      console.log("Chart cargado con éxito");
+      const baseMeta = metaData.base || {};
+      const diffMeta = (metaData.difficulties && metaData.difficulties[difficulty]) ? metaData.difficulties[difficulty] : {};
+
+      const finalMetadata = this._mergeMetadata(baseMeta, diffMeta);
+
+      this.chartData = {
+        metadata: {
+          ...finalMetadata,
+          mania: finalMetadata.lanes || 4 
+        },
+        notes: notesData[difficulty] || []
+      };
+
       return true;
     } catch (error) {
-      console.error(`Error crítico cargando chart en ${url}`, error);
+      console.error(`Error crítico cargando chart en ${baseUrl}`, error);
       this.chartData = null;
       return false;
     }
   }
 
   get(path) {
-    if (!this.chartData) {
-      console.warn("Intento de acceso al chart antes de ser cargado");
-      return null;
-    }
-
+    if (!this.chartData) return null;
     if (!path) return this.chartData;
 
     const keys = path.split(".");
     let current = this.chartData;
 
     for (const key of keys) {
-      if (current === undefined || current === null) {
-        return undefined;
-      }
+      if (current === undefined || current === null) return undefined;
       current = current[key];
     }
-
     return current;
   }
 
   setScrollSpeed(speed) {
-    if (!this.chartData) {
-      console.warn("No hay chart cargado para cambiar la velocidad");
-      return;
-    }
-    if (!this.chartData.metadata) {
-      this.chartData.metadata = {};
-    }
-
-    this.chartData.metadata.speed = speed;
-    console.log(`Velocidad del chart modificada a ${speed}`);
+    if (!this.chartData) return;
+    if (!this.chartData.metadata) this.chartData.metadata = {};
+    this.chartData.metadata.scrollSpeed = speed; 
   }
 
-  injectNote(time, direction, isPlayer, type = "normal") {
-    if (!this.chartData) {
-      console.warn("No hay chart cargado para inyectar nota");
-      return;
-    }
+  injectNote(time, direction, isPlayer) {
+    if (!this.chartData) return;
+    if (!this.chartData.notes) this.chartData.notes = [];
 
-    if (!this.chartData.notes) {
-      this.chartData.notes = [];
-    }
-
-    const pValue = isPlayer ? 1 : 0; 
+    // Se asigna string (pl u op) en lugar de número, y se elimina 'k'
+    const pValue = isPlayer ? "pl" : "op"; 
 
     const newNote = {
       t: time,
       d: direction,
       p: pValue,
-      l: 0,
-      k: type,
+      l: 0
     };
 
     this.chartData.notes.push(newNote);
@@ -106,6 +113,4 @@ class ChartManager {
 }
 
 funkin.play.data.sources.ChartManager = ChartManager;
-
-// Instancia global usada por PhaseInit
 funkin.play.chart = new ChartManager();

@@ -1,6 +1,6 @@
 /**
  * @file preloadSong.js
- * Precarga dinámica del audio de la canción con compatibilidad para PhaseInit.
+ * Precarga dinámica del audio de la canción con compatibilidad para PhaseInit y la nueva estructura meta.jsonc.
  */
 
 window.funkin = window.funkin || {};
@@ -21,10 +21,27 @@ class PreloadSong {
         return new Promise((resolve) => {
             console.log(`[Audio Debug] PhaseInit llamó a preloadAudio con la canción: ${songName}`);
 
-            const GetSongs = funkin.play.data.GetSongs;
-            const audioData = GetSongs ? GetSongs.getAudioData() : {
-                multiVoc: false, needVoc: true, inst: { "inst": "Inst.ogg" }, voc: { "vocals": "Voices.ogg" }
-            };
+            // Lógica actualizada: Buscar metadatos del chart cargado desde meta.jsonc
+            let audioData = { multiVoc: false, needVoc: false, inst: {}, voc: {} };
+            const chartMetaAudio = funkin.play.chart && typeof funkin.play.chart.get === 'function' ? funkin.play.chart.get("metadata.audio") : null;
+
+            if (chartMetaAudio) {
+                // Si el chart tiene datos (nueva arquitectura)
+                audioData.multiVoc = chartMetaAudio.multiVocal || false;
+                audioData.needVoc = chartMetaAudio.needsVoices || false;
+                audioData.inst = chartMetaAudio.instrumental || { "inst": "Inst.ogg" };
+                audioData.voc = chartMetaAudio.vocals || { "vocals": "Voices.ogg" };
+            } else {
+                // Fallback de seguridad por si no se cargó el chart
+                const GetSongs = funkin.play.data.GetSongs;
+                if (GetSongs && typeof GetSongs.getAudioData === 'function') {
+                    audioData = GetSongs.getAudioData();
+                } else {
+                    audioData = {
+                        multiVoc: false, needVoc: true, inst: { "inst": "Inst.ogg" }, voc: { "vocals": "Voices.ogg" }
+                    };
+                }
+            }
             
             const loadedData = {
                 multiVoc: audioData.multiVoc, needVoc: audioData.needVoc,
@@ -54,14 +71,24 @@ class PreloadSong {
 
             // Precargar Instrumentales
             if (audioData.inst) {
-                for (const [key, fileName] of Object.entries(audioData.inst)) {
-                    loadedData.instKeys.push(loadAudio(key, fileName, 'inst'));
+                for (const [key, fileData] of Object.entries(audioData.inst)) {
+                    // FIX: Verifica si viene como string (formato viejo) o como objeto (nuevo formato meta.jsonc)
+                    const fileName = typeof fileData === 'string' ? fileData : fileData.file;
+                    
+                    if (fileName) {
+                        loadedData.instKeys.push(loadAudio(key, fileName, 'inst'));
+                    }
                 }
             }
 
             // Precargar Vocales
             if (audioData.needVoc && audioData.voc) {
-                for (const [key, fileName] of Object.entries(audioData.voc)) {
+                for (const [key, fileData] of Object.entries(audioData.voc)) {
+                    // FIX: Extracción del nombre del archivo previniendo "[object Object]"
+                    const fileName = typeof fileData === 'string' ? fileData : fileData.file;
+                    
+                    if (!fileName) continue;
+
                     const cacheKey = loadAudio(key, fileName, 'voc');
                     const lowerKey = key.toLowerCase();
                     

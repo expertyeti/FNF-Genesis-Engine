@@ -35,10 +35,12 @@ funkin.play.visuals.arrows.notes.NoteLogic.prototype.updateMovement = function (
     const timeDiff = note.noteTime - songPos;
     const distance = timeDiff * 0.45 * this.manager.scrollSpeed;
     
+    // FIX ESTRICTO: Determinar si la nota pertenece al lado humano (player) o CPU (opponent)
+    const isNotePlayer = note.pType === "pl" || note.isPlayer === true;
+
     // En multijugador, determinamos el lado original sin invertirlo
-    const isMyNoteAuto = (playAsOpponent && !isTwoPlayer) ? !note.isPlayer : note.isPlayer;
+    const isMyNoteAuto = (playAsOpponent && !isTwoPlayer) ? !isNotePlayer : isNotePlayer;
     
-    // CORRECCIÓN DE MULTIJUGADOR: El enemigo ya no es un Bot si 2P está activo
     let isAutoHit = window.autoplay;
     if (!isTwoPlayer) {
         isAutoHit = !isMyNoteAuto || (isMyNoteAuto && window.autoplay);

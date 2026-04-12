@@ -52,13 +52,42 @@ class FreePlaySongs {
 
           const tracksList = json.tracks || json.songs;
           if (tracksList && Array.isArray(tracksList)) {
-            tracksList.forEach((trackData) => {
-              let songName = "???";
-              if (typeof trackData === "string") songName = trackData;
+            const trackPromises = tracksList.map(async (trackData) => {
+              let folderName = "???";
+              if (typeof trackData === "string") folderName = trackData;
               else if (Array.isArray(trackData) && trackData.length > 0)
-                songName = trackData[0];
-              this.songs.push({ name: songName, color: weekColor });
+                folderName = trackData[0];
+
+              let displayName = folderName;
+              let songDifficulties = ["easy", "normal", "hard"]; // Fallback por defecto
+
+              if (folderName !== "???") {
+                try {
+                  const metaRes = await fetch(`${window.BASE_URL}assets/songs/${folderName.toLowerCase()}/charts/meta.json`);
+                  if (metaRes.ok) {
+                    const metaJson = await metaRes.json();
+                    displayName = metaJson.songName || folderName;
+                    
+                    // Extraemos las dificultades disponibles del meta.json
+                    if (metaJson.difficulties && typeof metaJson.difficulties === 'object') {
+                      songDifficulties = Object.keys(metaJson.difficulties);
+                    }
+                  }
+                } catch (e) {
+                  // Fallback silencioso
+                }
+              }
+
+              return { 
+                name: folderName, 
+                displayName: displayName, 
+                color: weekColor,
+                difficulties: songDifficulties 
+              };
             });
+
+            const resolvedTracks = await Promise.all(trackPromises);
+            this.songs.push(...resolvedTracks);
           }
         } catch (e) {
           console.warn(`[FreePlaySongs] Error cargando semana ${weekId}:`, e);
@@ -81,7 +110,7 @@ class FreePlaySongs {
         this.scene,
         100,
         0,
-        songData.name.toUpperCase(),
+        songData.displayName.toUpperCase(),
         true,
         this.alphabetScale,
       );
@@ -131,8 +160,15 @@ class FreePlaySongs {
     });
 
     const currentSongData = this.songs[this.selectedIndex];
-    if (currentSongData && this.scene.bgManager) {
-      this.scene.bgManager.updateColor(currentSongData.color);
+    if (currentSongData) {
+      if (this.scene.bgManager) {
+        this.scene.bgManager.updateColor(currentSongData.color);
+      }
+      
+      // Actualizamos dinámicamente las dificultades en el UI
+      if (this.scene.diffManager && currentSongData.difficulties) {
+        this.scene.diffManager.updateDifficultiesList(currentSongData.difficulties);
+      }
     }
   }
 

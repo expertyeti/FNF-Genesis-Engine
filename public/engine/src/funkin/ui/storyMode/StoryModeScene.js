@@ -10,6 +10,7 @@ class StoryModeScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.imageBitmapFormat = true;
     if (!this.cache.audio.exists("scrollMenu"))
       this.load.audio(
         "scrollMenu",

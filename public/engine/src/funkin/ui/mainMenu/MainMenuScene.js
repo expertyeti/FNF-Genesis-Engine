@@ -15,6 +15,7 @@ class MainMenuScene extends Phaser.Scene {
     }
 
     preload() {
+        this.load.imageBitmapFormat = true;
         this.load.image('menuBackground', window.BASE_URL + 'assets/images/menu/bg/menuBG.png');
         this.load.image('menuFlash', window.BASE_URL + 'assets/images/menu/bg/menuBGMagenta.png'); 
         this.load.audio('selectSound', window.BASE_URL + 'assets/sounds/scrollMenu.ogg');

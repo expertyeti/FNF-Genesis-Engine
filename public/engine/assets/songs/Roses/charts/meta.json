@@ -1,0 +1,102 @@
+{
+  "songName": "Roses",
+  "base": {
+    "stage": "school",
+    "scrollSpeed": 1,
+    "lanes": 4,
+    "characters": {
+      "players": [
+        "bf-pixel"
+      ],
+      "opponents": [
+        "senpai-angry"
+      ],
+      "spectator": [
+        "gf-pixel"
+      ]
+    },
+    "credits": [
+      "Artist: Kawai Sprite"
+    ],
+    "skins": {
+      "ui": "pixel",
+      "pause": "funkin"
+    },
+    "audio": {
+      "bpm": 120,
+      "needsVoices": true,
+      "multiVocal": true,
+      "instrumental": {
+        "inst": {
+          "file": "Inst.ogg",
+          "offset": 0
+        }
+      },
+      "vocals": {
+        "player": {
+          "file": "Voices-bf.ogg",
+          "offset": 0
+        },
+        "opponent": {
+          "file": "Voices-senpai.ogg",
+          "offset": 0
+        }
+      }
+    }
+  },
+  "difficulties": {
+    "easy": {
+      "scrollSpeed": 1.6
+    },
+    "normal": {
+      "scrollSpeed": 1.7
+    },
+    "hard": {
+      "scrollSpeed": 1.8
+    },
+    "erect": {
+      "scrollSpeed": 2.6,
+      "stage": "schoolErect",
+      "audio": {
+        "instrumental": {
+          "inst": {
+            "file": "Inst-erect.ogg",
+            "offset": 0
+          }
+        },
+        "vocals": {
+          "player": {
+            "file": "Voices-bf-pixel-erect.ogg",
+            "offset": 0
+          },
+          "opponent": {
+            "file": "Voices-senpai-angry-erect.ogg",
+            "offset": 0
+          }
+        }
+      }
+    },
+    "nightmare": {
+      "scrollSpeed": 2.6,
+      "stage": "schoolErect",
+      "audio": {
+        "instrumental": {
+          "inst": {
+            "file": "Inst-erect.ogg",
+            "offset": 0
+          }
+        },
+        "vocals": {
+          "player": {
+            "file": "Voices-bf-pixel-erect.ogg",
+            "offset": 0
+          },
+          "opponent": {
+            "file": "Voices-senpai-angry-erect.ogg",
+            "offset": 0
+          }
+        }
+      }
+    }
+  }
+}

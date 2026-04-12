@@ -12,7 +12,9 @@ class CreateImages {
 		data.stage.forEach((item) => {
 			if (item.type === 'image' && item.namePath) {
 				const cleanPath = item.namePath.endsWith('/') ? item.namePath.slice(0, -1) : item.namePath;
-				const key = `stage_${pathName}_${cleanPath}`;
+                
+                // Llave sincronizada con preloadStage
+				const key = item.image || item.name || (cleanPath ? `stage_${pathName}_${cleanPath}` : `stage_${pathName}`);
 				
 				if (!scene.textures.exists(key)) return;
 
@@ -22,34 +24,35 @@ class CreateImages {
 
 				const x = item.position ? item.position[0] : 0;
 				const y = item.position ? item.position[1] : 0;
-				const spr = scene.add.sprite(x, y, key);
+                
+				const img = scene.add.image(x, y, key);
 				
-				if (spr.texture && item.antialiasing === false) {
-					spr.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+				if (img.texture && item.antialiasing === false) {
+					img.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
 				}
 				
-				spr.setOrigin(item.origin ? item.origin[0] : 0, item.origin ? item.origin[1] : 0);
-				spr.setScale(item.scale !== undefined ? item.scale : 1);
+				img.setOrigin(item.origin ? item.origin[0] : 0, item.origin ? item.origin[1] : 0);
+				img.setScale(item.scale !== undefined ? item.scale : 1);
 				
 				if (item.rotate !== undefined) {
-					spr.setAngle(item.rotate);
+					img.setAngle(item.rotate);
 				}
 
-				spr.setAlpha(item.opacity !== undefined ? item.opacity : 1);
-				spr.setVisible(item.visible !== undefined ? item.visible : true);
-				spr.setFlip(item.flip_x || false, item.flip_y || false);
-				spr.setDepth(item.layer !== undefined ? item.layer : 0);
+				img.setAlpha(item.opacity !== undefined ? item.opacity : 1);
+				img.setVisible(item.visible !== undefined ? item.visible : true);
+				img.setFlip(item.flip_x || false, item.flip_y || false);
+				img.setDepth(item.layer !== undefined ? item.layer : 0);
 				
 				if (item.scrollFactor !== undefined) {
-					if (Array.isArray(item.scrollFactor)) spr.setScrollFactor(item.scrollFactor[0], item.scrollFactor[1]);
-					else spr.setScrollFactor(item.scrollFactor);
+					if (Array.isArray(item.scrollFactor)) img.setScrollFactor(item.scrollFactor[0], item.scrollFactor[1]);
+					else img.setScrollFactor(item.scrollFactor);
 				}
 
 				const blendVal = item.blendMode || item.blend;
-				if (blendVal && funkin.play.BlendMode) funkin.play.BlendMode.apply(spr, blendVal);
+				if (blendVal && funkin.play.BlendMode) funkin.play.BlendMode.apply(img, blendVal);
 
 				if (funkin.play.data.camera && typeof funkin.play.data.camera.addObjToGame === 'function') {
-					funkin.play.data.camera.addObjToGame(spr);
+					funkin.play.data.camera.addObjToGame(img);
 				}
 			}
 		});

@@ -20,8 +20,15 @@ funkin.play.visuals.arrows.notes.NoteLogic.prototype.update = function (time, de
   }
   this.manager.lastSongPos = songPos;
 
-  this.manager.scrollSpeed =
-    funkin.play.chart && funkin.play.chart.get("metadata.speed") ? funkin.play.chart.get("metadata.speed") : 1.0;
+  // FIX: Extraer correctamente 'scrollSpeed' de la nueva estructura del chart.
+  if (funkin.play && funkin.play.chart) {
+    const chartSpeed = funkin.play.chart.get("metadata.scrollSpeed") || funkin.play.chart.get("metadata.speed");
+    if (chartSpeed !== undefined && chartSpeed !== null) {
+      this.manager.scrollSpeed = chartSpeed;
+    } else {
+      this.manager.scrollSpeed = 1.0;
+    }
+  }
 
   this.handleRewind(songPos);
   this.processInputs(songPos, playAsOpponent, time);

@@ -23,6 +23,9 @@ funkin.play.missSoundsAssets = [
 
 class PlayPreload {
 	static preloadGeneralAssets(scene) {
+        // Desactivamos el mapa de bits para los assets ligeros para evitar colas asíncronas
+        scene.load.imageBitmapFormat = false;
+
 		const audioAssets = [
 			{ key: "cancelSound", path: getSafeBaseUrl() + "assets/sounds/cancelMenu.ogg" },
             ...funkin.play.missSoundsAssets 

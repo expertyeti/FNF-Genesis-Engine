@@ -1,5 +1,5 @@
 {
-    "tracks": ["Bopeebo", "Fresh", "Dadbattle"],
+    "tracks": ["bopeebo", "fresh", "dadbattle"],
 
 	"weekCharacters": {
         "dad": {
@@ -69,6 +69,6 @@
         }
     },
 
-    "phrase": "TIME TO BATTLE!",
+    "phrase": "DADDY DEAREST",
     "weekName": "week1"
 }

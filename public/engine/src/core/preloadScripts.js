@@ -79,7 +79,6 @@ const scriptsToLoad = [
   window.BASE_URL + "src/funkin/play/data/playScene/clean/CleanUI.js",
   window.BASE_URL + "src/funkin/play/data/playScene/clean/playCleanUp.js",
 
-  // INYECTAMOS EL NUEVO MODO LOCAL
   window.BASE_URL + "src/funkin/play/data/playScene/TwoPlayerLocal.js",
 
   window.BASE_URL + "src/funkin/play/data/camera/mainCamera.js",
@@ -89,10 +88,8 @@ const scriptsToLoad = [
 
   window.BASE_URL + "src/funkin/play/visuals/stage/createImages.js",
   window.BASE_URL + "src/funkin/play/visuals/stage/createSprites.js",
-  window.BASE_URL + "src/funkin/play/visuals/stage/createAtlasSprite.js",
   window.BASE_URL + "src/funkin/play/visuals/stage/createBG.js",
-  window.BASE_URL + "src/funkin/play/visuals/stage/playListSprites.js",
-
+  window.BASE_URL + "src/funkin/play/visuals/stage/playListSprites.js",  
   window.BASE_URL + "src/funkin/play/visuals/skins/SkinPathResolver.js",
   window.BASE_URL + "src/funkin/play/visuals/skins/SkinDataLoader.js",
   window.BASE_URL + "src/funkin/play/visuals/skins/playUISkins.js",
@@ -169,6 +166,17 @@ const scriptsToLoad = [
   window.BASE_URL + "src/funkin/play/visuals/arrows/strumelines/strumlineAnimator.js",
   window.BASE_URL + "src/funkin/play/visuals/arrows/strumelines/strumlineUpdater.js",
   window.BASE_URL + "src/funkin/play/visuals/arrows/strumelines/strumelines.js",
+
+  window.BASE_URL + "src/funkin/play/visuals/arrows/spawner/clearExisting.js",
+  window.BASE_URL + "src/funkin/play/visuals/arrows/spawner/checkSparrowXML.js",
+  window.BASE_URL + "src/funkin/play/visuals/arrows/spawner/createStrumAnimations.js",
+  window.BASE_URL + "src/funkin/play/visuals/arrows/spawner/createArrow.js",
+  window.BASE_URL + "src/funkin/play/visuals/arrows/spawner/spawnStrumlines.js",
+  window.BASE_URL + "src/funkin/play/visuals/arrows/spawner/calculateOptimalPoolSize.js",
+  window.BASE_URL + "src/funkin/play/visuals/arrows/spawner/createNoteFallbackFrames.js",
+  window.BASE_URL + "src/funkin/play/visuals/arrows/spawner/spawnNotesArray.js",
+  window.BASE_URL + "src/funkin/play/visuals/arrows/spawner/spawnChartNotes.js",
+
   window.BASE_URL + "src/funkin/play/visuals/arrows/ArrowsSpawner.js",
 
   window.BASE_URL + "src/funkin/play/input/inputDebugg.js",

@@ -12,7 +12,9 @@ class CreateSprites {
 		data.stage.forEach((item) => {
 			if (item.type === 'spritesheet' && item.namePath) {
 				const cleanPath = item.namePath.endsWith('/') ? item.namePath.slice(0, -1) : item.namePath;
-				const key = `stage_${pathName}_${cleanPath}`;
+                
+                // Llave sincronizada con preloadStage
+				const key = item.image || item.name || (cleanPath ? `stage_${pathName}_${cleanPath}` : `stage_${pathName}`);
 
 				if (!scene.textures.exists(key)) return;
 

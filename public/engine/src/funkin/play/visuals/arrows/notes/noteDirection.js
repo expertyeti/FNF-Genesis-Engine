@@ -11,6 +11,11 @@ class NoteDirection {
         return dir % 4; 
     }
     static isPlayerNote(p) {
+        // FIX: Entiende si es un string (nueva estructura "pl") o número (vieja estructura)
+        if (typeof p === "string") {
+            const pStr = p.toLowerCase();
+            return pStr === "pl" || pStr === "player";
+        }
         return p % 2 !== 0;
     }
 }

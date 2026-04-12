@@ -10,6 +10,9 @@ class SkinPreloader {
 
   async preload(scene, uiSkinsManager) {
     return new Promise((resolve) => {
+      // Activar formato de mapa de bits para la UI y notas
+      scene.load.imageBitmapFormat = true;
+
       if (!uiSkinsManager.skinData && !uiSkinsManager.fallbackSkinData)
         return resolve();
 

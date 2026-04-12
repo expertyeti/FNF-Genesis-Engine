@@ -1,3 +1,7 @@
+/**
+ * @file SustainLogic.js
+ * Lógica de procesamiento para notas largas en Genesis Engine.
+ */
 class SustainLogic {
   constructor(manager) {
     this.manager = manager;
@@ -56,16 +60,29 @@ class SustainLogic {
       this.handleRewind(sustain, songPos);
       if (!sustain.active) return;
 
-      const isMyNote = (playAsOpponent && !isTwoPlayer) ? !sustain.isPlayer : sustain.isPlayer;
+      // --- NUEVA LÓGICA DE DETECCIÓN POR STRINGS ---
+      // Si el spawner ya convirtió p: "pl" a isPlayer: true, lo usamos. 
+      // Si no, lo extraemos directamente del objeto de la nota.
+      const isPlayer = sustain.pType === "pl" || sustain.isPlayer === true;
+      const isOpponent = sustain.pType === "op" || sustain.isOpponent === true;
+
+      // Determinamos si es "Nuestra" nota (la que el humano debe presionar)
+      const isMyNote = (playAsOpponent && !isTwoPlayer) ? isOpponent : isPlayer;
       
-      // EL ENEMIGO YA NO ES BOT SI HAY 2 JUGADORES
+      // Lógica de Bot mejorada: El oponente solo es bot si no estamos en modo 2 Jugadores Local
       let isBot = window.autoplay;
-      if (!isTwoPlayer) isBot = !isMyNote || (isMyNote && window.autoplay);
+      if (!isTwoPlayer) {
+          isBot = !isMyNote || (isMyNote && window.autoplay);
+      }
 
       let isHeld = true;
       if (!isBot) {
-          if (isTwoPlayer) isHeld = sustain.isPlayer ? currentKeysP1[sustain.lane] : currentKeysP2[sustain.lane];
-          else isHeld = currentKeysP1[sustain.lane];
+          if (isTwoPlayer) {
+              // En 2P, el jugador 1 presiona sus notas y el jugador 2 las suyas
+              isHeld = isPlayer ? currentKeysP1[sustain.lane] : currentKeysP2[sustain.lane];
+          } else {
+              isHeld = currentKeysP1[sustain.lane];
+          }
       }
 
       const isNearEnd = songPos >= sustain.time + sustain.length - this.manager.toleranceMs;
@@ -100,16 +117,6 @@ class SustainLogic {
   handleRewind(sustain, songPos) {
     const timeDiffRewind = sustain.time - songPos;
     if (timeDiffRewind > 166.0) {
-      if ((sustain.isBeingHit || sustain.wasBeingHit) && !sustain.coverEnded) {
-        sustain.coverEnded = true;
-        if (funkin.playSustains) {
-          funkin.playSustains.emit("sustainDrop", {
-            lane: sustain.lane,
-            isPlayer: sustain.isPlayer,
-            id: sustain.id,
-          });
-        }
-      }
       sustain.active = true;
       sustain.isBeingHit = false;
       sustain.wasBeingHit = false;
@@ -142,9 +149,11 @@ class SustainLogic {
     sustain.consumedTime = Math.max(0, songPos - sustain.time);
 
     if (this.manager.strumlines) {
-      const strums = sustain.isPlayer
+      const isPlayer = sustain.pType === "pl" || sustain.isPlayer === true;
+      const strums = isPlayer
         ? this.manager.strumlines.playerStrums
         : this.manager.strumlines.opponentStrums;
+        
       const arrow = strums[sustain.lane];
       if (arrow && arrow.playAnim) {
         arrow.playAnim("confirm", false);
@@ -166,7 +175,7 @@ class SustainLogic {
             judgment: "miss",
             score: -10,
             direction: sustain.lane,
-            isPlayer: sustain.isPlayer,
+            isPlayer: (sustain.pType === "pl" || sustain.isPlayer === true),
             isSustain: true,
             isAuto: false,
           };
@@ -177,32 +186,22 @@ class SustainLogic {
   }
 
   emitSustainEvents(sustain, isFullyConsumed) {
+    const isPlayer = sustain.pType === "pl" || sustain.isPlayer === true;
+    const eventData = { lane: sustain.lane, isPlayer: isPlayer, id: sustain.id };
+
     if (!sustain.wasBeingHit && sustain.isBeingHit) {
-      if (funkin.playSustains)
-        funkin.playSustains.emit("sustainStart", { lane: sustain.lane, isPlayer: sustain.isPlayer, id: sustain.id });
+      if (funkin.playSustains) funkin.playSustains.emit("sustainStart", eventData);
     } else if (sustain.wasBeingHit && sustain.isBeingHit) {
       if (isFullyConsumed && !sustain.coverEnded) {
         sustain.coverEnded = true;
-        if (funkin.playSustains)
-          funkin.playSustains.emit("sustainEnd", { lane: sustain.lane, isPlayer: sustain.isPlayer, id: sustain.id });
+        if (funkin.playSustains) funkin.playSustains.emit("sustainEnd", eventData);
       } else if (!sustain.coverEnded) {
-        if (funkin.playSustains)
-          funkin.playSustains.emit("sustainActive", { lane: sustain.lane, isPlayer: sustain.isPlayer, id: sustain.id });
+        if (funkin.playSustains) funkin.playSustains.emit("sustainActive", eventData);
       }
     } else if (sustain.wasBeingHit && !sustain.isBeingHit) {
-      if (isFullyConsumed) {
-        if (!sustain.coverEnded) {
-          sustain.coverEnded = true;
-          if (funkin.playSustains)
-            funkin.playSustains.emit("sustainEnd", { lane: sustain.lane, isPlayer: sustain.isPlayer, id: sustain.id });
-        }
-      } else {
-        if (!sustain.coverEnded) {
-          sustain.coverEnded = true;
-          if (funkin.playSustains)
-            funkin.playSustains.emit("sustainDrop", { lane: sustain.lane, isPlayer: sustain.isPlayer, id: sustain.id });
-        }
-      }
+      sustain.coverEnded = true;
+      const eventName = isFullyConsumed ? "sustainEnd" : "sustainDrop";
+      if (funkin.playSustains) funkin.playSustains.emit(eventName, eventData);
     }
     sustain.wasBeingHit = sustain.isBeingHit;
   }
@@ -211,6 +210,7 @@ class SustainLogic {
     if (sustain.parentMissed && !sustain.hasBeenHit && songPos > sustain.time + 166.0 && !isBot) {
       if (!sustain.missAnimPlayed) {
         if (funkin.playNotes && !window.autoplay) {
+          const isPlayer = sustain.pType === "pl" || sustain.isPlayer === true;
           funkin.playNotes.lastHit = {
             pressed: false,
             ms: 0,
@@ -218,7 +218,7 @@ class SustainLogic {
             judgment: "miss",
             score: -10,
             direction: sustain.lane,
-            isPlayer: sustain.isPlayer,
+            isPlayer: isPlayer,
             isSustain: true,
             isAuto: false,
           };

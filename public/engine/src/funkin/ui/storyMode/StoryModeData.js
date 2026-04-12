@@ -42,6 +42,28 @@ class StoryModeData {
           let json = await jsonRes.json();
           if (json.visible === false) continue;
 
+          // Extraer nombres reales de las canciones desde el meta.json
+          const rawTracks = json.tracks || json.songs || [];
+          const trackPromises = rawTracks.map(async (trackEntry) => {
+             let folderName = typeof trackEntry === 'string' ? trackEntry : (Array.isArray(trackEntry) ? trackEntry[0] : "");
+             if (!folderName) return "???";
+
+             try {
+                 // Accedemos al meta.json limpio para sacar el songName
+                 const metaRes = await fetch(`${window.BASE_URL}assets/songs/${folderName.toLowerCase()}/charts/meta.json`);
+                 if (metaRes.ok) {
+                     const metaJson = await metaRes.json();
+                     return metaJson.songName || folderName;
+                 }
+                 return folderName;
+             } catch (e) {
+                 return folderName;
+             }
+          });
+
+          // Esperamos todas las llamadas de la semana y lo guardamos
+          json.resolvedTrackNames = await Promise.all(trackPromises);
+
           const weekTitle = json.weekTitle || weekId;
 
           this.weeks.push({ id: weekId, titleImage: weekTitle, data: json });

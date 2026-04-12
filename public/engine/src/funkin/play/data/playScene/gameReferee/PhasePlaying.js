@@ -50,6 +50,11 @@ class PhasePlaying {
     if (scene.healthBar) scene.healthBar.update(time, delta);
     if (scene.antiLag) scene.antiLag.update(time, delta);
     
+    // ==========================================
+    // ACTUALIZADOR DEL SISTEMA DE SHADERS
+    // ==========================================
+    if (scene.shaderManager) scene.shaderManager.update(time, delta);
+
     if (scene.scoreText) scene.scoreText.update(time, delta);
     if (scene.botplayText) scene.botplayText.update(time, delta);
 
@@ -98,12 +103,11 @@ class PhasePlaying {
           scene.lastBeat = currentBeat;
 
           if (currentBeat % 4 === 0) {
-            // CORRECCIÓN: Añadido el Booping al GameCamera
             if (scene.gameCam && typeof scene.gameCam.bop === "function") {
-              scene.gameCam.bop(0.015); // Efecto sutil para el escenario
+              scene.gameCam.bop(0.015);
             }
             if (scene.uiCam && typeof scene.uiCam.bop === "function") {
-              scene.uiCam.bop(0.03); // Efecto pronunciado para la UI
+              scene.uiCam.bop(0.03); 
             }
           }
 

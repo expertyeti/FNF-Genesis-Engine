@@ -4,17 +4,27 @@ class IntroDanceScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.imageBitmapFormat = true;
     // Si ya los precargas en loading.js puedes omitirlos aquí, pero no está de más
-    this.load.audio("confirmMenu", window.BASE_URL + "assets/sounds/confirmMenu.ogg");
-    this.load.audio("girlfriendsRingtone", window.BASE_URL + "assets/music/girlfriendsRingtone.ogg");
-    this.load.text("rainbowShader", window.BASE_URL + "assets/shaders/RainbowShader.frag");
+    this.load.audio(
+      "confirmMenu",
+      window.BASE_URL + "assets/sounds/confirmMenu.ogg",
+    );
+    this.load.audio(
+      "girlfriendsRingtone",
+      window.BASE_URL + "assets/music/girlfriendsRingtone.ogg",
+    );
+    this.load.text(
+      "rainbowShader",
+      window.BASE_URL + "assets/shaders/RainbowShader.frag",
+    );
 
     if (!this.sys.game.device.os.desktop) {
-        this.load.atlasXML(
-            "titleEnter_mobile", 
-            window.BASE_URL + "assets/images/menu/intro/titleEnter_mobile.png", 
-            window.BASE_URL + "assets/images/menu/intro/titleEnter_mobile.xml"
-        );
+      this.load.atlasXML(
+        "titleEnter_mobile",
+        window.BASE_URL + "assets/images/menu/intro/titleEnter_mobile.png",
+        window.BASE_URL + "assets/images/menu/intro/titleEnter_mobile.xml",
+      );
     }
   }
 
@@ -24,7 +34,7 @@ class IntroDanceScene extends Phaser.Scene {
 
     this.confirmSound = this.sound.add("confirmMenu");
     this.isTransitioning = false;
-    
+
     this.touchStartX = 0;
     this.touchStartY = 0;
     this.isSwiping = false;
@@ -35,38 +45,38 @@ class IntroDanceScene extends Phaser.Scene {
     }
 
     if (!this.sys.game.device.os.desktop) {
-        this.setupMobileControls();
+      this.setupMobileControls();
     }
 
-    this.input.keyboard.on('keydown-BACKSPACE', () => {
-        if (typeof Neutralino !== 'undefined') Neutralino.app.exit(); 
+    this.input.keyboard.on("keydown-BACKSPACE", () => {
+      if (typeof Neutralino !== "undefined") Neutralino.app.exit();
     });
   }
 
   setupMobileControls() {
-      this.input.on('pointerdown', (pointer) => {
-          this.touchStartX = pointer.x;
-          this.touchStartY = pointer.y;
-          this.isSwiping = false;
-      });
+    this.input.on("pointerdown", (pointer) => {
+      this.touchStartX = pointer.x;
+      this.touchStartY = pointer.y;
+      this.isSwiping = false;
+    });
 
-      this.input.on('pointerup', (pointer) => {
-          const diffX = pointer.x - this.touchStartX;
-          const diffY = pointer.y - this.touchStartY;
+    this.input.on("pointerup", (pointer) => {
+      const diffX = pointer.x - this.touchStartX;
+      const diffY = pointer.y - this.touchStartY;
 
-          if (Math.abs(diffX) > 50 || Math.abs(diffY) > 50) {
-              this.isSwiping = true;
-              if (this.funScript && !this.funScript.active) {
-                  if (Math.abs(diffX) > Math.abs(diffY)) {
-                      this.funScript.checkInput(diffX > 0 ? 'RIGHT' : 'LEFT');
-                  } else {
-                      this.funScript.checkInput(diffY > 0 ? 'DOWN' : 'UP');
-                  }
-              }
+      if (Math.abs(diffX) > 50 || Math.abs(diffY) > 50) {
+        this.isSwiping = true;
+        if (this.funScript && !this.funScript.active) {
+          if (Math.abs(diffX) > Math.abs(diffY)) {
+            this.funScript.checkInput(diffX > 0 ? "RIGHT" : "LEFT");
           } else {
-              if (!this.isSwiping) this.acceptAction();
+            this.funScript.checkInput(diffY > 0 ? "DOWN" : "UP");
           }
-      });
+        }
+      } else {
+        if (!this.isSwiping) this.acceptAction();
+      }
+    });
   }
 
   update(time, delta) {
@@ -76,38 +86,40 @@ class IntroDanceScene extends Phaser.Scene {
     if (this.isTransitioning) return;
 
     if (funkin.controls && funkin.controls.ACCEPT_P) {
-        this.acceptAction();
+      this.acceptAction();
     }
   }
 
   acceptAction() {
-      if (this.isTransitioning) return;
-      this.isTransitioning = true;
+    if (this.isTransitioning) return;
+    this.isTransitioning = true;
 
-      funkin.ui.intro.danceEventBus.emit("play_confirm");
-      this.confirmSound.play();
+    funkin.ui.intro.danceEventBus.emit("play_confirm");
+    this.confirmSound.play();
 
-      try { if (navigator.vibrate) navigator.vibrate([100, 50, 100]); } catch(e){}
+    try {
+      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+    } catch (e) {}
 
-      const flashScene = this.scene.get("FlashEffect");
+    const flashScene = this.scene.get("FlashEffect");
 
-      if (this.funScript && this.funScript.active && this.funScript.secretMusic) {
-        this.funScript.secretMusic.stop();
-      }
+    if (this.funScript && this.funScript.active && this.funScript.secretMusic) {
+      this.funScript.secretMusic.stop();
+    }
 
-      if (flashScene) {
-        flashScene.isTransitioning = false;
-        flashScene.tweens.killTweensOf(flashScene.whiteScreen);
-        flashScene.startTransition("MainMenuScene");
-      } else {
-        this.scene.start("MainMenuScene");
-      }
+    if (flashScene) {
+      flashScene.isTransitioning = false;
+      flashScene.tweens.killTweensOf(flashScene.whiteScreen);
+      flashScene.startTransition("MainMenuScene");
+    } else {
+      this.scene.start("MainMenuScene");
+    }
   }
 
   shutdown() {
-      this.input.off('pointerdown');
-      this.input.off('pointerup');
-      this.input.keyboard.off('keydown-BACKSPACE');
+    this.input.off("pointerdown");
+    this.input.off("pointerup");
+    this.input.keyboard.off("keydown-BACKSPACE");
   }
 }
 

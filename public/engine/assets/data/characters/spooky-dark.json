@@ -1,0 +1,98 @@
+{
+    "animations": [
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "danceLeft",
+            "fps": 24,
+            "name": "Idle",
+            "indices": [0, 1, 2, 3, 4, 5, 6, 7]
+        },
+        {
+            "loop": false,
+            "offsets": [
+                0,
+                0
+            ],
+            "anim": "danceRight",
+            "fps": 24,
+            "name": "Idle",
+            "indices": [8, 9, 10, 11, 12, 13, 14, 15]
+        },
+        {
+            "loop": false,
+            "offsets": [
+                130,
+                -15
+            ],
+            "anim": "singLEFT",
+            "fps": 24,
+            "name": "SingLEFT",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -50,
+                -140
+            ],
+            "anim": "singDOWN",
+            "fps": 24,
+            "name": "SingDOWN",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -20,
+                26
+            ],
+            "anim": "singUP",
+            "fps": 24,
+            "name": "SingUP",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                -130,
+                -15
+            ],
+            "anim": "singRIGHT",
+            "fps": 24,
+            "name": "SingRIGHT",
+            "indices": []
+        },
+        {
+            "loop": false,
+            "offsets": [
+                60,
+                30
+            ],
+            "anim": "cheer",
+            "fps": 24,
+            "name": "Spookiez YEAH cheer",
+            "indices": []
+        }
+    ],
+    "flip_x": false,
+    "health": {
+        "id": "spooky",
+        "scale": 1,
+        "antialiasing": true,
+        "type": "legacy",
+        "offset": [
+            0,
+            0
+        ],
+        "color": [
+            255,
+            0,
+            0
+        ]
+    },
+    "image": "characters/spooky_dark"
+}

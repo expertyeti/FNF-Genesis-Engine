@@ -63,6 +63,50 @@ class FreePlayDiff {
       .setDepth(100);
   }
 
+  // Nueva función para actualizar la lista de dificultades de forma dinámica
+  updateDifficultiesList(newList) {
+    const oldDiffName = this.difficulties[this.currentIndex];
+
+    if (!newList || newList.length === 0) {
+      newList = ["easy", "normal", "hard"];
+    }
+
+    this.difficulties = newList.map(d => d.toUpperCase());
+
+    // Intentamos mantener la misma dificultad si la nueva canción también la tiene
+    if (oldDiffName) {
+      const newIndex = this.difficulties.indexOf(oldDiffName);
+      if (newIndex !== -1) {
+        this.currentIndex = newIndex;
+      } else {
+        // Si no existe, buscamos "NORMAL" por defecto, o la primera.
+        const normalIndex = this.difficulties.indexOf("NORMAL");
+        this.currentIndex = normalIndex !== -1 ? normalIndex : 0;
+      }
+    } else {
+      this.currentIndex = 0;
+    }
+
+    this.scene.game.registry.set("freeplayDiffIndex", this.currentIndex);
+    this.diffText.setText(`< ${this.difficulties[this.currentIndex]} >`);
+
+    // Actualizar hitbox táctil si aplica
+    if (!this.scene.sys.game.device.os.desktop && this.diffText.input) {
+      const padding = 20;
+      this.diffText.input.hitArea.width = this.diffText.width + padding * 2;
+    }
+
+    // Refrescar el puntaje visual
+    if (this.scene.songsManager) {
+      const currentSong = this.scene.songsManager.getCurrentSong();
+      const songName =
+        typeof currentSong === "string"
+          ? currentSong
+          : currentSong && (currentSong.songName || currentSong.name);
+      if (songName) this.updateScoreDisplay(songName);
+    }
+  }
+
   changeDifficulty(change) {
     this.currentIndex += change;
 

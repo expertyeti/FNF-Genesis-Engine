@@ -1,0 +1,574 @@
+{
+    "pathName": "limo/erect",
+    "stage": [
+        {
+            "type": "image",
+            "layer": 1,
+            "scale": 0.9,
+            "namePath": "limoSunset",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -180,
+                -80
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.1
+        },
+        {
+            "type": "spritesheet",
+            "layer": 2,
+            "scale": 1,
+            "namePath": "shooting star",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                200,
+                0
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.12,
+            "animation": {
+                "play_list": {
+                    "shooting star": {
+                        "prefix": "shooting star"
+                    }
+                },
+                "play_mode": "Loop",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 3,
+            "scale": 1,
+            "namePath": "bgLimo",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -200,
+                480
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.4,
+            "animation": {
+                "play_list": {
+                    "drive": {
+                        "prefix": "background limo blue"
+                    }
+                },
+                "play_mode": "Loop",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 4,
+            "scale": 1,
+            "namePath": "limo/henchmen",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                100,
+                100
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.4,
+            "animation": {
+                "play_list": {
+                    "left": {
+                        "prefix": "hench dancing",
+                        "indices": [
+                            "00",
+                            "01",
+                            "02",
+                            "03",
+                            "04",
+                            "05",
+                            "06",
+                            "07",
+                            "08",
+                            "09",
+                            "10",
+                            "11",
+                            "12",
+                            "13",
+                            "14"
+                        ]
+                    },
+                    "right": {
+                        "prefix": "hench dancing",
+                        "indices": [
+                            "15",
+                            "16",
+                            "17",
+                            "18",
+                            "19",
+                            "20",
+                            "21",
+                            "22",
+                            "23",
+                            "24",
+                            "25",
+                            "26",
+                            "27",
+                            "28",
+                            "29"
+                        ]
+                    },
+                    "hit1": {
+                        "prefix": "hench hit 1"
+                    },
+                    "hit2": {
+                        "prefix": "hench hit 2"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 5,
+            "scale": 1,
+            "namePath": "limo/henchmen",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                400,
+                100
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.4,
+            "animation": {
+                "play_list": {
+                    "left": {
+                        "prefix": "hench dancing",
+                        "indices": [
+                            "00",
+                            "01",
+                            "02",
+                            "03",
+                            "04",
+                            "05",
+                            "06",
+                            "07",
+                            "08",
+                            "09",
+                            "10",
+                            "11",
+                            "12",
+                            "13",
+                            "14"
+                        ]
+                    },
+                    "right": {
+                        "prefix": "hench dancing",
+                        "indices": [
+                            "15",
+                            "16",
+                            "17",
+                            "18",
+                            "19",
+                            "20",
+                            "21",
+                            "22",
+                            "23",
+                            "24",
+                            "25",
+                            "26",
+                            "27",
+                            "28",
+                            "29"
+                        ]
+                    },
+                    "hit1": {
+                        "prefix": "hench hit 1"
+                    },
+                    "hit2": {
+                        "prefix": "hench hit 2"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 6,
+            "scale": 1,
+            "namePath": "limo/henchmen",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                700,
+                100
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.4,
+            "animation": {
+                "play_list": {
+                    "left": {
+                        "prefix": "hench dancing",
+                        "indices": [
+                            "00",
+                            "01",
+                            "02",
+                            "03",
+                            "04",
+                            "05",
+                            "06",
+                            "07",
+                            "08",
+                            "09",
+                            "10",
+                            "11",
+                            "12",
+                            "13",
+                            "14"
+                        ]
+                    },
+                    "right": {
+                        "prefix": "hench dancing",
+                        "indices": [
+                            "15",
+                            "16",
+                            "17",
+                            "18",
+                            "19",
+                            "20",
+                            "21",
+                            "22",
+                            "23",
+                            "24",
+                            "25",
+                            "26",
+                            "27",
+                            "28",
+                            "29"
+                        ]
+                    },
+                    "hit1": {
+                        "prefix": "hench hit 1"
+                    },
+                    "hit2": {
+                        "prefix": "hench hit 2"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 7,
+            "scale": 1,
+            "namePath": "limo/henchmen",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1000,
+                100
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.4,
+            "animation": {
+                "play_list": {
+                    "left": {
+                        "prefix": "hench dancing",
+                        "indices": [
+                            "00",
+                            "01",
+                            "02",
+                            "03",
+                            "04",
+                            "05",
+                            "06",
+                            "07",
+                            "08",
+                            "09",
+                            "10",
+                            "11",
+                            "12",
+                            "13",
+                            "14"
+                        ]
+                    },
+                    "right": {
+                        "prefix": "hench dancing",
+                        "indices": [
+                            "15",
+                            "16",
+                            "17",
+                            "18",
+                            "19",
+                            "20",
+                            "21",
+                            "22",
+                            "23",
+                            "24",
+                            "25",
+                            "26",
+                            "27",
+                            "28",
+                            "29"
+                        ]
+                    },
+                    "hit1": {
+                        "prefix": "hench hit 1"
+                    },
+                    "hit2": {
+                        "prefix": "hench hit 2"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 8,
+            "scale": 1,
+            "namePath": "limo/henchmen",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                1300,
+                100
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.4,
+            "animation": {
+                "play_list": {
+                    "left": {
+                        "prefix": "hench dancing",
+                        "indices": [
+                            "00",
+                            "01",
+                            "02",
+                            "03",
+                            "04",
+                            "05",
+                            "06",
+                            "07",
+                            "08",
+                            "09",
+                            "10",
+                            "11",
+                            "12",
+                            "13",
+                            "14"
+                        ]
+                    },
+                    "right": {
+                        "prefix": "hench dancing",
+                        "indices": [
+                            "15",
+                            "16",
+                            "17",
+                            "18",
+                            "19",
+                            "20",
+                            "21",
+                            "22",
+                            "23",
+                            "24",
+                            "25",
+                            "26",
+                            "27",
+                            "28",
+                            "29"
+                        ]
+                    },
+                    "hit1": {
+                        "prefix": "hench hit 1"
+                    },
+                    "hit2": {
+                        "prefix": "hench hit 2"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "playergf": {
+                "type": "character",
+                "layer": 9,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    787,
+                    779
+                ],
+                "camera_Offset": [
+                    0,
+                    0
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 10,
+            "scale": 1,
+            "namePath": "limoDrive",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -120,
+                520
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1,
+            "animation": {
+                "play_list": {
+                    "drive": {
+                        "prefix": "Limo stage"
+                    }
+                },
+                "play_mode": "Loop",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "enemy": {
+                "type": "character",
+                "layer": 11,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    329.5,
+                    913
+                ],
+                "camera_Offset": [
+                    150,
+                    0
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "player": {
+                "type": "character",
+                "layer": 12,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    1217.5,
+                    592
+                ],
+                "camera_Offset": [
+                    -300,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "type": "image",
+            "layer": 13,
+            "scale": 1,
+            "namePath": "limo/fastCarLol",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -12600,
+                160
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1
+        }
+    ]
+}

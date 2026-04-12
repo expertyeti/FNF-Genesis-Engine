@@ -1,5 +1,5 @@
 {
-	"tracks": ["Spookeez", "South", "Monster"],
+	"tracks": ["spookeez", "south", "monster"],
 	"weekCharacters": {
         "dad": {
             "path": "spooky",

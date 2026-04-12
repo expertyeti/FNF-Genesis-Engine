@@ -26,13 +26,6 @@ class SustainNotesManager {
     this.toleranceMs = 150;
     this.missedAlphaMultiplier = 0.4;
 
-    if (this.scene && this.scene.sys && this.scene.sys.game) {
-      this.scene.sys.game.events.off("blur");
-      this.scene.sys.game.events.off("hidden");
-      if (this.scene.sys.game.sound)
-        this.scene.sys.game.sound.pauseOnBlur = false;
-    }
-
     this.maskGraphicsList = [];
     this.sustainMasksList = [];
 
@@ -40,11 +33,9 @@ class SustainNotesManager {
       let mg = this.scene.add.graphics();
       mg.setScrollFactor(0);
       mg.setVisible(false);
-
       if (funkin.play.data.camera && funkin.play.data.camera.addObjToUI) {
         funkin.play.data.camera.addObjToUI(mg);
       }
-
       this.maskGraphicsList.push(mg);
       this.sustainMasksList.push(mg.createGeometryMask());
     }
@@ -62,10 +53,13 @@ class SustainNotesManager {
   update(time, delta) {
     if (!funkin.conductor || this.sustains.length === 0) return;
 
-    this.scrollSpeed =
-      funkin.play.chart && funkin.play.chart.get("metadata.speed")
-        ? funkin.play.chart.get("metadata.speed")
-        : 1.0;
+    // FIX: Ahora las notas largas también actualizan su velocidad leyendo el chart dinámicamente.
+    if (funkin.play && funkin.play.chart) {
+        const chartSpeed = funkin.play.chart.get("metadata.scrollSpeed") || funkin.play.chart.get("metadata.speed");
+        if (chartSpeed !== undefined && chartSpeed !== null) {
+            this.scrollSpeed = chartSpeed;
+        }
+    }
 
     this.logic.update(time, delta);
     this.renderer.update(time, delta);
@@ -74,11 +68,7 @@ class SustainNotesManager {
   destroy() {
     this.scene.events.off("ui_skin_changed", this.skin.reloadSkin, this);
     this.sustains.forEach((s) => {
-      if (s.bodyParts) {
-        s.bodyParts.forEach((p) => {
-          if (p) p.destroy();
-        });
-      }
+      if (s.bodyParts) s.bodyParts.forEach((p) => { if (p) p.destroy(); });
       if (s.end) s.end.destroy();
     });
     this.sustains = [];
@@ -88,7 +78,6 @@ class SustainNotesManager {
       this.maskGraphicsList = [];
     }
     this.sustainMasksList = [];
-
     this.api.destroy();
   }
 }

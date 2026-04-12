@@ -1,5 +1,5 @@
 {
-	"tracks": ["Pico", "Philly Nice", "Blammed"],
+	"tracks": ["pico", "philly-nice", "blammed"],
 	"weekCharacters": {
         "dad": {
             "path": "pico",

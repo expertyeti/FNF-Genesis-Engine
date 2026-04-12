@@ -38,10 +38,17 @@ class StoryModeTracks {
         }
 
         const tracksArray = this.extractTrackNames(currentWeek.data);
-        this.trackText.setText(tracksArray.join('\n').toUpperCase());
+        // Quitamos el .toUpperCase() para respetar las mayúsculas y minúsculas originales
+        this.trackText.setText(tracksArray.join('\n'));
     }
 
     extractTrackNames(weekData) {
+        // Obtenemos los nombres resueltos desde el meta.json que generamos en StoryModeData
+        if (weekData.resolvedTrackNames && weekData.resolvedTrackNames.length > 0) {
+            return weekData.resolvedTrackNames;
+        }
+
+        // Fallback por si la metadata falló por algún motivo
         const tracksList = weekData.tracks || weekData.songs;
         if (!tracksList || !Array.isArray(tracksList) || tracksList.length === 0) return ["???"];
         if (typeof tracksList[0] === 'string') return tracksList;
