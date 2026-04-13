@@ -1,0 +1,275 @@
+{
+    "pathName": "mall/erect",
+    "stage": [
+        {
+            "type": "image",
+            "layer": 1,
+            "scale": 0.9,
+            "namePath": "bgWalls",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -726,
+                -566
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.2
+        },
+        {
+            "type": "spritesheet",
+            "layer": 2,
+            "scale": 0.85,
+            "namePath": "upperBop",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -374,
+                -98
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.28,
+            "animation": {
+                "play_list": {
+                    "idle": {
+                        "prefix": "upperBop"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "image",
+            "layer": 3,
+            "scale": 0.9,
+            "namePath": "bgEscalator",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -1100,
+                -540
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.3
+        },
+        {
+            "type": "image",
+            "layer": 4,
+            "scale": 1,
+            "namePath": "christmasTree",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                370,
+                -250
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.4
+        },
+        {
+            "type": "image",
+            "layer": 5,
+            "scale": 0.9,
+            "namePath": "white",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -1000,
+                100
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.85
+        },
+        {
+            "type": "spritesheet",
+            "layer": 6,
+            "scale": 1,
+            "namePath": "bottomBop",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -300,
+                70
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 0.9,
+            "animation": {
+                "play_list": {
+                    "idle": {
+                        "prefix": "bottomBop"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "type": "image",
+            "layer": 7,
+            "scale": 5700,
+            "namePath": "#F3F4F5",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -1500,
+                800
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1
+        },
+        {
+            "type": "image",
+            "layer": 8,
+            "scale": 1.1,
+            "namePath": "mall/fgSnow",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -1350,
+                680
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1
+        },
+        {
+            "playergf": {
+                "type": "character",
+                "layer": 9,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    808.5,
+                    854
+                ],
+                "camera_Offset": [
+                    0,
+                    0
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "enemy": {
+                "type": "character",
+                "layer": 10,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    42,
+                    882
+                ],
+                "camera_Offset": [
+                    150,
+                    -100
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        },
+        {
+            "type": "spritesheet",
+            "layer": 11,
+            "scale": 1,
+            "namePath": "mall/santa",
+            "visible": true,
+            "opacity": 1,
+            "position": [
+                -840,
+                150
+            ],
+            "origin": [
+                0,
+                0
+            ],
+            "flip_x": false,
+            "flip_y": false,
+            "scrollFactor": 1,
+            "animation": {
+                "play_list": {
+                    "idle": {
+                        "prefix": "santa idle in fear"
+                    }
+                },
+                "play_mode": "Beat",
+                "frameRate": 24,
+                "offsets": {},
+                "beat": [
+                    1
+                ]
+            }
+        },
+        {
+            "player": {
+                "type": "character",
+                "layer": 12,
+                "scale": 1,
+                "visible": true,
+                "opacity": 1,
+                "position": [
+                    1177.5,
+                    871
+                ],
+                "camera_Offset": [
+                    -300,
+                    -200
+                ],
+                "flip_x": false,
+                "flip_y": false,
+                "scrollFactor": 1
+            }
+        }
+    ]
+}

@@ -1684,3 +1684,72 @@ ERROR 2026-04-12 15:34:57,549 NE_RS_UNBLDRE: Unable to load application resource
 ERROR 2026-04-12 15:35:00,609 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
 ERROR 2026-04-12 15:41:45,312 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
 ERROR 2026-04-12 15:41:47,904 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+INFO 2026-04-12 17:29:34,519 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:29:39,060 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:29:44,905 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:31:16,214 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/philly/erect/train.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:33:30,092 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/stages/mallXmasErect.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:33:30,232 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/songs/eggnog/song/Voices-bf-erect.ogg api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:34:23,154 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:34:38,310 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:36:23,152 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/stages/mallXmasErect.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:37:31,674 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/stages/mallXmasErect.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:37:39,035 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:37:43,698 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:39:44,175 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:39:47,401 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,000 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/bgWalls.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,002 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/upperBop.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,004 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/upperBop.xml api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,034 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/bgEscalator.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,044 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/christmasTree.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,049 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/upperBop.xml api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,433 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/white.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,488 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/bottomBop.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,499 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/bottomBop.xml api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,516 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/index.html api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,523 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/fgSnow.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,543 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/santa.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,563 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/santa.xml api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,569 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/bottomBop.xml api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:41:50,606 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mallXmasErect/santa.xml api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:42:35,314 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/index.html api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:42:35,400 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/santa.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:42:35,619 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/fgSnow.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:42:35,733 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/santa.xml api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:42:35,937 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/santa.xml api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:43:25,239 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/index.html api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:43:25,254 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/fgSnow.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:44:04,200 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/index.html api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:45:28,504 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/index.html api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:46:08,014 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/index.html api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:48:26,215 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/index.html api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+INFO 2026-04-12 17:58:45,472 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:58:56,101 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:59:06,320 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 17:59:29,113 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/philly/erect/train.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+INFO 2026-04-12 18:04:39,022 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:04:47,626 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:04:57,389 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+INFO 2026-04-12 18:12:47,440 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:12:56,281 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:13:03,744 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+INFO 2026-04-12 18:28:04,365 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:28:11,144 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:28:20,760 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:28:44,601 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/philly/erect/train.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:28:49,313 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/icons/icon_face.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:30:58,423 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/philly/erect/train.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:31:00,043 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/icons/icon_face.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:31:53,481 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/philly/erect/train.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:31:54,622 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/icons/icon_face.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:32:23,853 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:32:31,158 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:32:58,132 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/icons/icon_face.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+INFO 2026-04-12 18:33:29,028 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:33:35,233 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:33:41,654 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:35:06,738 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/philly/erect/train.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:38:12,526 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/philly/erect/train.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:38:25,426 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/philly/erect/train.png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1
+ERROR 2026-04-12 18:40:50,874 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/icons/girlfriend (tankman stickup).png api\debug\debug.cpp:20 Britex@DESKTOP-TUKI7H1

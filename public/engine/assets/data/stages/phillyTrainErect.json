@@ -81,7 +81,7 @@
             "type": "image",
             "layer": 5,
             "scale": 1,
-            "namePath": "train",
+            "namePath": "philly/train",
             "visible": true,
             "opacity": 1,
             "position": [

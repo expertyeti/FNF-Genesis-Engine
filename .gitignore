@@ -44,3 +44,4 @@ app-example
 
 bin/
 .tmp/
+dist/

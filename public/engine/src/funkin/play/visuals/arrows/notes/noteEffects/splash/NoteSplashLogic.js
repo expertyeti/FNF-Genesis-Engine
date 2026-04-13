@@ -19,6 +19,10 @@ class NoteSplashLogic {
 			funkin.playNotes.event("noteHit", (hitData) => {
 				if (!hitData || !hitData.judgment) return;
 				
+				const getStoredOption = (key) => localStorage.getItem(`fnf_${key}`) === "true";
+				const is2P = getStoredOption("twoPlayerLocal");
+				if (!hitData.isPlayer && !is2P) return;
+				
 				const judg = hitData.judgment.toLowerCase();
 				if (hitData.pressed && (judg === "sick" || judg === "perfect")) {
 					this.spawnSplash(hitData);
