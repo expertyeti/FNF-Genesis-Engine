@@ -45,3 +45,5 @@ app-example
 bin/
 .tmp/
 dist/
+
+neutralinojs.log
