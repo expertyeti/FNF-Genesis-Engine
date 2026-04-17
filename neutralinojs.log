@@ -1789,3 +1789,9 @@ ERROR 2026-04-16 03:34:37,721 NE_RS_UNBLDRE: Unable to load application resource
 ERROR 2026-04-16 03:34:37,749 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-16 03:35:04,061 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-16 03:35:05,253 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-17 01:26:15,976 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-17 01:26:19,871 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-17 01:26:20,372 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-17 01:28:12,046 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-17 01:28:15,491 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/favicon.ico api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-17 01:28:17,566 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
