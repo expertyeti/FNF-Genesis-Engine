@@ -143,12 +143,6 @@
                             "28",
                             "29"
                         ]
-                    },
-                    "hit1": {
-                        "prefix": "hench hit 1"
-                    },
-                    "hit2": {
-                        "prefix": "hench hit 2"
                     }
                 },
                 "play_mode": "Beat",
@@ -218,12 +212,6 @@
                             "28",
                             "29"
                         ]
-                    },
-                    "hit1": {
-                        "prefix": "hench hit 1"
-                    },
-                    "hit2": {
-                        "prefix": "hench hit 2"
                     }
                 },
                 "play_mode": "Beat",
@@ -293,12 +281,6 @@
                             "28",
                             "29"
                         ]
-                    },
-                    "hit1": {
-                        "prefix": "hench hit 1"
-                    },
-                    "hit2": {
-                        "prefix": "hench hit 2"
                     }
                 },
                 "play_mode": "Beat",
@@ -368,12 +350,6 @@
                             "28",
                             "29"
                         ]
-                    },
-                    "hit1": {
-                        "prefix": "hench hit 1"
-                    },
-                    "hit2": {
-                        "prefix": "hench hit 2"
                     }
                 },
                 "play_mode": "Beat",
@@ -443,12 +419,6 @@
                             "28",
                             "29"
                         ]
-                    },
-                    "hit1": {
-                        "prefix": "hench hit 1"
-                    },
-                    "hit2": {
-                        "prefix": "hench hit 2"
                     }
                 },
                 "play_mode": "Beat",

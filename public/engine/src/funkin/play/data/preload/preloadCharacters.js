@@ -1,7 +1,7 @@
 /**
  * @file preloadCharacters.js
- * Optimizado: Encola assets principales y animaciones optimizadas en archivos separados (.png, .webp, etc).
- * Si no se especifica extensión, usa .png por defecto.
+ * Optimizado: Detecta extensiones personalizadas (.webp, .png) tanto en la imagen principal 
+ * como en las animaciones. Usa .png por defecto.
  */
 class PreloadCharacters {
     static loadedKeys = { opponents: [], players: [], spectator: [] };
@@ -27,23 +27,35 @@ class PreloadCharacters {
                 const char = group[index];
                 if (!char?.image) continue;
 
-                const imagePath = `${baseUrl}assets/images/${char.image}.png`;
-                const xmlPath = `${baseUrl}assets/images/${char.image}.xml`;
+                // NUEVO: Detectar extensión de la imagen principal
+                let rawImage = char.image;
+                let mainExtIndex = rawImage.lastIndexOf('.');
+                let mainKey = rawImage;
+                let mainExt = '.png'; // POR DEFECTO
+                
+                if (mainExtIndex !== -1 && (rawImage.length - mainExtIndex <= 5)) {
+                    mainKey = rawImage.substring(0, mainExtIndex);
+                    mainExt = rawImage.substring(mainExtIndex);
+                }
+
+                const imagePath = `${baseUrl}assets/images/${mainKey}${mainExt}`;
+                const xmlPath = `${baseUrl}assets/images/${mainKey}.xml`;
+                
                 const iconId = char.health?.id || "face";
                 const iconKey = `icon_${iconId}`;
                 const iconPath = `${baseUrl}assets/images/icons/${iconId}.png`;
 
                 // Encolar textura principal del personaje
-                if (!scene.textures.exists(char.image)) {
-                    scene.load.image(char.image, imagePath);
-                    scene.load.text(`${char.image}_xml`, xmlPath);
+                if (!scene.textures.exists(mainKey)) {
+                    scene.load.image(mainKey, imagePath);
+                    scene.load.text(`${mainKey}_xml`, xmlPath);
                 }
                 
                 if (!scene.textures.exists(iconKey)) {
                     scene.load.image(iconKey, iconPath);
                 }
 
-                // NUEVO: Buscar animaciones propias (optimizadas) con rutas personalizadas
+                // Buscar animaciones propias (optimizadas) con rutas personalizadas
                 if (char.animations && Array.isArray(char.animations)) {
                     char.animations.forEach(anim => {
                         if (anim.path) {
@@ -51,7 +63,6 @@ class PreloadCharacters {
                             let customKey = anim.path;
                             let ext = '.png'; // POR DEFECTO
                             
-                            // Verificar si existe una extensión válida al final de la ruta (ej. .webp)
                             if (extIndex !== -1 && (anim.path.length - extIndex <= 5)) {
                                 customKey = anim.path.substring(0, extIndex);
                                 ext = anim.path.substring(extIndex);
@@ -67,7 +78,7 @@ class PreloadCharacters {
 
                 this.loadedKeys[groupName].push({
                     id: `${groupName}_${index}`,
-                    key: char.image,
+                    key: mainKey, // Guardamos la llave limpia sin extensión
                     type: char.type || "sparrow",
                     data: char,
                 });

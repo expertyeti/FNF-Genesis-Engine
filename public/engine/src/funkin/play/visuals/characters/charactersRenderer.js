@@ -1,7 +1,7 @@
 /**
  * @file CharacterRenderer.js
  * Constructor maestro de personajes.
- * INCLUYE: Spritesheets Dinámicos, soporte mejorado para prefijos de FNF, y Capas/Layers respetadas del Stage.
+ * INCLUYE: Soporte para extensiones dinámicas (.webp) en la textura base y animaciones.
  */
 
 window.funkin = window.funkin || {};
@@ -58,6 +58,14 @@ class CharacterRenderer {
         let assetKey = defaultName; 
         if (charData && charData.image) assetKey = charData.image; 
 
+        // NUEVO: Extraer extensión de la imagen principal si la tiene
+        let mainExt = '.png';
+        let mainExtIndex = assetKey.lastIndexOf('.');
+        if (mainExtIndex !== -1 && (assetKey.length - mainExtIndex <= 5)) {
+            mainExt = assetKey.substring(mainExtIndex);
+            assetKey = assetKey.substring(0, mainExtIndex);
+        }
+
         if (!charData) charData = this.getFallbackData(assetKey, role);
 
         const basePath = window.BASE_URL || "";
@@ -65,7 +73,7 @@ class CharacterRenderer {
         // --- MULTI-TEXTURA: Recopilar la imagen principal y las animaciones secundarias ---
         let textureMap = new Map();
         textureMap.set(assetKey, {
-            imgPath: `${basePath}assets/images/${assetKey}.png`,
+            imgPath: `${basePath}assets/images/${assetKey}${mainExt}`,
             xmlPath: `${basePath}assets/images/${assetKey}.xml`
         });
 
@@ -147,7 +155,7 @@ class CharacterRenderer {
         charSprite.role = role;
         
         charSprite.animOffsets = new Map();
-        charSprite.animKeys = new Map(); // Mapa crucial para las texturas dinámicas
+        charSprite.animKeys = new Map(); 
         charSprite.danceMode = "idle"; 
         
         charSprite.isSinging = false;
@@ -165,7 +173,6 @@ class CharacterRenderer {
         const anims = (charData.animations && Array.isArray(charData.animations)) ? charData.animations : this.getFallbackAnimations();
         this.setupAnimations(scene, charSprite, anims, assetKey);
 
-        // Búsqueda inteligente de animaciones Dance (case insensitive)
         let hasLeft = false, hasRight = false;
         let leftKey = "danceLeft", rightKey = "danceRight";
         
@@ -182,7 +189,6 @@ class CharacterRenderer {
             charSprite.danced = false;
         }
 
-        // Posicionar y asignar la capa (Depth/Layer) correcta
         this.positionCharacter(charSprite, charData, role, stageData);
 
         if (charSprite.isPlayer) {
@@ -312,8 +318,6 @@ class CharacterRenderer {
             charSprite.animKeys.set(animName, fullAnimKey); 
             
             if (!scene.anims.exists(fullAnimKey)) {
-                // AQUÍ EL FIX PARA GF: Regex tolerante que permite espacios y la palabra "instance"
-                // Imita cómo HaxeFlixel agrega frames sin romper la animación
                 let matchingFrames = frameNames.filter(name => {
                     if (!name.startsWith(prefix)) return false;
                     const remainder = name.substring(prefix.length);
@@ -375,7 +379,6 @@ class CharacterRenderer {
             }
         }
 
-        // Asignación de Capa (Depth) Respetando al Stage
         charSprite.setDepth(targetLayer);
 
         const charOffset = charData.position || [0, 0];
@@ -403,7 +406,6 @@ class CharacterRenderer {
     static playAnim(charSprite, animName, forced = false) {
         if (!charSprite || !charSprite.active) return;
         
-        // Ahora lee directamente la llave correcta desde el mapa, no importa qué textura la creó
         const fullAnimKey = charSprite.animKeys ? charSprite.animKeys.get(animName) : null;
         
         if (fullAnimKey && charSprite.scene.anims.exists(fullAnimKey)) {

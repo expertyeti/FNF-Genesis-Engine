@@ -1923,3 +1923,11 @@ INFO 2026-04-19 11:40:17,431 Auth info was exported to ./.tmp/auth_info.json api
 ERROR 2026-04-19 11:40:22,865 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-19 11:40:42,621 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/icons/nene.png api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-19 11:46:36,745 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-19 12:00:30,881 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 12:00:38,241 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 12:07:00,240 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/characters/gfCar.png api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 12:07:06,064 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/characters/gfCar.png api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 12:11:14,350 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/songs/eggnog/song/Voices-bf-erect.ogg api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 12:11:35,982 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/index.html api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-19 15:00:38,696 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 15:00:47,068 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T

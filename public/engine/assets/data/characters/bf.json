@@ -152,7 +152,8 @@
             "anim": "hey",
             "fps": 24,
             "name": "BF HEY!!",
-            "indices": []
+            "indices": [],
+            "path": "characters/BFCheer.webp"
         },
         {
             "loop": false,
@@ -255,5 +256,5 @@
             0
         ]
     },
-    "image": "characters/BOYFRIEND"
+    "image": "characters/BOYFRIEND.webp"
 }
