@@ -1,3 +1,8 @@
+/**
+ * @file modes.js
+ * Controlador de los atajos de teclado para Debug y Modos de Flechas.
+ */
+
 window.funkin = window.funkin || {};
 
 class ArrowModesDebug {
@@ -223,12 +228,19 @@ class ArrowModesDebug {
 	}
 
 	refreshLayout() {
-		const strumlinesNamespace = window.funkin.play.visuals && window.funkin.play.visuals.arrows && window.funkin.play.visuals.arrows.strumlines;
-		const LayoutClass = (strumlinesNamespace && strumlinesNamespace.StrumlineLayout) || window.funkin.StrumlineLayout;
-		
-		if (this.scene.strumlines && LayoutClass) {
-			LayoutClass.updateLayout(this.scene.strumlines);
-		}
+        // Enlace directo a nuestra nueva clase unificada (¡esto hace que responda al instante!)
+        if (this.scene && this.scene.strumlines && typeof this.scene.strumlines.applyLayout === 'function') {
+            this.scene.strumlines.applyLayout();
+        } else {
+            // Fallback en caso de que alguien haya roto la inicialización
+            const arrowsNamespace = window.funkin.play.visuals && window.funkin.play.visuals.arrows;
+            const strumlinesNamespace = arrowsNamespace && (arrowsNamespace.strumlines || arrowsNamespace.strumelines);
+            const LayoutClass = (strumlinesNamespace && strumlinesNamespace.StrumlineLayout) || window.funkin.StrumlineLayout;
+            
+            if (this.scene.strumlines && LayoutClass && typeof LayoutClass.updateLayout === 'function') {
+                LayoutClass.updateLayout(this.scene.strumlines);
+            }
+        }
 	}
 
 	destroy() {

@@ -23,29 +23,46 @@ class CharacterPositionDebug {
   }
 
   drawPositions() {
-    if (!this.scene.debugCharacterPositions) {
-      console.warn("No character positions registered in scene via PropsCharacters");
-      return;
-    }
-
-    const positions = this.scene.debugCharacterPositions;
     let foundAny = false;
 
-    Object.keys(positions).forEach((role) => {
-      const pos = positions[role];
-      this.createMarker(role, pos.x, pos.y);
-      foundAny = true;
+    // Roles que buscaremos en el JSON del Stage
+    const roles = ["player", "opponent", "spectator"];
+
+    if (!funkin.play.stageManager) {
+        console.warn("[CharacterPositionDebug] StageManager no está disponible.");
+        return;
+    }
+
+    roles.forEach((role) => {
+      // Obtenemos los datos puros y directos desde el JSON cargado
+      let roleData = funkin.play.stageManager.getCharacterData(role);
+      
+      if (roleData) {
+          let stagePos = null;
+          
+          if (roleData.position && Array.isArray(roleData.position)) {
+              stagePos = roleData.position;
+          } else if (Array.isArray(roleData)) {
+              stagePos = roleData;
+          }
+
+          if (stagePos && stagePos.length >= 2) {
+              this.createMarker(role, stagePos[0], stagePos[1]);
+              foundAny = true;
+          }
+      }
     });
 
     if (!foundAny) {
-      console.warn("Character position registry is empty");
     }
   }
 
   createMarker(role, targetX, targetY) {
-    const roleColor = 0xffffff;
-
-    console.log("Created marker for " + role + " at X:" + targetX + ", Y:" + targetY);
+    // Colores para distinguir qué crucecita pertenece a cada quién
+    let roleColor = 0xffffff;
+    if (role === "player") roleColor = 0x00ff00; // Verde
+    if (role === "opponent") roleColor = 0xff0000; // Rojo
+    if (role === "spectator") roleColor = 0x0000ff; // Azul
 
     const markerSize = 80;
     const markerAlpha = 0.8;
@@ -105,7 +122,7 @@ class CharacterPositionDebug {
 
     this.isVisible = !this.isVisible;
     this.debugObjects.forEach((obj) => {
-      if (obj && obj.active) {
+      if (obj) {
         obj.setVisible(this.isVisible);
       }
     });

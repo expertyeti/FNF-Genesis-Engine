@@ -15,6 +15,9 @@ class JudgmentPopUpManager {
     setupEvents() {
         if (funkin.playNotes) {
             funkin.playNotes.event('noteHit', (hitData) => {
+                // 🚨 RESTRICCIÓN DE BOTPLAY: No mostrar judgments si es automático
+                if (window.autoplay || hitData.isAuto) return;
+
                 const getStoredOption = (key) => {
                     if (typeof funkin !== 'undefined' && funkin.play && funkin.play.options && funkin.play.options[key] !== undefined) return funkin.play.options[key];
                     try {
@@ -34,7 +37,6 @@ class JudgmentPopUpManager {
                 const playAsOpponent = funkin.play && funkin.play.options && funkin.play.options.playAsOpponent === true;
                 const isMyNote = playAsOpponent ? !hitData.isPlayer : hitData.isPlayer;
 
-                // Ahora spawnea si es del lado del jugador en 1P, o si cualquiera golpea en 2P
                 if ((isMyNote || is2P) && hitData.pressed && hitData.judgment !== 'miss') {
                     this.spawnJudgment(hitData.judgment, hitData.isPlayer, is2P);
                 }
@@ -78,7 +80,6 @@ class JudgmentPopUpManager {
 
         let x = this.scene.scale.width / 2;
         
-        // Ajuste posicional si hay 2 jugadores
         if (is2P) {
             x = isPlayerSide ? (this.scene.scale.width * 0.75) : (this.scene.scale.width * 0.25);
         } else if (funkin.play?.options?.middlescroll) {

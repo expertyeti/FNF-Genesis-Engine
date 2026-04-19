@@ -14,7 +14,7 @@ class SoundTrayLogic {
     }
 
     this.scene = null;
-    this.currentVolume = 1;
+    this.currentVolume = 0.1;
     this.isMuted = false;
 
     window.hudEventBus.off("init_hud", this.init, this);

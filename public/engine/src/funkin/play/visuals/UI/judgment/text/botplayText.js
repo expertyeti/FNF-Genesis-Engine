@@ -61,15 +61,13 @@ class BotplayText {
         });
       }
 
-      // 2. Determinar personajes (P1 y P2)
+      // 2. Determinar personajes (P1 y P2) usando las variables correctas
       let charP1 = null;
       let charP2 = null;
 
-      if (this.scene.stageCharacters) {
-          charP1 = (isOpponent && !isTwoPlayer) ? this.scene.stageCharacters.enemy : this.scene.stageCharacters.player;
-          if (isTwoPlayer) {
-              charP2 = this.scene.stageCharacters.enemy;
-          }
+      charP1 = (isOpponent && !isTwoPlayer) ? this.scene.opponent : this.scene.player;
+      if (isTwoPlayer) {
+          charP2 = this.scene.opponent;
       }
 
       // 3. Actualizar textos
@@ -106,6 +104,7 @@ class BotplayText {
          textObj.setScrollFactor(charSprite.scrollFactorX, charSprite.scrollFactorY);
       }
 
+      // Con origen en (0,0) como establecimos antes, esta matemática lo centrará perfecto
       const originX = charSprite.originX !== undefined ? charSprite.originX : 0;
       const originY = charSprite.originY !== undefined ? charSprite.originY : 0;
       

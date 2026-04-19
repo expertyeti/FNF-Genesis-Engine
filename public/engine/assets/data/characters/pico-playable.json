@@ -108,7 +108,8 @@
             "anim": "singLEFTmiss",
             "fps": 24,
             "name": "Pico Left Note MISS",
-            "indices": []
+            "indices": [],
+            "path": "characters/Pico_Playable.webp"
         },
         {
             "loop": false,

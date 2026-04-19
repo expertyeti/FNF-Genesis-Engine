@@ -1,5 +1,5 @@
 /**
- * @file src/funkin/play/data/playScene/gameReferee/PhaseCountdown.js
+ * @file PhaseCountdown.js
  * Fase 2: Cuenta regresiva visual antes de comenzar a reproducir la música.
  */
 class PhaseCountdown {
@@ -25,11 +25,9 @@ class PhaseCountdown {
         funkin.conductor.songPosition = -(crochet * 4);
     }
 
-    // --- SOLUCIÓN: SI skipFade ES TRUE (VIENE DE UN RESTART), NOS SALTAMOS EL FADE NEGRO ---
     if (scene.skipFade) {
-        scene.skipFade = false; // Consumimos la bandera
+        scene.skipFade = false; 
         
-        // Destruimos rastros anteriores de CountDown para evitar errores de timers colgados
         if (scene.countDown) {
             if (typeof scene.countDown.destroy === "function") scene.countDown.destroy();
             scene.countDown.isInCountdown = true;
@@ -38,7 +36,6 @@ class PhaseCountdown {
             if (scene.isReady) scene.countDown.start();
         }
     } else {
-        // Ejecución normal (cuando entras a la canción por primera vez)
         if (scene.cameras && scene.cameras.cameras) {
           scene.cameras.cameras.forEach((cam) => cam.fadeIn(800, 0, 0, 0));
         }
@@ -55,7 +52,6 @@ class PhaseCountdown {
     const scene = this.scene;
     if (!scene.isReady) return;
 
-    // Avanzar el tiempo manualmente durante el conteo
     if (scene.countDown && scene.countDown.isInCountdown && scene.countDown.hasStarted) {
         if (funkin.conductor) {
             funkin.conductor.songPosition += delta;
@@ -71,8 +67,6 @@ class PhaseCountdown {
     if (scene.mainCam) scene.mainCam.update();
 
     if (scene.strumlines) scene.strumlines.update(time, delta);
-    
-    // Llamar el ciclo de vida de las notas durante esta fase
     if (scene.notesManager) scene.notesManager.update(time, delta);
     if (scene.sustainNotesManager) scene.sustainNotesManager.update(time, delta);
 
@@ -104,7 +98,15 @@ class PhaseCountdown {
           }
 
           if (window.funkin.play.playListSprites) window.funkin.play.playListSprites.onBeat(currentBeat);
-          if (scene.animateCharacters) scene.animateCharacters.onBeat(currentBeat);
+          
+          // EJECUCIÓN PURA DE ANIMACIONES BASADA EN EL NUEVO CHARACTERS MANAGER
+          if (scene.activeCharacters) {
+              scene.activeCharacters.forEach(char => {
+                  if (char && typeof char.dance === 'function') {
+                      char.dance();
+                  }
+              });
+          }
         }
       }
     }

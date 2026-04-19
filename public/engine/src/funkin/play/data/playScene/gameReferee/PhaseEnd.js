@@ -14,17 +14,14 @@ class PhaseEnd {
         const currentList = scene.playData.songPlayList || [];
         const currentIndex = currentList.indexOf(scene.playData.actuallyPlaying);
 
-        // Verifica si la playlist tiene más canciones
         if (currentIndex !== -1 && currentIndex + 1 < currentList.length) {
             scene.playData.actuallyPlaying = currentList[currentIndex + 1];
             funkin.PlayDataPayload = JSON.parse(JSON.stringify(scene.playData)); 
             scene.scene.restart(); 
         } else {
-            // Si no hay más canciones, va al menú o lugar de origen
             funkin.PlayDataPayload = null; 
             const source = scene.playData.sourceScene || "MainMenuScene";
             
-            // Usamos nuestra API de transición global si existe
             if (funkin.transition) funkin.transition(scene, source);
             else scene.scene.start(source);
         }

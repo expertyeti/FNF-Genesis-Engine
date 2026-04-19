@@ -1,5 +1,5 @@
 /**
- * @file src/funkin/play/data/playScene/gameReferee/PhaseInit.js
+ * @file PhaseInit.js
  * Construye el entorno gráfico y de datos de la PlayScene.
  */
 
@@ -9,18 +9,11 @@ funkin.play.data = funkin.play.data || {};
 funkin.play.data.referee = funkin.play.data.referee || {};
 
 class PhaseInit {
-    /**
-     * @param {Object} referee - Gestor maestro del ciclo de vida del juego.
-     */
     constructor(referee) {
         this.referee = referee;
         this.scene = referee.scene;
     }
 
-    /**
-     * Ejecuta el flujo de inicialización asíncrona de recursos.
-     * @returns {Promise<void>}
-     */
     async enter() {
         const scene = this.scene;
         funkin.play.currentScene = scene;
@@ -35,13 +28,11 @@ class PhaseInit {
         const stageName = funkin.play.chart.get("metadata.stage") || "stage";
         await this._loadAssets(scene, stageName);
 
-        // --- OPTIMIZACIÓN VRAM ---
-        // Asegurar que la memoria gráfica cachee los recursos cargados antes de instanciar entidades
         if (funkin.play.data.clean && funkin.play.data.clean.GPUWarming) {
             await funkin.play.data.clean.GPUWarming.execute(scene);
         }
 
-        this._buildStageAndCharacters(scene, stageName);
+        await this._buildStageAndCharacters(scene, stageName);
         this._buildNotesAndUI(scene);
         this._initHealthSystem(scene);
         this._setupConductor();
@@ -135,18 +126,22 @@ class PhaseInit {
         if (stage.CreateImages) stage.CreateImages.execute(scene, stageName);
         if (stage.CreateSprites) stage.CreateSprites.execute(scene, stageName);
 
-        const chars = funkin.play.visuals?.characters || {};
-        if (chars.AnimateCharacters) scene.animateCharacters = new chars.AnimateCharacters(scene);
-        if (chars.SparrowCharacters) await chars.SparrowCharacters.execute(scene, stageName);
-        if (chars.AtlasCharacters) await chars.AtlasCharacters.execute(scene, stageName);
+        // EJECUCIÓN DIRECTA AL ÚNICO NAMESPACE
+        const charsManager = funkin.play.visuals?.characters?.charactersManager;
+        if (charsManager && typeof charsManager.execute === 'function') {
+            await charsManager.execute(scene, stageName);
+        } else {
+            console.warn("[PhaseInit] charactersManager no encontrado o no es ejecutable.");
+        }
     }
 
     _buildNotesAndUI(scene) {
         const notesAPI = funkin.play.visuals?.arrows || {};
+        const strumAPI = notesAPI.strumelines || notesAPI.strumlines || {};
         
         if (notesAPI.ArrowsSpawner?.clearExisting) notesAPI.ArrowsSpawner.clearExisting(scene);
 
-        if (notesAPI.strumlines?.Strumlines) scene.strumlines = new notesAPI.strumlines.Strumlines(scene);
+        if (strumAPI.Strumlines) scene.strumlines = new strumAPI.Strumlines(scene);
         if (notesAPI.notes?.SustainNotesManager && scene.strumlines) scene.sustainNotesManager = new notesAPI.notes.SustainNotesManager(scene, scene.strumlines);
         if (notesAPI.notes?.NotesManager && scene.strumlines) scene.notesManager = new notesAPI.notes.NotesManager(scene, scene.strumlines);
 
@@ -200,7 +195,9 @@ class PhaseInit {
                 funkin.play.health.subtract(0.0475);
                 const missSound = "missnote" + Phaser.Math.Between(1, 3);
                 if (scene.cache.audio.exists(missSound)) scene.sound.play(missSound, { volume: Phaser.Math.FloatBetween(0.7, 0.9) });
-                if (scene.songPlaylist?.vocalManager) scene.songPlaylist.vocalManager.muteVocals(data.isPlayer);
+                
+                // CORRECCIÓN APLICADA AQUÍ: llamar a handleMiss(data) en lugar de muteVocals()
+                if (scene.songPlaylist?.vocalManager) scene.songPlaylist.vocalManager.handleMiss(data);
             }
         });
     }

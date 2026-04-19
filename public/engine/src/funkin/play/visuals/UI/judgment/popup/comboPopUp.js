@@ -15,6 +15,9 @@ class ComboPopUpManager {
     setupEvents() {
         if (funkin.playNotes) {
             funkin.playNotes.event('noteHit', (hitData) => {
+                // 🚨 RESTRICCIÓN DE BOTPLAY: No mostrar combo si es automático
+                if (window.autoplay || hitData.isAuto) return;
+
                 const getStoredOption = (key) => {
                     if (typeof funkin !== 'undefined' && funkin.play && funkin.play.options && funkin.play.options[key] !== undefined) return funkin.play.options[key];
                     try {
@@ -69,7 +72,6 @@ class ComboPopUpManager {
 
         let xBase = (this.scene.scale.width / 2) - 50;
         
-        // Ajuste de X para el modo P2
         if (is2P) {
             xBase = isPlayerSide ? (this.scene.scale.width * 0.75) - 50 : (this.scene.scale.width * 0.25) - 50;
         } else if (funkin.play?.options?.middlescroll) {

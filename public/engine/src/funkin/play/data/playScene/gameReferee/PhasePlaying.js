@@ -50,9 +50,6 @@ class PhasePlaying {
     if (scene.healthBar) scene.healthBar.update(time, delta);
     if (scene.antiLag) scene.antiLag.update(time, delta);
     
-    // ==========================================
-    // ACTUALIZADOR DEL SISTEMA DE SHADERS
-    // ==========================================
     if (scene.shaderManager) scene.shaderManager.update(time, delta);
 
     if (scene.scoreText) scene.scoreText.update(time, delta);
@@ -112,7 +109,15 @@ class PhasePlaying {
           }
 
           if (window.funkin.play.playListSprites) window.funkin.play.playListSprites.onBeat(currentBeat);
-          if (scene.animateCharacters) scene.animateCharacters.onBeat(currentBeat);
+          
+          // EJECUCIÓN PURA DE ANIMACIONES BASADA EN EL NUEVO CHARACTERS MANAGER
+          if (scene.activeCharacters) {
+              scene.activeCharacters.forEach(char => {
+                  if (char && typeof char.dance === 'function') {
+                      char.dance();
+                  }
+              });
+          }
         }
       }
     }

@@ -1,23 +1,39 @@
 /**
  * @file gameReferee.js
- * Controlador principal del flujo del juego. Mueve el ciclo de vida por las distintas fases.
+ * Controlador principal del flujo del juego y unificador de dependencias heredadas.
  */
 
-// Garantizamos la existencia de la jerarquía para evitar crashes durante la inyección
 window.funkin = window.funkin || {};
 funkin.play = funkin.play || {};
 funkin.play.data = funkin.play.data || {};
 funkin.play.data.referee = funkin.play.data.referee || {};
+funkin.play.visuals = funkin.play.visuals || {};
+funkin.play.visuals.arrows = funkin.play.visuals.arrows || {};
+
+// ============================================================================
+// ALIAS Y UNIFICACIÓN DE NAMESPACES (Evita crashes por clases eliminadas)
+// ============================================================================
+// 1. Unificamos el typo histórico entre strumelines (con e) y strumlines (sin e)
+funkin.play.visuals.arrows.strumelines = funkin.play.visuals.arrows.strumelines || {};
+funkin.play.visuals.arrows.strumlines = funkin.play.visuals.arrows.strumelines;
+
+// 2. Restauramos el namespace de StrumlineLayout para que MiddlescrollHandler no crashee
+funkin.play.visuals.arrows.strumelines.StrumlineLayout = {
+    updateLayout: (manager) => {
+        if (manager && typeof manager.applyLayout === 'function') {
+            manager.applyLayout();
+        }
+    }
+};
+// ============================================================================
 
 class GameReferee {
     constructor(scene) {
         this.scene = scene;
         this.currentPhase = null;
 
-        // Instanciamos todas las fases del ciclo de vida apuntando al namespace global
         const refereeData = funkin.play.data.referee;
         
-        // Operadores de encadenamiento/condicionales por si alguna fase aún no se ha inyectado
         this.phases = {
             init: refereeData.PhaseInit ? new refereeData.PhaseInit(this) : null,
             countdown: refereeData.PhaseCountdown ? new refereeData.PhaseCountdown(this) : null,
@@ -43,7 +59,6 @@ class GameReferee {
     }
 
     update(time, delta) {
-        // Bloqueamos el update si el juego está en pausa
         if (this.scene.isGamePaused) return;
 
         if (this.currentPhase && typeof this.currentPhase.update === 'function') {
@@ -53,8 +68,6 @@ class GameReferee {
 
     pauseGame() {
         this.scene.isGamePaused = true;
-        // Aquí puedes lanzar la escena de pausa
-        // this.scene.scene.launch("PauseSubScene", { parentScene: this.scene });
     }
 
     destroy() {
@@ -64,5 +77,4 @@ class GameReferee {
     }
 }
 
-// Registro explícito en el árbol global
 funkin.play.data.referee.GameReferee = GameReferee;
