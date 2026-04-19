@@ -1,8 +1,7 @@
 /**
  * @file CharacterRenderer.js
- * Constructor maestro de personajes. Recibe los JSON completos, carga texturas dinámicamente,
- * aplica Pixel Art (nearest) si es necesario, y renderiza desde el pivote inferior central.
- * INCLUYE: Soporte para notas Sustain mediante eventos continuos de Strumlines.
+ * Constructor maestro de personajes.
+ * INCLUYE: Spritesheets Dinámicos, soporte mejorado para prefijos de FNF, y Capas/Layers respetadas del Stage.
  */
 
 window.funkin = window.funkin || {};
@@ -48,10 +47,6 @@ class CharacterRenderer {
         scene.spectator = await this.buildCharacter(scene, gfData, fallbackGf, "spectator", stageData);
         scene.player = await this.buildCharacter(scene, bfData, fallbackBf, "player", stageData);
 
-        if (scene.spectator) scene.spectator.setDepth(10);
-        if (scene.opponent) scene.opponent.setDepth(11);
-        if (scene.player) scene.player.setDepth(12);
-
         scene.activeCharacters = [scene.opponent, scene.spectator, scene.player].filter(c => c !== null);
     }
 
@@ -65,36 +60,77 @@ class CharacterRenderer {
 
         if (!charData) charData = this.getFallbackData(assetKey, role);
 
-        if (!scene.textures.exists(assetKey)) {
-            const basePath = window.BASE_URL || "";
-            const pngUrl = `${basePath}assets/images/${assetKey}.png`;
-            const xmlUrl = `${basePath}assets/images/${assetKey}.xml`;
+        const basePath = window.BASE_URL || "";
+        
+        // --- MULTI-TEXTURA: Recopilar la imagen principal y las animaciones secundarias ---
+        let textureMap = new Map();
+        textureMap.set(assetKey, {
+            imgPath: `${basePath}assets/images/${assetKey}.png`,
+            xmlPath: `${basePath}assets/images/${assetKey}.xml`
+        });
 
+        if (charData.animations) {
+            charData.animations.forEach(anim => {
+                if (anim.path) {
+                    let extIndex = anim.path.lastIndexOf('.');
+                    let customKey = anim.path;
+                    let ext = '.png';
+                    
+                    if (extIndex !== -1 && (anim.path.length - extIndex <= 5)) {
+                        customKey = anim.path.substring(0, extIndex);
+                        ext = anim.path.substring(extIndex);
+                    }
+                    
+                    textureMap.set(customKey, {
+                        imgPath: `${basePath}assets/images/${customKey}${ext}`,
+                        xmlPath: `${basePath}assets/images/${customKey}.xml`
+                    });
+                    
+                    anim.customAssetKey = customKey; 
+                }
+            });
+        }
+
+        const missingKeys = Array.from(textureMap.keys()).filter(key => !scene.textures.exists(key));
+        if (missingKeys.length > 0) {
             await new Promise((resolve) => {
-                scene.load.atlas(assetKey, pngUrl, xmlUrl);
-                scene.load.once(`filecomplete-atlas-${assetKey}`, () => resolve());
-                scene.load.once('loaderror', (fileObj) => { if (fileObj.key === assetKey) resolve(); });
+                let loadedCount = 0;
+                const checkComplete = () => {
+                    loadedCount++;
+                    if (loadedCount >= missingKeys.length) resolve();
+                };
+
+                missingKeys.forEach(key => {
+                    const paths = textureMap.get(key);
+                    scene.load.atlas(key, paths.imgPath, paths.xmlPath);
+                    scene.load.once(`filecomplete-atlas-${key}`, checkComplete);
+                    scene.load.once('loaderror', (fileObj) => { if (fileObj.key === key) checkComplete(); });
+                });
                 scene.load.start();
             });
         }
 
         if (!scene.textures.exists(assetKey)) {
-            console.error(`[CharacterRenderer] ❌ Error: No se pudo cargar la textura para "${assetKey}".`);
+            console.error(`[CharacterRenderer] ❌ Error: No se pudo cargar la textura principal para "${assetKey}".`);
             return null;
         }
 
-        if (charData.antialiasing === false) {
-            scene.textures.get(assetKey).setFilter(Phaser.Textures.FilterMode.NEAREST);
-        }
+        textureMap.forEach((paths, key) => {
+            if (scene.textures.exists(key)) {
+                if (charData.antialiasing === false) {
+                    scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+                }
 
-        if (funkin.utils && funkin.utils.animations && funkin.utils.animations.sparrow) {
-            const xmlText = scene.cache.text.get(assetKey) || scene.cache.text.get(`${assetKey}_xml`);
-            if (xmlText) {
-                funkin.utils.animations.sparrow.SparrowParser.fixPhaserSparrow(scene, assetKey, xmlText);
-                const tex = scene.textures.get(assetKey);
-                if (tex && tex.source) tex.source.forEach(s => s.update());
+                if (funkin.utils && funkin.utils.animations && funkin.utils.animations.sparrow) {
+                    const xmlText = scene.cache.text.get(key) || scene.cache.text.get(`${key}_xml`);
+                    if (xmlText) {
+                        funkin.utils.animations.sparrow.SparrowParser.fixPhaserSparrow(scene, key, xmlText);
+                        const tex = scene.textures.get(key);
+                        if (tex && tex.source) tex.source.forEach(s => s.update());
+                    }
+                }
             }
-        }
+        });
 
         const charSprite = scene.add.sprite(0, 0, assetKey);
         
@@ -111,6 +147,7 @@ class CharacterRenderer {
         charSprite.role = role;
         
         charSprite.animOffsets = new Map();
+        charSprite.animKeys = new Map(); // Mapa crucial para las texturas dinámicas
         charSprite.danceMode = "idle"; 
         
         charSprite.isSinging = false;
@@ -128,11 +165,24 @@ class CharacterRenderer {
         const anims = (charData.animations && Array.isArray(charData.animations)) ? charData.animations : this.getFallbackAnimations();
         this.setupAnimations(scene, charSprite, anims, assetKey);
 
-        if (charSprite.animOffsets.has("danceLeft") && charSprite.animOffsets.has("danceRight")) {
+        // Búsqueda inteligente de animaciones Dance (case insensitive)
+        let hasLeft = false, hasRight = false;
+        let leftKey = "danceLeft", rightKey = "danceRight";
+        
+        for (let key of charSprite.animOffsets.keys()) {
+            const k = key.toLowerCase();
+            if (k === "danceleft" || k === "dance_left") { hasLeft = true; leftKey = key; }
+            if (k === "danceright" || k === "dance_right") { hasRight = true; rightKey = key; }
+        }
+
+        if (hasLeft && hasRight) {
             charSprite.danceMode = "danceLeftRight";
+            charSprite.danceLeftKey = leftKey;
+            charSprite.danceRightKey = rightKey;
             charSprite.danced = false;
         }
 
+        // Posicionar y asignar la capa (Depth/Layer) correcta
         this.positionCharacter(charSprite, charData, role, stageData);
 
         if (charSprite.isPlayer) {
@@ -151,7 +201,7 @@ class CharacterRenderer {
 
             if (charSprite.danceMode === "danceLeftRight") {
                 charSprite.danced = !charSprite.danced;
-                CharacterRenderer.playAnim(charSprite, charSprite.danced ? "danceRight" : "danceLeft", forced);
+                CharacterRenderer.playAnim(charSprite, charSprite.danced ? charSprite.danceRightKey : charSprite.danceLeftKey, forced);
             } else {
                 CharacterRenderer.playAnim(charSprite, "idle", forced);
             }
@@ -164,10 +214,7 @@ class CharacterRenderer {
             }
         });
 
-        // ---------------- SISTEMA DE INTERCEPCIÓN DE NOTAS ----------------
-
         const DIR_MAP = ["LEFT", "DOWN", "UP", "RIGHT"];
-        
         const extractDirection = (data) => {
             if (typeof data === "number") return data;
             if (data && data.direction !== undefined) return data.direction;
@@ -178,7 +225,6 @@ class CharacterRenderer {
             return 0; 
         };
 
-        // isSustain = true evita forzar el reinicio (ignoreIfPlaying = true)
         const playSingAnim = (sprite, dirIndex, miss = false, isSustain = false) => {
             const dirName = DIR_MAP[dirIndex % 4] || "UP";
             const animName = `sing${dirName}${miss ? 'miss' : ''}`;
@@ -200,7 +246,6 @@ class CharacterRenderer {
             const stepCrochet = crochet / 4;
             const holdMs = (sprite.holdTime || 4) * stepCrochet;
 
-            // Reinicia la cuenta regresiva que regresará a idle al terminar
             if (scene && scene.time) {
                 sprite.singTimeout = scene.time.delayedCall(holdMs, () => {
                     sprite.isSinging = false;
@@ -209,23 +254,18 @@ class CharacterRenderer {
             }
         };
 
-        // Hit regular
         scene.events.on("noteHit", (data) => {
             if (!charSprite || !charSprite.active) return;
             const dirIndex = extractDirection(data);
             const isPlayerNote = data && data.isPlayer !== false; 
-            
             if (isPlayerNote && charSprite.isPlayer) playSingAnim(charSprite, dirIndex, false, false);
             else if (!isPlayerNote && charSprite.isOpponent) playSingAnim(charSprite, dirIndex, false, false);
         });
 
-        // 🚨 SEÑAL CONSTANTE DE LA SUSTAIN CONSUMIÉNDOSE
         scene.events.on("sustainActive", (data) => {
             if (!charSprite || !charSprite.active) return;
             const dirIndex = extractDirection(data);
             const isPlayerNote = data && data.isPlayer !== false; 
-            
-            // isSustain = true para mantener la animación sin volver al frame 0
             if (isPlayerNote && charSprite.isPlayer) playSingAnim(charSprite, dirIndex, false, true);
             else if (!isPlayerNote && charSprite.isOpponent) playSingAnim(charSprite, dirIndex, false, true);
         });
@@ -252,9 +292,13 @@ class CharacterRenderer {
     }
 
     static setupAnimations(scene, charSprite, animsArray, assetKey) {
-        const frameNames = scene.textures.get(assetKey).getFrameNames();
-
         animsArray.forEach(anim => {
+            const targetAssetKey = anim.customAssetKey || assetKey;
+            const tex = scene.textures.get(targetAssetKey);
+            if (!tex) return;
+
+            const frameNames = tex.getFrameNames();
+
             const animName = anim.anim;
             const prefix = anim.name || anim.prefix || animName;
             const fps = anim.fps || 24;
@@ -263,13 +307,17 @@ class CharacterRenderer {
             const indices = anim.indices || [];
 
             charSprite.animOffsets.set(animName, offsets);
-
-            const fullAnimKey = `${assetKey}_${animName}`;
+            
+            const fullAnimKey = `${targetAssetKey}_${animName}`;
+            charSprite.animKeys.set(animName, fullAnimKey); 
+            
             if (!scene.anims.exists(fullAnimKey)) {
+                // AQUÍ EL FIX PARA GF: Regex tolerante que permite espacios y la palabra "instance"
+                // Imita cómo HaxeFlixel agrega frames sin romper la animación
                 let matchingFrames = frameNames.filter(name => {
                     if (!name.startsWith(prefix)) return false;
                     const remainder = name.substring(prefix.length);
-                    return /^\d*$/.test(remainder); 
+                    return /^[\s_\-a-zA-Z]*\d*$/.test(remainder); 
                 });
                 
                 matchingFrames.sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
@@ -279,11 +327,11 @@ class CharacterRenderer {
                 if (indices.length > 0) {
                     indices.forEach(index => {
                         if (matchingFrames[index]) {
-                            finalFrames.push({ key: assetKey, frame: matchingFrames[index] });
+                            finalFrames.push({ key: targetAssetKey, frame: matchingFrames[index] });
                         }
                     });
                 } else {
-                    finalFrames = matchingFrames.map(frame => ({ key: assetKey, frame: frame }));
+                    finalFrames = matchingFrames.map(frame => ({ key: targetAssetKey, frame: frame }));
                 }
 
                 if (finalFrames.length > 0) {
@@ -300,6 +348,7 @@ class CharacterRenderer {
 
     static positionCharacter(charSprite, charData, role, stageData) {
         let stagePos = [0, 0];
+        let targetLayer = role === 'spectator' ? 10 : (role === 'opponent' ? 11 : 12);
 
         let roleData = funkin.play.stageManager ? funkin.play.stageManager.getCharacterData(role) : null;
 
@@ -316,11 +365,18 @@ class CharacterRenderer {
                 charSprite.setScale(newScaleX, newScaleY);
             }
 
+            if (roleData.layer !== undefined) {
+                targetLayer = roleData.layer;
+            }
+
             let camOffsetRaw = roleData.camera_Offset || roleData.camera_position;
             if (Array.isArray(camOffsetRaw) && camOffsetRaw.length >= 2) {
                 charSprite.cameraPosition = camOffsetRaw;
             }
         }
+
+        // Asignación de Capa (Depth) Respetando al Stage
+        charSprite.setDepth(targetLayer);
 
         const charOffset = charData.position || [0, 0];
 
@@ -341,14 +397,16 @@ class CharacterRenderer {
         charSprite.x = charSprite.baseX;
         charSprite.y = charSprite.baseY;
 
-        console.log(`[CharacterRenderer] ${role.toUpperCase()} instanciado | Pos: [${charSprite.x}, ${charSprite.y}]`);
+        console.log(`[CharacterRenderer] ${role.toUpperCase()} | Layer: ${targetLayer} | Pos: [${charSprite.x}, ${charSprite.y}]`);
     }
 
     static playAnim(charSprite, animName, forced = false) {
         if (!charSprite || !charSprite.active) return;
         
-        const fullAnimKey = `${charSprite.texture.key}_${animName}`;
-        if (charSprite.scene.anims.exists(fullAnimKey)) {
+        // Ahora lee directamente la llave correcta desde el mapa, no importa qué textura la creó
+        const fullAnimKey = charSprite.animKeys ? charSprite.animKeys.get(animName) : null;
+        
+        if (fullAnimKey && charSprite.scene.anims.exists(fullAnimKey)) {
             const animDef = charSprite.scene.anims.get(fullAnimKey);
             
             charSprite.play({

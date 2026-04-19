@@ -146,7 +146,7 @@
     ],
     "flip_x": false,
     "health": {
-        "id": "nene",
+        "id": "face",
         "scale": 1,
         "antialiasing": true,
         "type": "legacy",

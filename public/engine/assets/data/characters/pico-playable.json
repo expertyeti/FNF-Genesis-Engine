@@ -120,7 +120,8 @@
             "anim": "singDOWNmiss",
             "fps": 24,
             "name": "Pico Down Note MISS",
-            "indices": []
+            "indices": [],
+            "path": "characters/Pico_Playable.webp"
         },
         {
             "loop": false,
@@ -131,7 +132,8 @@
             "anim": "singUPmiss",
             "fps": 24,
             "name": "Pico Up Note MISS",
-            "indices": []
+            "indices": [],
+            "path": "characters/Pico_Playable.webp"
         },
         {
             "loop": false,
@@ -142,7 +144,8 @@
             "anim": "singRIGHTmiss",
             "fps": 24,
             "name": "Pico Right Note MISS",
-            "indices": []
+            "indices": [],
+            "path": "characters/Pico_Playable.webp"
         },
         {
             "loop": false,

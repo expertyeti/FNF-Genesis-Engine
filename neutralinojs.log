@@ -1913,3 +1913,13 @@ ERROR 2026-04-19 11:15:35,343 NE_RS_UNBLDRE: Unable to load application resource
 ERROR 2026-04-19 11:18:47,377 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-19 11:21:28,992 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-19 11:27:13,770 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-19 11:35:05,668 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 11:35:18,054 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 11:37:45,053 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/characters/Pico_Playable.webp api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 11:37:45,121 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/icons/nene.png api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 11:37:46,989 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/characters/Pico_Playable.webp api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 11:38:07,614 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-19 11:40:17,431 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 11:40:22,865 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 11:40:42,621 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/icons/nene.png api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-19 11:46:36,745 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
