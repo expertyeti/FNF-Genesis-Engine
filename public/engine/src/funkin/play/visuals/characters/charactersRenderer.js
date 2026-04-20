@@ -5,7 +5,7 @@ funkin.play.visuals.characters = funkin.play.visuals.characters || {};
 
 /**
  * Constructor de renders visuales para personajes.
- * Resuelve XMLs, animaciones especiales, offsets y métricas posicionales de escena.
+ * Resuelve XMLs, animaciones (incluyendo FPS específicos y paths custom), offsets y métricas posicionales de escena.
  */
 class CharacterRenderer {
     static async execute(scene, stageName) {
@@ -176,7 +176,14 @@ class CharacterRenderer {
                 const finalFrames = (anim.indices?.length > 0 ? anim.indices.map(i => matched[i]).filter(Boolean) : matched)
                                       .map(f => ({ key: targetAssetKey, frame: f }));
 
-                if (finalFrames.length > 0) scene.anims.create({ key: fullAnimKey, frames: finalFrames, frameRate: anim.fps || 24, repeat: anim.loop ? -1 : 0 });
+                if (finalFrames.length > 0) {
+                    scene.anims.create({ 
+                        key: fullAnimKey, 
+                        frames: finalFrames, 
+                        frameRate: anim.fps ?? 24, 
+                        repeat: anim.loop ? -1 : 0 
+                    });
+                }
             }
         });
     }
@@ -206,14 +213,19 @@ class CharacterRenderer {
         const fullAnimKey = charSprite.animKeys?.get(animName) || (charSprite.scene.anims.exists(`${charSprite.texture.key}_${animName}`) ? `${charSprite.texture.key}_${animName}` : null);
         
         if (fullAnimKey && charSprite.scene.anims.exists(fullAnimKey)) {
-            charSprite.play({ key: fullAnimKey, frameRate: charSprite.scene.anims.get(fullAnimKey).frameRate, timeScale: 1 }, !forced);
+            charSprite.play(fullAnimKey, !forced);
+            
             const offset = charSprite.animOffsets?.get(animName) || [0, 0];
             charSprite.setPosition(charSprite.baseX - offset[0], charSprite.baseY - offset[1]);
+            charSprite.currentAnim = animName;
         } else if (charSprite.texture?.key) {
             const frames = charSprite.texture.getFrameNames();
-            if (frames?.length > 0) charSprite.setFrame(frames.find(f => f.startsWith(animName) && /^\d*$/.test(f.substring(animName.length))) || frames.find(f => f.startsWith("idle") && /^\d*$/.test(f.substring(4))) || frames[0]);
+            if (frames?.length > 0) {
+                const frameName = frames.find(f => f.startsWith(animName) && /^\d*$/.test(f.substring(animName.length))) || frames.find(f => f.startsWith("idle") && /^\d*$/.test(f.substring(4))) || frames[0];
+                charSprite.setFrame(frameName);
+                charSprite.currentAnim = animName; 
+            }
         }
-        charSprite.currentAnim = animName;
     }
 
     static getFallbackData(assetKey) { return { image: assetKey, scale: 1.0, singing: 4, position: [0, 0], camera_position: [0, 0], flip_x: false, animations: this.getFallbackAnimations() }; }

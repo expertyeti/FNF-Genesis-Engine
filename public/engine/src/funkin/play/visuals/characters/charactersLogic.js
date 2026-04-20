@@ -5,7 +5,7 @@ funkin.play.visuals.characters = funkin.play.visuals.characters || {};
 
 /**
  * Controlador lógico de personajes.
- * Gestiona el ritmo, temporizadores de canto, combos y eventos especiales.
+ * Gestiona el ritmo, temporizadores de canto, combos, eventos especiales y atajos de teclado numérico (con soporte para loops).
  */
 class CharacterLogic {
     constructor(scene) {
@@ -15,9 +15,11 @@ class CharacterLogic {
 
         this.comboHandler = (e) => this.handleCombo(e.detail.isPlayer, e.detail.combo);
         this.comboDropHandler = (e) => this.handleComboDrop(e.detail.isPlayer, e.detail.droppedCombo);
+        this.keyDownHandler = this.handleKeyDown.bind(this);
 
         document.addEventListener('funkin_combo', this.comboHandler);
         document.addEventListener('funkin_comboDrop', this.comboDropHandler);
+        this.scene.input?.keyboard?.on('keydown', this.keyDownHandler);
 
         this.scene.events?.once('shutdown', this.cleanUp.bind(this));
         this.scene.events?.once('destroy', this.cleanUp.bind(this));
@@ -26,6 +28,42 @@ class CharacterLogic {
     cleanUp() {
         document.removeEventListener('funkin_combo', this.comboHandler);
         document.removeEventListener('funkin_comboDrop', this.comboDropHandler);
+        this.scene.input?.keyboard?.off('keydown', this.keyDownHandler);
+    }
+
+    handleKeyDown(event) {
+        let num = null;
+        
+        if (event.keyCode >= 49 && event.keyCode <= 57) {
+            num = event.keyCode - 48;
+        } else if (event.keyCode >= 97 && event.keyCode <= 105) {
+            num = event.keyCode - 96;
+        }
+
+        if (num !== null) this.triggerNumberAnimation(num);
+    }
+
+    triggerNumberAnimation(num) {
+        const animName = `special${num}`;
+        const playAsOpponent = funkin.play?.options?.playAsOpponent === true;
+
+        (this.scene.activeCharacters || []).forEach(char => {
+            if (!char?.active) return;
+            
+            const isControlled = playAsOpponent ? char.isOpponent : char.isPlayer;
+            
+            if (isControlled) {
+                if (char.animKeys?.has(animName) || this.scene.anims?.exists(`${char.texture.key}_${animName}`)) {
+                    if (char.currentAnim === animName && char.isSpecialAnim) {
+                        char.isSpecialAnim = false;
+                        char.isSinging = false;
+                        if (typeof char.dance === 'function') char.dance(true);
+                    } else {
+                        this.playSpecial(char, animName);
+                    }
+                }
+            }
+        });
     }
 
     onBeat(currentBeat) {
@@ -66,14 +104,14 @@ class CharacterLogic {
 
     handleCombo(isPlayer, combo) {
         const animName = combo === 50 ? 'combo50' : (combo === 200 ? 'combo200' : null);
-        if (animName) this._triggerSpecialAnim(isPlayer, animName);
+        if (animName) this._triggerComboAnim(isPlayer, animName);
     }
 
     handleComboDrop(isPlayer, droppedCombo) {
-        if (droppedCombo >= 70) this._triggerSpecialAnim(isPlayer, 'drop70');
+        if (droppedCombo >= 70) this._triggerComboAnim(isPlayer, 'drop70');
     }
 
-    _triggerSpecialAnim(isPlayer, animName) {
+    _triggerComboAnim(isPlayer, animName) {
         (this.scene.activeCharacters || []).forEach(char => {
             if (!char?.active) return;
             
@@ -110,7 +148,7 @@ class CharacterLogic {
         const bpm = funkin.play.chart?.get('metadata.audio.bpm') || 120;
         const timeToHold = (((60 / bpm) * 1000) / 4) * (char.holdTime || 4.0) * multiplier;
         
-        char.resetTimer = (window.funkin.conductor?.songPosition || this.scene.time.now) + timeToHold;
+        char.resetTimer = (window.funkin.conductor?.songPosition || this.scene.time?.now) + timeToHold;
     }
 
     update() {

@@ -242,6 +242,28 @@
             "fps": 24,
             "name": "BF idle shaking",
             "indices": []
+        },
+        {
+            "anim": "special1",
+            "name": "Cheer",
+            "path": "characters/BFCheer.webp"
+        },
+        { 
+            "anim": "special2",
+            "name": "bf transition",
+            "path": "characters/special/bf_transform",
+            "fps": 40
+        },
+        { 
+            "anim": "special3",
+            "name": "bf caramelldansen",
+            "path": "characters/special/bf_dancing",
+            "fps": 24,
+            "loop": true,
+            "offsets": [
+                80,
+                10
+            ]
         }
     ],
     "flip_x": true,
