@@ -1,13 +1,12 @@
-/**
- * @file PhaseInit.js
- * Construye el entorno gráfico y de datos de la PlayScene.
- */
-
 window.funkin = window.funkin || {};
 funkin.play = funkin.play || {};
 funkin.play.data = funkin.play.data || {};
 funkin.play.data.referee = funkin.play.data.referee || {};
 
+/**
+ * @class PhaseInit
+ * @description Construye el entorno gráfico y de datos de la PlayScene.
+ */
 class PhaseInit {
     constructor(referee) {
         this.referee = referee;
@@ -126,12 +125,14 @@ class PhaseInit {
         if (stage.CreateImages) stage.CreateImages.execute(scene, stageName);
         if (stage.CreateSprites) stage.CreateSprites.execute(scene, stageName);
 
-        // EJECUCIÓN DIRECTA AL ÚNICO NAMESPACE
         const charsManager = funkin.play.visuals?.characters?.charactersManager;
         if (charsManager && typeof charsManager.execute === 'function') {
             await charsManager.execute(scene, stageName);
-        } else {
-            console.warn("[PhaseInit] charactersManager no encontrado o no es ejecutable.");
+        }
+
+        const LogicClass = funkin.play.visuals?.characters?.CharacterLogic || funkin.play.visuals?.characters?.AnimateCharacters;
+        if (LogicClass) {
+            scene.animateCharacters = new LogicClass(scene);
         }
     }
 
@@ -196,7 +197,6 @@ class PhaseInit {
                 const missSound = "missnote" + Phaser.Math.Between(1, 3);
                 if (scene.cache.audio.exists(missSound)) scene.sound.play(missSound, { volume: Phaser.Math.FloatBetween(0.7, 0.9) });
                 
-                // CORRECCIÓN APLICADA AQUÍ: llamar a handleMiss(data) en lugar de muteVocals()
                 if (scene.songPlaylist?.vocalManager) scene.songPlaylist.vocalManager.handleMiss(data);
             }
         });

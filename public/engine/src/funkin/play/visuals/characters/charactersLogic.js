@@ -1,126 +1,126 @@
-/**
- * @file CharacterLogic.js
- * Controlador de Lógica y Animación. Regresa a los personajes al estado IDLE
- * automáticamente cuando se agota su tiempo de canto.
- */
-
 window.funkin = window.funkin || {};
 funkin.play = funkin.play || {};
 funkin.play.visuals = funkin.play.visuals || {};
 funkin.play.visuals.characters = funkin.play.visuals.characters || {};
 
+/**
+ * Controlador lógico de personajes.
+ * Gestiona el ritmo, temporizadores de canto, combos y eventos especiales.
+ */
 class CharacterLogic {
     constructor(scene) {
         this.scene = scene;
         const NoteDir = funkin.play.visuals.arrows.notes.NoteDirection || window.funkin.NoteDirection;
-        this.directions = NoteDir ? NoteDir.getMappings().names : ["left", "down", "up", "right"];
+        this.directions = NoteDir?.getMappings().names || ["left", "down", "up", "right"];
+
+        this.comboHandler = (e) => this.handleCombo(e.detail.isPlayer, e.detail.combo);
+        this.comboDropHandler = (e) => this.handleComboDrop(e.detail.isPlayer, e.detail.droppedCombo);
+
+        document.addEventListener('funkin_combo', this.comboHandler);
+        document.addEventListener('funkin_comboDrop', this.comboDropHandler);
+
+        this.scene.events?.once('shutdown', this.cleanUp.bind(this));
+        this.scene.events?.once('destroy', this.cleanUp.bind(this));
+    }
+
+    cleanUp() {
+        document.removeEventListener('funkin_combo', this.comboHandler);
+        document.removeEventListener('funkin_comboDrop', this.comboDropHandler);
     }
 
     onBeat(currentBeat) {
-        if (!this.scene.activeCharacters) return;
+        const isCountdown = funkin.CountDown?.isInCountdown;
 
-        const isCountdown = funkin.CountDown && funkin.CountDown.isInCountdown;
-
-        this.scene.activeCharacters.forEach(char => {
-            if (!char || !char.active) return;
-
-            const isSinging = char.currentAnim && (char.currentAnim.startsWith("sing") || char.currentAnim === "hey");
-            
-            if (isSinging && !isCountdown && char.resetTimer > 0) return;
+        (this.scene.activeCharacters || []).forEach(char => {
+            if (!char?.active || ((char.isSinging || char.isSpecialAnim) && !isCountdown)) return;
 
             if (char.danceMode === "danceLeftRight") {
                 char.danced = !char.danced;
                 this.playAnim(char, char.danced ? "danceRight" : "danceLeft", true);
-            } else {
+            } else if (currentBeat % 2 === 0) {
                 this.playAnim(char, "idle", true);
             }
         });
     }
 
     sing(isPlayerSide, lane) {
-        if (!this.scene.activeCharacters) return;
-        
-        const dirName = this.directions[lane];
-        if (!dirName) return;
-
-        const animName = `sing${dirName.toUpperCase()}`;
-
-        this.scene.activeCharacters.forEach(char => {
-            if ((isPlayerSide && char.isPlayer) || (!isPlayerSide && char.isOpponent)) {
-                this.playAnim(char, animName, true); // forced=true (se reiniciará si es la misma tecla)
-                this.updateHoldTimer(char);
-            }
-        });
+        this._executeDirectionalAnim(isPlayerSide, lane, false);
     }
 
     playMiss(isPlayerSide, lane) {
-        if (!this.scene.activeCharacters) return;
-        
+        this._executeDirectionalAnim(isPlayerSide, lane, true);
+    }
+
+    _executeDirectionalAnim(isPlayerSide, lane, miss) {
         const dirName = this.directions[lane];
         if (!dirName) return;
 
-        const animName = `sing${dirName.toUpperCase()}miss`;
-
-        this.scene.activeCharacters.forEach(char => {
+        (this.scene.activeCharacters || []).forEach(char => {
+            if (!char?.active) return;
             if ((isPlayerSide && char.isPlayer) || (!isPlayerSide && char.isOpponent)) {
-                const fullAnimKey = `${char.texture.key}_${animName}`;
-                if (this.scene.anims.exists(fullAnimKey)) {
-                    this.playAnim(char, animName, true);
-                } else {
-                    this.playAnim(char, `sing${dirName.toUpperCase()}`, true);
-                }
-                
+                this.playAnim(char, `sing${dirName.toUpperCase()}${miss ? 'miss' : ''}`, true);
                 this.updateHoldTimer(char);
             }
         });
     }
 
-    playSpecial(char, animName, holdMultiplier = 1.0) {
-        if (!char || !char.active) return;
+    handleCombo(isPlayer, combo) {
+        const animName = combo === 50 ? 'combo50' : (combo === 200 ? 'combo200' : null);
+        if (animName) this._triggerSpecialAnim(isPlayer, animName);
+    }
+
+    handleComboDrop(isPlayer, droppedCombo) {
+        if (droppedCombo >= 70) this._triggerSpecialAnim(isPlayer, 'drop70');
+    }
+
+    _triggerSpecialAnim(isPlayer, animName) {
+        (this.scene.activeCharacters || []).forEach(char => {
+            if (!char?.active) return;
+            
+            const isTarget = (isPlayer && char.isPlayer) || (!isPlayer && char.isOpponent) || char.isSpectator;
+            if (!isTarget) return;
+
+            if (char.animKeys?.has(animName) || this.scene.anims?.exists(`${char.texture.key}_${animName}`)) {
+                this.playSpecial(char, animName);
+            }
+        });
+    }
+
+    playSpecial(char, animName) {
+        if (!char?.active) return;
+        
+        char.isSinging = true;
+        char.isSpecialAnim = true;
+        
+        if (char.singTimeout) {
+            this.scene.time?.removeEvent(char.singTimeout);
+            char.singTimeout = null;
+        }
+
         this.playAnim(char, animName, true);
-        this.updateHoldTimer(char, holdMultiplier);
+        char.resetTimer = 0; 
     }
 
     playAnim(char, animName, forced = false) {
-        const Renderer = funkin.play.visuals.characters.CharacterRenderer;
-        if (Renderer) {
-            Renderer.playAnim(char, animName, forced);
-        }
+        const Renderer = funkin.play.visuals.characters.CharacterRenderer || funkin.play.visuals.characters.charactersManager;
+        Renderer?.playAnim(char, animName, forced);
     }
 
     updateHoldTimer(char, multiplier = 1.0) {
-        const bpm = funkin.play.chart ? (funkin.play.chart.get('metadata.audio.bpm') || 120) : 120;
-        const stepCrochet = ((60 / bpm) * 1000) / 4; 
+        const bpm = funkin.play.chart?.get('metadata.audio.bpm') || 120;
+        const timeToHold = (((60 / bpm) * 1000) / 4) * (char.holdTime || 4.0) * multiplier;
         
-        const timeToHold = stepCrochet * (char.holdTime || 4.0) * multiplier;
-        
-        if (window.funkin.conductor) {
-            char.resetTimer = window.funkin.conductor.songPosition + timeToHold;
-        } else {
-            char.resetTimer = this.scene.time.now + timeToHold;
-        }
+        char.resetTimer = (window.funkin.conductor?.songPosition || this.scene.time.now) + timeToHold;
     }
 
-    update(time, delta) {
-        if (!this.scene.activeCharacters) return;
-        
-        const currentSongPos = window.funkin.conductor ? window.funkin.conductor.songPosition : this.scene.time.now;
+    update() {
+        const currentSongPos = window.funkin.conductor?.songPosition || this.scene.time?.now || 0;
 
-        this.scene.activeCharacters.forEach(char => {
-            if (!char || !char.active) return;
+        (this.scene.activeCharacters || []).forEach(char => {
+            if (!char?.active || char.isSpecialAnim || char.resetTimer <= 0 || currentSongPos < char.resetTimer) return;
 
-            // 🚨 ARREGLO DE RETORNO A IDLE 🚨
-            // Cuando la nota termina y el temporizador se agota, forzamos el regreso al estado de reposo.
-            if (char.resetTimer > 0 && currentSongPos >= char.resetTimer) {
-                char.resetTimer = 0;
-                
-                if (char.danceMode === "danceLeftRight") {
-                    this.playAnim(char, char.danced ? "danceRight" : "danceLeft", false);
-                } else {
-                    // Forzamos "idle" exactamente como viene en el JSON
-                    this.playAnim(char, "idle", false);
-                }
-            }
+            char.resetTimer = 0;
+            this.playAnim(char, char.danceMode === "danceLeftRight" ? (char.danced ? "danceRight" : "danceLeft") : "idle", false);
         });
     }
 }

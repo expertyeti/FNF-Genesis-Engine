@@ -1,11 +1,12 @@
-/**
- * @file src/funkin/play/visuals/UI/judgment/playerStatics.js
- */
 window.funkin = window.funkin || {};
 funkin.play = funkin.play || {};
 funkin.play.visuals = funkin.play.visuals || {};
 funkin.play.visuals.ui = funkin.play.visuals.ui || {};
 
+/**
+ * Gestor de estadísticas en partida.
+ * Calcula precisión, combos, puntuación y emite eventos globales.
+ */
 class PlayerStatics {
   constructor() {
     this.reset();
@@ -13,153 +14,109 @@ class PlayerStatics {
   }
 
   reset() {
-    // CORRECCIÓN: Usar "accuracy" y "rating" exactos para que el TextScore los pueda leer
-    funkin.playerStaticsInSong = { combo: 0, maxCombo: 0, misses: 0, score: 0, sick: 0, good: 0, bad: 0, shit: 0, totalNotes: 0, accuracy: 0.0, rating: "?", cps: 0, clickTimestamps: [] };
-    funkin.player2StaticsInSong = { combo: 0, maxCombo: 0, misses: 0, score: 0, sick: 0, good: 0, bad: 0, shit: 0, totalNotes: 0, accuracy: 0.0, rating: "?", cps: 0, clickTimestamps: [] };
-
-    funkin.play = funkin.play || {};
+    const baseStats = { combo: 0, maxCombo: 0, misses: 0, score: 0, sick: 0, good: 0, bad: 0, shit: 0, totalNotes: 0, accuracy: 0.0, rating: "?", cps: 0, clickTimestamps: [] };
+    funkin.playerStaticsInSong = { ...baseStats };
+    funkin.player2StaticsInSong = { ...baseStats };
     funkin.play.health = funkin.play.health || { health: 1.0, healthLerp: 1.0 };
   }
 
   setupEvents() {
-    if (funkin.playNotes) {
-      funkin.playNotes.event("noteHit", (hitData) => {
-        const isTwoPlayer = funkin.play?.options?.twoPlayerLocal === true;
-        const playAsOpponent = funkin.play?.options?.playAsOpponent === true;
-        
-        let targetStats = null;
-        if (isTwoPlayer) {
-            targetStats = hitData.isPlayer ? funkin.playerStaticsInSong : funkin.player2StaticsInSong;
-        } else {
-            const isMyNote = playAsOpponent ? !hitData.isPlayer : hitData.isPlayer;
-            if (isMyNote) targetStats = funkin.playerStaticsInSong;
+    funkin.playNotes?.event("noteHit", (hitData) => {
+      if (hitData.judgment === "miss") return this.registerMiss(hitData);
+
+      const isPlayerNote = hitData.isPlayer === true;
+      const targetStats = this._getTargetStats(isPlayerNote);
+
+      if (targetStats && !hitData.isAuto) {
+        const absTiming = Math.abs(hitData.ms || 0);
+
+        if (absTiming <= 45.0) targetStats.sick++;
+        else if (absTiming <= 90.0) targetStats.good++;
+        else if (absTiming <= 135.0) targetStats.bad++;
+        else targetStats.shit++;
+
+        targetStats.combo++;
+        targetStats.score += absTiming < 5.0 ? 500 : Math.floor(9 + 491 * Math.max(0, 1.0 - (absTiming - 5.0) / 155.0));
+        targetStats.totalNotes++;
+
+        if (targetStats.combo === 50 || targetStats.combo === 200) {
+            document.dispatchEvent(new CustomEvent('funkin_combo', { detail: { isPlayer: isPlayerNote, combo: targetStats.combo } }));
         }
 
-        if (hitData.judgment !== "miss") {
-          if (targetStats && !hitData.isAuto) {
-            const absTiming = Math.abs(hitData.ms || 0);
+        targetStats.maxCombo = Math.max(targetStats.maxCombo, targetStats.combo);
+      }
 
-            if (absTiming <= 45.0) targetStats.sick++;
-            else if (absTiming <= 90.0) targetStats.good++;
-            else if (absTiming <= 135.0) targetStats.bad++;
-            else targetStats.shit++;
+      this._updateHealth(0.023, isPlayerNote);
+      this.updateRating();
+    });
 
-            let noteScore = 0;
-            if (absTiming < 5.0) noteScore = 500;
-            else {
-              const factor = Math.max(0, 1.0 - (absTiming - 5.0) / 155.0);
-              noteScore = Math.floor(9 + 491 * factor);
-            }
-
-            targetStats.combo++;
-            targetStats.score += noteScore;
-            targetStats.totalNotes++;
-
-            if (targetStats.combo > targetStats.maxCombo) targetStats.maxCombo = targetStats.combo;
-          }
-
-          if (funkin.play.health) {
-            if (isTwoPlayer) {
-              funkin.play.health.health += hitData.isPlayer ? 0.023 : -0.023;
-            } else {
-              const isMyNote = playAsOpponent ? !hitData.isPlayer : hitData.isPlayer;
-              if (isMyNote) {
-                funkin.play.health.health += playAsOpponent ? -0.023 : 0.023;
-              }
-            }
-
-            if (funkin.play.health.health > 2.0) funkin.play.health.health = 2.0;
-            if (funkin.play.health.health < 0.0) funkin.play.health.health = 0.0;
-          }
-        } else {
-          this.registerMiss(hitData);
-        }
-        this.updateRating();
-      });
-
-      funkin.playNotes.event("noteMiss", (hitData) => {
-        this.registerMiss(hitData);
-        this.updateRating();
-      });
-    }
+    funkin.playNotes?.event("noteMiss", (hitData) => {
+      this.registerMiss(hitData);
+      this.updateRating();
+    });
   }
 
   registerMiss(hitData) {
-    const isTwoPlayer = funkin.play?.options?.twoPlayerLocal === true;
-    const playAsOpponent = funkin.play?.options?.playAsOpponent === true;
-    
-    let targetStats = null;
-    if (isTwoPlayer) {
-        targetStats = hitData.isPlayer ? funkin.playerStaticsInSong : funkin.player2StaticsInSong;
-    } else {
-        const isMyNote = playAsOpponent ? !hitData.isPlayer : hitData.isPlayer;
-        if (isMyNote) targetStats = funkin.playerStaticsInSong;
+    const isPlayerNote = hitData.isPlayer === true;
+
+    if (hitData?.isSustain) {
+        return this._updateHealth(-0.005, isPlayerNote);
     }
 
-    if (hitData && hitData.isSustain) {
-      if (funkin.play && funkin.play.health) {
-        if (isTwoPlayer) {
-          funkin.play.health.health += hitData.isPlayer ? -0.005 : 0.005;
-        } else {
-          const isMyNote = playAsOpponent ? !hitData.isPlayer : hitData.isPlayer;
-          if (isMyNote) funkin.play.health.health += playAsOpponent ? 0.005 : -0.005;
-        }
-
-        if (funkin.play.health.health < 0) funkin.play.health.health = 0;
-        if (funkin.play.health.health > 2) funkin.play.health.health = 2;
-      }
-      return;
-    }
-
+    const targetStats = this._getTargetStats(isPlayerNote);
     if (targetStats && !hitData.isAuto) {
+      if (targetStats.combo >= 70) {
+          document.dispatchEvent(new CustomEvent('funkin_comboDrop', { detail: { isPlayer: isPlayerNote, droppedCombo: targetStats.combo } }));
+      }
       targetStats.combo = 0;
       targetStats.misses++;
       targetStats.score -= 100;
-      targetStats.totalNotes++; // CRÍTICO para calcular el accuracy
+      targetStats.totalNotes++;
     }
 
-    if (funkin.play && funkin.play.health) {
-      if (isTwoPlayer) {
-        funkin.play.health.health += hitData.isPlayer ? -0.0475 : 0.0475;
-      } else {
-        const isMyNote = playAsOpponent ? !hitData.isPlayer : hitData.isPlayer;
-        if (isMyNote) funkin.play.health.health += playAsOpponent ? 0.0475 : -0.0475;
-      }
+    this._updateHealth(-0.0475, isPlayerNote);
+  }
 
-      if (funkin.play.health.health < 0) funkin.play.health.health = 0;
-      if (funkin.play.health.health > 2) funkin.play.health.health = 2;
+  _getTargetStats(isPlayerNote) {
+    const isTwoPlayer = funkin.play?.options?.twoPlayerLocal;
+    const playAsOpponent = funkin.play?.options?.playAsOpponent;
+    
+    if (isTwoPlayer) return isPlayerNote ? funkin.playerStaticsInSong : funkin.player2StaticsInSong;
+    return (playAsOpponent ? !isPlayerNote : isPlayerNote) ? funkin.playerStaticsInSong : null;
+  }
+
+  _updateHealth(amount, isPlayerNote) {
+    if (!funkin.play?.health) return;
+
+    const isTwoPlayer = funkin.play.options?.twoPlayerLocal;
+    const playAsOpponent = funkin.play.options?.playAsOpponent;
+    
+    let applyHealth = false;
+    if (isTwoPlayer) amount = isPlayerNote ? amount : -amount;
+    else if (playAsOpponent ? !isPlayerNote : isPlayerNote) applyHealth = true;
+
+    if (isTwoPlayer || applyHealth) {
+        funkin.play.health.health = Math.max(0, Math.min(2, funkin.play.health.health + amount));
     }
   }
 
   updateRating() {
-    // Calculo que evalúa el rating real asignándolo a 'accuracy' y 'rating'
     const calcStats = (stats) => {
-        if (stats.totalNotes > 0) {
-          const positiveHits = stats.sick + stats.good;
-          let rawAccuracy = (positiveHits - stats.misses) / stats.totalNotes;
-          if (rawAccuracy < 0) rawAccuracy = 0;
-          stats.accuracy = rawAccuracy * 100; // Asignamos a .accuracy
-        } else {
-          stats.accuracy = 0.0;
-        }
+        if (!stats || stats.totalNotes === 0) return stats && (stats.accuracy = 0.0, stats.rating = "?");
 
-        const acc = stats.accuracy;
-        let ratingStr = "?";
-
-        if (stats.totalNotes === 0) ratingStr = "?";
-        else if (acc >= 100) ratingStr = "SSS";
-        else if (acc >= 95) ratingStr = "S";
-        else if (acc >= 90) ratingStr = "A";
-        else if (acc >= 80) ratingStr = "B";
-        else if (acc >= 70) ratingStr = "C";
-        else if (acc >= 60) ratingStr = "D";
-        else ratingStr = "F";
-
-        stats.rating = ratingStr; // Asignamos a .rating
+        stats.accuracy = Math.max(0, ((stats.sick + stats.good) - stats.misses) / stats.totalNotes) * 100;
+        
+        if (stats.accuracy >= 100) stats.rating = "SSS";
+        else if (stats.accuracy >= 95) stats.rating = "S";
+        else if (stats.accuracy >= 90) stats.rating = "A";
+        else if (stats.accuracy >= 80) stats.rating = "B";
+        else if (stats.accuracy >= 70) stats.rating = "C";
+        else if (stats.accuracy >= 60) stats.rating = "D";
+        else stats.rating = "F";
     };
 
-    if (funkin.playerStaticsInSong) calcStats(funkin.playerStaticsInSong);
-    if (funkin.player2StaticsInSong) calcStats(funkin.player2StaticsInSong);
+    calcStats(funkin.playerStaticsInSong);
+    calcStats(funkin.player2StaticsInSong);
   }
 
   destroy() {

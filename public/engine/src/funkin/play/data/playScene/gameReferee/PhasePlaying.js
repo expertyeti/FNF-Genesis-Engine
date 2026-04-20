@@ -1,13 +1,11 @@
-/**
- * @file PhasePlaying.js
- * Fase 3: La canción está en curso. Se actualizan las notas, hits, y eventos de música.
- */
-
 window.funkin = window.funkin || {};
 funkin.play = funkin.play || {};
 funkin.play.data = funkin.play.data || {};
 funkin.play.data.referee = funkin.play.data.referee || {};
 
+/**
+ * Fase 3 del juego. Bucle principal de ejecución de pista, cámaras y lógica musical.
+ */
 class PhasePlaying {
   constructor(referee) {
     this.referee = referee;
@@ -15,111 +13,69 @@ class PhasePlaying {
   }
 
   async enter() {
-    const scene = this.scene;
-
-    if (scene.songPlaylist) {
-      scene.songPlaylist.play("All");
-    }
-
-    scene.events.once("song_finished", () => {
-      this.referee.changePhase("end");
-    });
+    this.scene.songPlaylist?.play("All");
+    this.scene.events?.once("song_finished", () => this.referee.changePhase("end"));
   }
 
   update(time, delta) {
-    const scene = this.scene;
+    if (!this.scene.isReady) return;
 
-    if (!scene.isReady) return;
+    window.funkin.controls?.update();
+    this.scene.inputHandler?.update();
+    this.scene.cameraDebug?.update();
+    this.scene.gameCam?.update();
+    this.scene.uiCam?.update();
+    this.scene.mainCam?.update();
+    this.scene.strumlines?.update(time, delta);
+    this.scene.sustainNotesManager?.update(time, delta);
+    this.scene.notesManager?.update(time, delta);
+    this.scene.judgmentPopUpManager?.update(time, delta);
+    this.scene.comboPopUpManager?.update(time, delta);
+    window.funkin.play?.health?.update(time, delta);
+    this.scene.healthBar?.update(time, delta);
+    this.scene.antiLag?.update(time, delta);
+    this.scene.shaderManager?.update(time, delta);
+    this.scene.scoreText?.update(time, delta);
+    this.scene.botplayText?.update(time, delta);
+    this.scene.animateCharacters?.update(time, delta);
 
-    if (window.funkin.controls) window.funkin.controls.update();
-    if (scene.inputHandler) scene.inputHandler.update();
-    if (scene.cameraDebug) scene.cameraDebug.update();
+    const conductor = window.funkin.conductor;
+    if (!conductor) return;
 
-    if (scene.gameCam) scene.gameCam.update();
-    if (scene.uiCam) scene.uiCam.update();
-    if (scene.mainCam) scene.mainCam.update();
-
-    if (scene.strumlines) scene.strumlines.update(time, delta);
-    if (scene.sustainNotesManager) scene.sustainNotesManager.update(time, delta);
-    if (scene.notesManager) scene.notesManager.update(time, delta);
-
-    if (scene.judgmentPopUpManager) scene.judgmentPopUpManager.update(time, delta);
-    if (scene.comboPopUpManager) scene.comboPopUpManager.update(time, delta);
-
-    if (window.funkin.play && window.funkin.play.health) window.funkin.play.health.update(time, delta);
-    if (scene.healthBar) scene.healthBar.update(time, delta);
-    if (scene.antiLag) scene.antiLag.update(time, delta);
-    
-    if (scene.shaderManager) scene.shaderManager.update(time, delta);
-
-    if (scene.scoreText) scene.scoreText.update(time, delta);
-    if (scene.botplayText) scene.botplayText.update(time, delta);
-
-    if (window.funkin.conductor) {
-      if (scene.songPlaylist && scene.songPlaylist.activeSounds && scene.songPlaylist.activeSounds.length > 0) {
-        const mainTrack = scene.songPlaylist.activeSounds[0];
-
-        if (mainTrack && mainTrack.isPlaying) {
-          const audioTime = mainTrack.seek * 1000;
-          const rate = mainTrack.totalRate || mainTrack.rate || 1.0;
-
-          if (Math.abs(window.funkin.conductor.songPosition - audioTime) > 150) {
-            window.funkin.conductor.songPosition = audioTime;
-          } else {
-            window.funkin.conductor.songPosition += delta * rate;
-          }
-        } else {
-          window.funkin.conductor.songPosition += delta;
+    const mainTrack = this.scene.songPlaylist?.activeSounds?.[0];
+    if (mainTrack?.isPlaying) {
+        const audioTime = mainTrack.seek * 1000;
+        if (Math.abs(conductor.songPosition - audioTime) > 150) conductor.songPosition = audioTime;
+        else conductor.songPosition += delta * (mainTrack.totalRate || mainTrack.rate || 1.0);
+        
+        if (mainTrack.duration > 0 && conductor.songPosition > (mainTrack.duration * 1000) + 1000 && !this.scene.songEndedFlag) {
+            this.scene.songEndedFlag = true;
+            this.scene.events?.emit("song_finished");
         }
+    } else {
+        conductor.songPosition += delta;
+    }
 
-        if (mainTrack && mainTrack.duration > 0) {
-          const durationMs = mainTrack.duration * 1000;
+    const bpmValue = conductor.bpm?.get?.() ?? conductor.bpm;
+    if (bpmValue > 0) {
+        const currentBeat = Math.floor(conductor.songPosition / ((60 / bpmValue) * 1000));
+        
+        if (currentBeat !== (this.scene.lastBeat ?? -1)) {
+            this.scene.lastBeat = currentBeat;
 
-          if (window.funkin.conductor.songPosition > durationMs + 1000) {
-            if (!scene.songEndedFlag) {
-              scene.songEndedFlag = true;
-              scene.events.emit("song_finished");
+            if (currentBeat % 4 === 0) {
+                this.scene.gameCam?.bop?.(0.015);
+                this.scene.uiCam?.bop?.(0.03); 
             }
-          }
-        }
-      } else {
-        window.funkin.conductor.songPosition += delta;
-      }
 
-      const bpmValue = typeof window.funkin.conductor.bpm.get === "function" ? window.funkin.conductor.bpm.get() : window.funkin.conductor.bpm;
-
-      if (bpmValue > 0) {
-        const crochet = (60 / bpmValue) * 1000;
-        const currentBeat = Math.floor(window.funkin.conductor.songPosition / crochet);
-
-        if (scene.lastBeat === undefined) {
-          scene.lastBeat = currentBeat;
-        }
-
-        if (currentBeat !== scene.lastBeat) {
-          scene.lastBeat = currentBeat;
-
-          if (currentBeat % 4 === 0) {
-            if (scene.gameCam && typeof scene.gameCam.bop === "function") {
-              scene.gameCam.bop(0.015);
+            window.funkin.play.playListSprites?.onBeat(currentBeat);
+            
+            if (this.scene.animateCharacters?.onBeat) {
+                this.scene.animateCharacters.onBeat(currentBeat);
+            } else {
+                this.scene.activeCharacters?.forEach(char => char?.dance?.());
             }
-            if (scene.uiCam && typeof scene.uiCam.bop === "function") {
-              scene.uiCam.bop(0.03); 
-            }
-          }
-
-          if (window.funkin.play.playListSprites) window.funkin.play.playListSprites.onBeat(currentBeat);
-          
-          // EJECUCIÓN PURA DE ANIMACIONES BASADA EN EL NUEVO CHARACTERS MANAGER
-          if (scene.activeCharacters) {
-              scene.activeCharacters.forEach(char => {
-                  if (char && typeof char.dance === 'function') {
-                      char.dance();
-                  }
-              });
-          }
         }
-      }
     }
   }
 }
