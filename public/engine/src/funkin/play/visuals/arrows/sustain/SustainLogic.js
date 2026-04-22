@@ -213,24 +213,37 @@ class SustainLogic {
     }
   }
 
+  // 🚨 ARREGLO: Emitir el fallo (miss) de forma global para que quite vida y detenga vocales
   dropHold(sustain, songPos, isNearEnd, isMyNote, isTwoPlayer) {
     sustain.isBeingHit = false;
     if (sustain.hasBeenHit && songPos > sustain.time && !isNearEnd) {
       if (!sustain.parentMissed) {
-        sustain.parentMissed = true;
+        sustain.parentMissed = true; // Se considera fallada
+        
         if (!window.autoplay && funkin.playNotes && (isMyNote || isTwoPlayer)) {
-          funkin.playNotes.lastHit = {
+          const isPlayerSide = (sustain.pType === "pl" || sustain.isPlayer === true);
+          
+          const missData = {
             pressed: false,
             ms: 0,
             absMs: 0,
             judgment: "miss",
             score: -10,
             direction: sustain.lane,
-            isPlayer: (sustain.pType === "pl" || sustain.isPlayer === true),
+            isPlayer: isPlayerSide,
             isSustain: true,
             isAuto: false,
           };
-          funkin.playNotes.emit("noteMiss", funkin.playNotes.lastHit);
+          
+          funkin.playNotes.lastHit = missData;
+          funkin.playNotes.emit("noteMiss", missData);
+          
+          // 🔥 VITAL: Enviar a la escena para aplicar penalización y silenciar al cantante
+          if (this.scene && this.scene.events) {
+             this.scene.events.emit("noteMiss", missData);
+          }
+          
+          this.playMissSound(isPlayerSide, false);
         }
       }
     }
@@ -257,24 +270,32 @@ class SustainLogic {
     sustain.wasBeingHit = sustain.isBeingHit;
   }
 
+  // 🚨 ARREGLO: También asegurar que las notas ignoradas por completo avisen a la escena
   triggerMissFeedback(sustain, songPos, isBot) {
     if (sustain.parentMissed && !sustain.hasBeenHit && songPos > sustain.time + 166.0 && !isBot) {
       if (!sustain.missAnimPlayed) {
         if (funkin.playNotes && !window.autoplay) {
-          const isPlayer = sustain.pType === "pl" || sustain.isPlayer === true;
-          funkin.playNotes.lastHit = {
+          const isPlayerSide = sustain.pType === "pl" || sustain.isPlayer === true;
+          const missData = {
             pressed: false,
             ms: 0,
             absMs: 0,
             judgment: "miss",
             score: -10,
             direction: sustain.lane,
-            isPlayer: isPlayer,
+            isPlayer: isPlayerSide,
             isSustain: true,
             isAuto: false,
           };
-          funkin.playNotes.emit("noteMiss", funkin.playNotes.lastHit);
-          this.playMissSound(true, false);
+          
+          funkin.playNotes.lastHit = missData;
+          funkin.playNotes.emit("noteMiss", missData);
+          
+          if (this.scene && this.scene.events) {
+              this.scene.events.emit("noteMiss", missData);
+          }
+          
+          this.playMissSound(isPlayerSide, false);
         }
         sustain.missAnimPlayed = true;
       }

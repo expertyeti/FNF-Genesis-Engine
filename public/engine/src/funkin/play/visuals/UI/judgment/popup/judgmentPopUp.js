@@ -66,6 +66,12 @@ class JudgmentPopUpManager {
         const sessionKey = funkin.play.uiSkins.getAssetKey(assetInfo.path);
         if (!this.scene.textures.exists(sessionKey)) return;
 
+        // --- APLICAR FILTRO ANTIALIASING ---
+        const isAntialiased = typeof funkin.play.uiSkins.getAntialiasing === 'function' ? funkin.play.uiSkins.getAntialiasing() : true;
+        const filterMode = isAntialiased ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST;
+        this.scene.textures.get(sessionKey).setFilter(filterMode);
+        // ------------------------------------
+
         const mode = funkin.play?.options?.popupMode || 'normal';
 
         if (mode === 'stacking') {

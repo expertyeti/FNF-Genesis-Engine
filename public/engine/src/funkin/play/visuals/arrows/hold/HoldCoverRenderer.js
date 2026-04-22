@@ -44,6 +44,12 @@ class HoldCoverSkin {
             const assetKey = funkin.play.uiSkins?.getAssetKey(dirData.assetPath);
             if (!assetKey || !this.scene.textures.exists(assetKey)) return;
 
+            // --- APLICAR FILTRO ANTIALIASING ---
+            const isAntialiased = typeof funkin.play.uiSkins.getAntialiasing === 'function' ? funkin.play.uiSkins.getAntialiasing() : true;
+            const filterMode = isAntialiased ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST;
+            this.scene.textures.get(assetKey).setFilter(filterMode);
+            // ------------------------------------
+
             const rawXML = this.scene.cache.text.get(`${assetKey}_rawXML`);
             if (rawXML) {
                 funkin.utils.animations?.sparrow?.SparrowParser?.fixPhaserSparrow(this.scene, assetKey, rawXML);

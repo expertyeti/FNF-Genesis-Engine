@@ -1,3 +1,8 @@
+window.funkin = window.funkin || {};
+funkin.play = funkin.play || {};
+funkin.play.visuals = funkin.play.visuals || {};
+funkin.play.visuals.skins = funkin.play.visuals.skins || {};
+
 /**
  * Pre-carga de assets visuales y de audio para la interfaz de usuario en escena.
  */
@@ -15,6 +20,9 @@ class SkinPreloader {
         const mainPath = uiManager.skinData?.global?.basePath || "funkin";
         const fallbackPath = uiManager.fallbackSkinData?.global?.basePath || "funkin";
         const baseUrl = window.BASE_URL || "";
+        
+        // Obtenemos si la skin usa antialiasing o no
+        const isAntialiased = uiManager.getAntialiasing ? uiManager.getAntialiasing() : true;
         
         this.loadedAssets = [];
 
@@ -69,8 +77,17 @@ class SkinPreloader {
         resolve("ui.bars.time.path", "image", false);
 
         scene.events?.once('create', () => {
-            const filterMode = Phaser.Textures.FilterMode?.NEAREST ?? 0;
-            this.loadedAssets.forEach(k => scene.textures.exists(k) && scene.textures.get(k).setFilter(filterMode));
+            // Si el antialiasing es explicitamente false, aplicamos el filtro NEAREST (0). 
+            // Si es true, aplicamos LINEAR (1) para un renderizado suavizado.
+            const filterMode = isAntialiased === false ? 
+                (Phaser.Textures.FilterMode?.NEAREST ?? 0) : 
+                (Phaser.Textures.FilterMode?.LINEAR ?? 1);
+            
+            this.loadedAssets.forEach(k => {
+                if (scene.textures.exists(k)) {
+                    scene.textures.get(k).setFilter(filterMode);
+                }
+            });
         });
     }
 }

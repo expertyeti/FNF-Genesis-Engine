@@ -98,6 +98,12 @@ class ComboPopUpManager {
             const sessionKey = funkin.play.uiSkins.getAssetKey(assetPath);
             if (!this.scene.textures.exists(sessionKey)) continue;
 
+            // --- APLICAR FILTRO ANTIALIASING ---
+            const isAntialiased = typeof funkin.play.uiSkins.getAntialiasing === 'function' ? funkin.play.uiSkins.getAntialiasing() : true;
+            const filterMode = isAntialiased ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST;
+            this.scene.textures.get(sessionKey).setFilter(filterMode);
+            // ------------------------------------
+
             const sprite = this.scene.add.sprite(0, yBase, sessionKey);
             sprite.setAlpha(globalAlpha);
             sprite.setOrigin(0.5, 0.5);

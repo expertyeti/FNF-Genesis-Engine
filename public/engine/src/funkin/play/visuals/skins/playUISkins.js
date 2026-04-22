@@ -13,6 +13,7 @@ class PlayUISkins {
         this.fallbackSkinData = null; 
         this.overrideSkinName = null;
         this.currentScene = null;
+        this.skinName = null;
     }
 
     isValidPath(pathStr) {
@@ -23,13 +24,35 @@ class PlayUISkins {
         return funkin.play.visuals.skins.SkinPathResolver?.getAssetKey(originalPath, this.skinData) ?? originalPath;
     }
 
-    async loadSkinData(forceReload = false) {
+    /**
+     * Carga los metadatos de la skin.
+     */
+    async loadSkinData(skinName = null, forceReload = false) {
         const chart = funkin.play.chart;
-        const skinName = this.overrideSkinName || chart?.get?.('base.skins.ui') || chart?.get?.('metadata.skin') || "Funkin";
+        
+        let targetSkin = skinName || this.overrideSkinName;
+        
+        if (!targetSkin && chart) {
+            if (typeof chart.get === 'function') {
+                targetSkin = chart.get('skins.ui') ||              
+                             chart.get('metadata.skins.ui') ||     
+                             chart.get('base.skins.ui') ||         
+                             chart.get('metadata.skin');           
+            }
+
+            if (!targetSkin) {
+                targetSkin = chart.metadata?.skins?.ui || 
+                             chart.base?.skins?.ui || 
+                             chart.skins?.ui;
+            }
+        }
+
+        this.skinName = targetSkin || "funkin";
+        console.log(`[PlayUISkins] Skin resuelta para cargar: "${this.skinName}"`);
 
         const Loader = funkin.play.visuals.skins.SkinDataLoader;
         if (Loader) {
-            const loadedData = await Loader.load(skinName, forceReload);
+            const loadedData = await Loader.load(this.skinName, forceReload);
             this.skinData = loadedData.skinData;
             this.fallbackSkinData = loadedData.fallbackSkinData;
         }
@@ -47,6 +70,16 @@ class PlayUISkins {
         return funkin.play.visuals.skins.SkinPathResolver?.get(this.skinData, this.fallbackSkinData, path);
     }
 
+    /**
+     * Consulta si la skin actual permite Antialiasing
+     * @returns {boolean}
+     */
+    getAntialiasing() {
+        if (this.skinData?.global?.antialiasing !== undefined) return this.skinData.global.antialiasing;
+        if (this.fallbackSkinData?.global?.antialiasing !== undefined) return this.fallbackSkinData.global.antialiasing;
+        return true; // Por defecto true (smooth)
+    }
+
     async setOverrideSkin(skinName) {
         this.overrideSkinName = skinName;
         await this.reloadActiveSkin();
@@ -55,10 +88,9 @@ class PlayUISkins {
     async reloadActiveSkin() {
         if (!this.currentScene) return;
         
-        await this.loadSkinData(true);
+        await this.loadSkinData(null, true);
         await this.preloadSkinAssets(this.currentScene, false);
 
-        // SEÑAL VITAL: Esperar a que Phaser descargue todo antes de emitir el cambio.
         if (this.currentScene.load.isLoading() || this.currentScene.load.totalToLoad > 0) {
             await new Promise((resolve) => {
                 this.currentScene.load.once("complete", resolve);

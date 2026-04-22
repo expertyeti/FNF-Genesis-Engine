@@ -83,6 +83,12 @@ class CountDown {
         const imgKey = funkin.play.uiSkins.getAssetKey(skinData.image.assetPath);
 
         if (this.scene.textures.exists(imgKey)) {
+          // --- APLICAR FILTRO ANTIALIASING ---
+          const isAntialiased = typeof funkin.play.uiSkins.getAntialiasing === 'function' ? funkin.play.uiSkins.getAntialiasing() : true;
+          const filterMode = isAntialiased ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST;
+          this.scene.textures.get(imgKey).setFilter(filterMode);
+          // ------------------------------------
+
           const centerX = this.scene.scale.width / 2;
           const centerY = this.scene.scale.height / 2;
 

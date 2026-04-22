@@ -1,6 +1,7 @@
 {
   "global": {
-    "basePath": "Pixel"
+    "basePath": "Pixel",
+    "antialiasing": false
   },
   "gameplay": {
     "strumline": {

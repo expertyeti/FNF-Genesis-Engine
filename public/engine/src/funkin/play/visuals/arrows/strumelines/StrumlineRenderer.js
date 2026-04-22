@@ -58,6 +58,15 @@ if (funkin.play.visuals.arrows.strumelines.Strumlines) {
         if (!skinData) return;
 
         const assetKey = funkin.play.uiSkins.getAssetKey(skinData.assetPath);
+        
+        // --- APLICAR FILTRO ANTIALIASING ---
+        if (this.scene.textures.exists(assetKey)) {
+            const isAntialiased = typeof funkin.play.uiSkins.getAntialiasing === 'function' ? funkin.play.uiSkins.getAntialiasing() : true;
+            const filterMode = isAntialiased ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST;
+            this.scene.textures.get(assetKey).setFilter(filterMode);
+        }
+        // ------------------------------------
+
         const scale = skinData.scale !== undefined ? skinData.scale : 0.7;
 
         const setupSide = (strums) => {

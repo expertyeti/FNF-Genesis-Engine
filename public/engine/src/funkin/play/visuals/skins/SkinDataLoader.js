@@ -9,14 +9,29 @@ funkin.play.visuals.skins = funkin.play.visuals.skins || {};
 class SkinDataLoader {
     static async load(skinName, forceReload = false) {
         const cb = forceReload ? `?t=${Date.now()}` : '';
-        const targetSkin = skinName?.trim() ? skinName : "funkin";
+        // Convierte a minúsculas por seguridad en la lectura de archivos (evita error "Funkin.json" vs "funkin.json")
+        const targetSkin = (skinName && skinName.trim() !== "") ? skinName.trim().toLowerCase() : "funkin";
         const baseUrl = window.BASE_URL || "";
         
         let fallbackData = null;
         let mainData = null;
 
-        try { fallbackData = await (await fetch(`${baseUrl}assets/data/skins/funkin.json${cb}`)).json(); } catch (e) {}
-        try { mainData = await (await fetch(`${baseUrl}assets/data/skins/${targetSkin}.json${cb}`)).json(); } catch (e) { mainData = fallbackData; }
+        try { 
+            const resFallback = await fetch(`${baseUrl}assets/data/skins/funkin.json${cb}`);
+            if (resFallback.ok) fallbackData = await resFallback.json();
+        } catch (e) {
+            console.warn(`[SkinDataLoader] No se pudo cargar la skin fallback funkin.json`);
+        }
+
+        try { 
+            const resMain = await fetch(`${baseUrl}assets/data/skins/${targetSkin}.json${cb}`);
+            if (resMain.ok) mainData = await resMain.json();
+            else throw new Error(`HTTP Error ${resMain.status}`);
+            console.log(`[SkinDataLoader] Skin "${targetSkin}" cargada correctamente.`);
+        } catch (e) { 
+            mainData = fallbackData; 
+            console.warn(`[SkinDataLoader] Skin "${targetSkin}" no encontrada. Usando fallback.`, e);
+        }
 
         return { skinData: mainData || fallbackData, fallbackSkinData: fallbackData };
     }

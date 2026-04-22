@@ -1,7 +1,7 @@
 /**
  * @file SustainRenderer.js
  * Unificación del Renderizado Visual y Manejo de Skins para las notas largas.
- * ARREGLO: Las notas no golpeadas o soltadas ya no se recortan/consumen visualmente.
+ * ARREGLO: Las notas no golpeadas o soltadas ya no se recortan/consumen visualmente y usan el filtro adecuado.
  */
 
 window.funkin = window.funkin || {};
@@ -37,7 +37,11 @@ class SustainSkin {
 		const assetKey = funkin.play.uiSkins.getAssetKey(skinData.assetPath);
 		if (!this.scene.textures.exists(assetKey)) return;
 
-		this.scene.textures.get(assetKey).setFilter(Phaser.Textures.FilterMode.LINEAR);
+		// --- APLICAR FILTRO ANTIALIASING (Quitando el LINEAR harcodeado) ---
+		const isAntialiased = typeof funkin.play.uiSkins.getAntialiasing === 'function' ? funkin.play.uiSkins.getAntialiasing() : true;
+		const filterMode = isAntialiased ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST;
+		this.scene.textures.get(assetKey).setFilter(filterMode);
+		// -------------------------------------------------------------------
 
 		if (funkin.utils && funkin.utils.animations && funkin.utils.animations.sparrow) {
 			const xmlText = this.scene.cache.text.get(`${assetKey}_rawXML`);
@@ -166,7 +170,11 @@ class SustainSkin {
 		const assetKey = funkin.play.uiSkins.getAssetKey(skinData.assetPath);
 		if (!this.scene.textures.exists(assetKey)) return;
 
-		this.scene.textures.get(assetKey).setFilter(Phaser.Textures.FilterMode.LINEAR);
+		// --- APLICAR FILTRO ANTIALIASING (Quitando el LINEAR harcodeado) ---
+		const isAntialiased = typeof funkin.play.uiSkins.getAntialiasing === 'function' ? funkin.play.uiSkins.getAntialiasing() : true;
+		const filterMode = isAntialiased ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST;
+		this.scene.textures.get(assetKey).setFilter(filterMode);
+		// -------------------------------------------------------------------
 
 		if (funkin.utils && funkin.utils.animations && funkin.utils.animations.sparrow) {
 			const xmlText = this.scene.cache.text.get(`${assetKey}_rawXML`);

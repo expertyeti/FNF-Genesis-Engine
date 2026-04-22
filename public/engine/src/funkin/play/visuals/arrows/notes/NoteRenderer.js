@@ -26,6 +26,12 @@ class NoteSkin {
 		const assetKey = funkin.play.uiSkins.getAssetKey(skinData.assetPath);
 		if (!this.scene.textures.exists(assetKey)) return;
 
+		// --- APLICAR FILTRO ANTIALIASING ---
+		const isAntialiased = typeof funkin.play.uiSkins.getAntialiasing === 'function' ? funkin.play.uiSkins.getAntialiasing() : true;
+		const filterMode = isAntialiased ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST;
+		this.scene.textures.get(assetKey).setFilter(filterMode);
+		// ------------------------------------
+
 		if (skinData.chromaKey && funkin.play.uiSkins) {
 			funkin.play.uiSkins.applyChromaKey(this.scene, assetKey, skinData.chromaKey);
 		}
@@ -63,6 +69,12 @@ class NoteSkin {
 
 		const assetKey = funkin.play.uiSkins.getAssetKey(skinData.assetPath);
 		if (!this.scene.textures.exists(assetKey)) return;
+
+		// --- APLICAR FILTRO ANTIALIASING ---
+		const isAntialiased = typeof funkin.play.uiSkins.getAntialiasing === 'function' ? funkin.play.uiSkins.getAntialiasing() : true;
+		const filterMode = isAntialiased ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST;
+		this.scene.textures.get(assetKey).setFilter(filterMode);
+		// ------------------------------------
 
 		if (skinData.chromaKey && funkin.play.uiSkins) {
 			funkin.play.uiSkins.applyChromaKey(this.scene, assetKey, skinData.chromaKey);
