@@ -122,16 +122,20 @@
 
   "src/funkin/play/input/inputDebugg.js",
   "src/funkin/play/input/PlayInput.js",
+
   "src/funkin/play/data/playScene/gameReferee/PhaseInit.js",
   "src/funkin/play/data/playScene/gameReferee/PhaseCountdown.js",
   "src/funkin/play/data/playScene/gameReferee/PhasePlaying.js",
   "src/funkin/play/data/playScene/gameReferee/PhaseEnd.js",
+  "src/funkin/play/data/playScene/gameReferee/PhaseGameOver.js",
   "src/funkin/play/data/playScene/gameReferee/gameReferee.js",
+
   "src/funkin/play/data/preload/preloadCharacters.js",
   "src/funkin/play/data/preload/preloadSkins.js",
   "src/funkin/play/data/preload/preloadSong.js",
   "src/funkin/play/data/preload/preloadStage.js",
   "src/funkin/play/data/preload/playPreload.js",
+
   "src/funkin/play/PlayScene.js",
   "src/funkin/ui/intro/introText/introText.js",
   "src/funkin/ui/intro/loading/loading.js"

@@ -13,11 +13,9 @@ funkin.play.visuals.arrows = funkin.play.visuals.arrows || {};
 // ============================================================================
 // ALIAS Y UNIFICACIÓN DE NAMESPACES (Evita crashes por clases eliminadas)
 // ============================================================================
-// 1. Unificamos el typo histórico entre strumelines (con e) y strumlines (sin e)
 funkin.play.visuals.arrows.strumelines = funkin.play.visuals.arrows.strumelines || {};
 funkin.play.visuals.arrows.strumlines = funkin.play.visuals.arrows.strumelines;
 
-// 2. Restauramos el namespace de StrumlineLayout para que MiddlescrollHandler no crashee
 funkin.play.visuals.arrows.strumelines.StrumlineLayout = {
     updateLayout: (manager) => {
         if (manager && typeof manager.applyLayout === 'function') {
@@ -34,11 +32,13 @@ class GameReferee {
 
         const refereeData = funkin.play.data.referee;
         
+        // Registramos todas las fases, incluyendo la nueva de GameOver
         this.phases = {
             init: refereeData.PhaseInit ? new refereeData.PhaseInit(this) : null,
             countdown: refereeData.PhaseCountdown ? new refereeData.PhaseCountdown(this) : null,
             playing: refereeData.PhasePlaying ? new refereeData.PhasePlaying(this) : null,
-            end: refereeData.PhaseEnd ? new refereeData.PhaseEnd(this) : null
+            end: refereeData.PhaseEnd ? new refereeData.PhaseEnd(this) : null,
+            gameOver: refereeData.PhaseGameOver ? new refereeData.PhaseGameOver(this) : null
         };
     }
 

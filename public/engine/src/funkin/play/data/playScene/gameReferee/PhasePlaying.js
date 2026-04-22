@@ -31,7 +31,17 @@ class PhasePlaying {
     this.scene.notesManager?.update(time, delta);
     this.scene.judgmentPopUpManager?.update(time, delta);
     this.scene.comboPopUpManager?.update(time, delta);
+    
+    // Actualizar la salud primero
     window.funkin.play?.health?.update(time, delta);
+
+    // 🚨 DETECTOR DE MUERTE
+    // Si la salud es 0 y no estamos en botplay, interrumpir y pasar al Game Over
+    if (window.funkin.play?.health?.health <= 0 && !window.autoplay) {
+        this.referee.changePhase("gameOver");
+        return; // VITAL: Evita que el juego siga avanzando en este frame
+    }
+
     this.scene.healthBar?.update(time, delta);
     this.scene.antiLag?.update(time, delta);
     this.scene.shaderManager?.update(time, delta);
