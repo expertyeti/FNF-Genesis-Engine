@@ -1,19 +1,20 @@
 /**
  * @file preloadCharacters.js
  * Optimizado: Detecta extensiones personalizadas (.webp, .png) tanto en la imagen principal 
- * como en las animaciones. Usa .png por defecto.
+ * como en las animaciones. Usa .png por defecto. Se limpia al iniciar nueva carga.
  */
 class PreloadCharacters {
     static loadedKeys = { opponents: [], players: [], spectator: [] };
 
     static async preload(scene) {
+        // SIEMPRE reiniciar las llaves para evitar acumular personajes de canciones pasadas
+        this.loadedKeys = { opponents: [], players: [], spectator: [] };
+
         if (funkin.play.options?.simpleMode) {
-            this.loadedKeys = { opponents: [], players: [], spectator: [] };
             return;
         }
 
         if (!funkin.play.characterLoader?.charactersData) {
-            this.loadedKeys = { opponents: [], players: [], spectator: [] };
             return;
         }
 

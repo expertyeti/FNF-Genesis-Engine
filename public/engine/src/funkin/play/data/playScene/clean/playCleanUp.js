@@ -13,30 +13,45 @@ class PlayCleanUp {
 		if (clean.CleanAudio) clean.CleanAudio.execute(scene);
 
         // 2. Limpiar personajes explícitamente ANTES del nuke de la escena
-        if (scene && scene.stageCharacters) {
-            const groups = Object.values(scene.stageCharacters);
-            
-            groups.forEach(group => {
-                const charArray = Array.isArray(group) ? group : [group];
-                
-                charArray.forEach(char => {
-                    // Phaser cambia active a 'false' si el objeto ya fue destruido.
-                    // Esto evita tocar "fantasmas".
-                    if (char && char.active !== false) {
-                        if (typeof char.stop === 'function') char.stop();
-                        if (char.scene && char.scene.tweens) char.scene.tweens.killTweensOf(char);
-                        
-                        if (typeof char.destroy === 'function') {
-                            char.destroy(true); 
-                        }
+        // ARREGLO: Se usa la variable correcta 'activeCharacters' en lugar del obsoleto 'stageCharacters'
+        if (scene && scene.activeCharacters) {
+            scene.activeCharacters.forEach(char => {
+                if (char && char.active !== false) {
+                    if (typeof char.stop === 'function') char.stop();
+                    if (char.scene && char.scene.tweens) char.scene.tweens.killTweensOf(char);
+                    
+                    // Limpiar el timeout de canto si existe para evitar llamadas fantasma
+                    if (char.singTimeout && scene.time) {
+                        scene.time.removeEvent(char.singTimeout);
+                        char.singTimeout = null;
                     }
-                });
+                    
+                    if (typeof char.destroy === 'function') {
+                        char.destroy(true); 
+                    }
+                }
             });
-
-            scene.stageCharacters = null;
+            scene.activeCharacters = null;
         }
 
-        // 3. Destruir el AnimManager ahora que los personajes ya fueron procesados
+        // Limpiar referencias individuales
+        ['player', 'opponent', 'spectator'].forEach(role => {
+            if (scene && scene[role]) {
+                if (scene[role].active !== false && typeof scene[role].destroy === 'function') {
+                    scene[role].destroy(true);
+                }
+                scene[role] = null;
+            }
+        });
+
+        // 3. Destruir la lógica de animaciones de los personajes
+        if (scene && scene.animateCharacters) {
+            if (typeof scene.animateCharacters.cleanUp === 'function') {
+                scene.animateCharacters.cleanUp();
+            }
+            scene.animateCharacters = null;
+        }
+
         if (scene && scene.characterAnimManager) {
             if (typeof scene.characterAnimManager.destroy === 'function') {
                 scene.characterAnimManager.destroy();
@@ -47,12 +62,29 @@ class PlayCleanUp {
         // 4. EL NUKE FINAL (scene.children.removeAll(true) ocurre aquí)
 		if (clean.CleanCore) clean.CleanCore.execute(scene);
 
+        // 5. Limpieza profunda de Datos Globales y Memoria VRAM
 		if (funkin.play) {
 			funkin.play.currentScene = null;
 			funkin.play.health = null;
             
-            // Reiniciar caché para evitar memory leaks de texturas
-            if (funkin.play.preload && funkin.play.preload.characters) {
+            // Vaciar los metadatos de los personajes cargados de la canción anterior
+            if (funkin.play.characterLoader) {
+                funkin.play.characterLoader.charactersData = { opponents: [], players: [], spectator: [] };
+            }
+
+            // ARREGLO: Destruir físicamente las texturas de la memoria de Phaser
+            if (funkin.play.preload && funkin.play.preload.characters && funkin.play.preload.characters.loadedKeys) {
+                const keys = funkin.play.preload.characters.loadedKeys;
+                if (scene && scene.textures) {
+                    ['opponents', 'players', 'spectator'].forEach(group => {
+                        keys[group].forEach(charInfo => {
+                            if (charInfo.key && scene.textures.exists(charInfo.key)) {
+                                scene.textures.remove(charInfo.key);
+                            }
+                        });
+                    });
+                }
+                // Reiniciar el tracker de llaves
                 funkin.play.preload.characters.loadedKeys = { opponents: [], players: [], spectator: [] };
             }
 		}

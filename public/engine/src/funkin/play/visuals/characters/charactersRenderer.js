@@ -20,9 +20,16 @@ class CharacterRenderer {
         
         const stageData = funkin.play.stageManager?.get() || { scale: 1.0, stage: [{ player: { position: [770, 100] } }, { enemy: { position: [100, 100] } }, { playergf: { position: [400, 130] } }] };
 
-        scene.opponent = await this.buildCharacter(scene, loadedChars.opponents?.[0], chart?.get("metadata.characters.opponent") || "dad", "opponent", stageData);
-        scene.spectator = await this.buildCharacter(scene, loadedChars.spectator?.[0], chart?.get("metadata.characters.spectator") || "gf", "spectator", stageData);
-        scene.player = await this.buildCharacter(scene, loadedChars.players?.[0], chart?.get("metadata.characters.player") || "bf", "player", stageData);
+        // Helper para resolver el nombre por defecto en caso de fallback usando arrays
+        const getCharName = (role) => {
+            if (role === 'opponent') return chart?.get('characters.opponents')?.[0] || chart?.get('metadata.characters.opponents')?.[0] || chart?.get('metadata.characters.opponent') || "dad";
+            if (role === 'spectator') return chart?.get('characters.spectator')?.[0] || chart?.get('metadata.characters.spectator')?.[0] || chart?.get('metadata.characters.spectator') || "gf";
+            if (role === 'player') return chart?.get('characters.players')?.[0] || chart?.get('metadata.characters.players')?.[0] || chart?.get('metadata.characters.player') || "bf";
+        };
+
+        scene.opponent = await this.buildCharacter(scene, loadedChars.opponents?.[0], getCharName('opponent'), "opponent", stageData);
+        scene.spectator = await this.buildCharacter(scene, loadedChars.spectator?.[0], getCharName('spectator'), "spectator", stageData);
+        scene.player = await this.buildCharacter(scene, loadedChars.players?.[0], getCharName('player'), "player", stageData);
 
         scene.activeCharacters = [scene.opponent, scene.spectator, scene.player].filter(c => c);
     }
@@ -169,21 +176,26 @@ class CharacterRenderer {
             const fullAnimKey = `${targetAssetKey}_${anim.anim}`;
             charSprite.animKeys.set(anim.anim, fullAnimKey); 
             
-            if (!scene.anims.exists(fullAnimKey)) {
-                const matched = frames.filter(n => n.startsWith(prefix) && /^[\s_\-a-zA-Z]*\d*$/.test(n.substring(prefix.length)))
-                                      .sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+            // 🚨 EL ARREGLO: Eliminar la animación global de Phaser si ya existe.
+            // Esto asegura que la animación se recree apuntando a la nueva textura cargada
+            // y no a la textura destruida del memory wipe de PlayCleanUp.js
+            if (scene.anims.exists(fullAnimKey)) {
+                scene.anims.remove(fullAnimKey);
+            }
 
-                const finalFrames = (anim.indices?.length > 0 ? anim.indices.map(i => matched[i]).filter(Boolean) : matched)
-                                      .map(f => ({ key: targetAssetKey, frame: f }));
+            const matched = frames.filter(n => n.startsWith(prefix) && /^[\s_\-a-zA-Z]*\d*$/.test(n.substring(prefix.length)))
+                                  .sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
 
-                if (finalFrames.length > 0) {
-                    scene.anims.create({ 
-                        key: fullAnimKey, 
-                        frames: finalFrames, 
-                        frameRate: anim.fps ?? 24, 
-                        repeat: anim.loop ? -1 : 0 
-                    });
-                }
+            const finalFrames = (anim.indices?.length > 0 ? anim.indices.map(i => matched[i]).filter(Boolean) : matched)
+                                  .map(f => ({ key: targetAssetKey, frame: f }));
+
+            if (finalFrames.length > 0) {
+                scene.anims.create({ 
+                    key: fullAnimKey, 
+                    frames: finalFrames, 
+                    frameRate: anim.fps ?? 24, 
+                    repeat: anim.loop ? -1 : 0 
+                });
             }
         });
     }

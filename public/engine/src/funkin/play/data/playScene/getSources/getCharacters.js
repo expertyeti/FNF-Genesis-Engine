@@ -17,50 +17,44 @@ class CharacterDataLoader {
             return null;
         }
 
-        let metadata = funkin.play.chart.get('metadata');
-        if (!metadata) return null;
-
-        // 1. PREVENCIÓN: Si el .jsonc se guardó como string en caché, lo parseamos a fuerza bruta
-        if (typeof metadata === 'string') {
-            try {
-                // Elimina los comentarios del formato JSONC para evitar errores de parseo
-                const cleanJson = metadata.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
-                metadata = JSON.parse(cleanJson);
-                console.log("[getCharacters] El metadata era un string. Parseado con éxito.");
-            } catch(e) {
-                console.error("[getCharacters] Falló el parseo forzado del JSONC:", e);
-            }
-        }
-
-        console.log("[getCharacters] Objeto metadata recuperado:", metadata);
+        // 1. Limpiamos los datos anteriores por si es un reinicio o cambio de canción
+        this.charactersData = { opponents: [], players: [], spectator: [] };
 
         let opponents = [];
         let players = [];
         let spectators = [];
 
-        // 2. BÚSQUEDA ROBUSTA DE LA ESTRUCTURA
-        if (metadata.base && metadata.base.characters) {
-            console.log("[getCharacters] -> Ruta detectada: metadata.base.characters");
-            opponents = metadata.base.characters.opponents || [];
-            players = metadata.base.characters.players || [];
-            spectators = metadata.base.characters.spectator || [];
-        } else if (metadata.characters) {
-            // Por si el objeto recuperado ya es la raíz 'base'
-            console.log("[getCharacters] -> Ruta detectada: metadata.characters directa");
-            opponents = metadata.characters.opponents || [];
-            players = metadata.characters.players || [];
-            spectators = metadata.characters.spectator || [];
-        } else {
-            console.log("[getCharacters] -> Ruta detectada: Fallback (Estructura antigua)");
-            opponents = metadata.opponents || [];
-            players = metadata.players || [];
-            spectators = metadata.spectator || [];
+        // 2. BÚSQUEDA ROBUSTA DE LA ESTRUCTURA (Soporta aplanamiento de dificultades)
+        const chart = funkin.play.chart;
+        if (chart && typeof chart.get === 'function') {
+            opponents = chart.get('characters.opponents') || 
+                        chart.get('metadata.characters.opponents') || 
+                        chart.get('base.characters.opponents') || [];
+                        
+            players = chart.get('characters.players') || 
+                      chart.get('metadata.characters.players') || 
+                      chart.get('base.characters.players') || [];
+                      
+            spectators = chart.get('characters.spectator') || 
+                         chart.get('characters.spectators') || 
+                         chart.get('metadata.characters.spectator') || 
+                         chart.get('base.characters.spectator') || [];
+        }
+
+        // Fallback por si el método get() falla (lee el objeto en bruto)
+        if (opponents.length === 0 && players.length === 0 && spectators.length === 0) {
+            let meta = chart?.metadata || chart?.base || chart;
+            if (meta?.characters) {
+                opponents = meta.characters.opponents || [];
+                players = meta.characters.players || [];
+                spectators = meta.characters.spectator || meta.characters.spectators || [];
+            }
         }
 
         console.log(`[getCharacters] Arrays listos para descargar -> Jugadores: [${players}], Oponentes: [${opponents}], Espectadores: [${spectators}]`);
 
         if (players.length === 0 && opponents.length === 0 && spectators.length === 0) {
-            console.warn("[getCharacters] ¡ALERTA! No se encontró a nadie en el JSON. Revisa el objeto impreso arriba.");
+            console.warn("[getCharacters] ¡ALERTA! No se encontró a nadie en el JSON. Revisa la estructura del Chart.");
         }
 
         try {
@@ -103,7 +97,6 @@ class CharacterDataLoader {
         try {
             const response = await fetch(url);
             if (!response.ok) {
-                // Si la consola imprime este mensaje, significa que el arreglo funciona, pero no encuentra el archivo .json de BF o PICO en la carpeta
                 console.warn(`[getCharacters] Error HTTP ${response.status}: No se encontró el archivo del personaje en ${url}`);
                 return null;
             }
