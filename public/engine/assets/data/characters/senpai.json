@@ -1,71 +1,56 @@
 {
-    "animations": [
-        {
-            "loop": false,
-            "offsets": [
-                0,
-                0
-            ],
-            "anim": "idle",
-            "fps": 24,
-            "name": "Senpai Idle instance 10",
-            "indices": []
-        },
-        {
-            "loop": false,
-            "offsets": [
-                6.6,
-                0
-            ],
-            "anim": "singLEFT",
-            "fps": 24,
-            "name": "SENPAI LEFT NOTE instance 10",
-            "indices": []
-        },
-        {
-            "loop": false,
-            "offsets": [
-                2.33,
-                0
-            ],
-            "anim": "singDOWN",
-            "fps": 24,
-            "name": "SENPAI DOWN NOTE instance 10",
-            "indices": []
-        },
-        {
-            "loop": false,
-            "offsets": [
-                0.83,
-                6.16
-            ],
-            "anim": "singUP",
-            "fps": 24,
-            "name": "SENPAI UP NOTE instance 10",
-            "indices": []
-        },
-        {
-            "loop": false,
-            "offsets": [
-                0,
-                0
-            ],
-            "anim": "singRIGHT",
-            "fps": 24,
-            "name": "SENPAI RIGHT NOTE instance 10",
-            "indices": []
-        }
-    ],
-    "flip_x": false,
-    "health": {
-        "id": "senpai",
-        "scale": 1,
-        "antialiasing": true,
-        "type": "legacy",
-        "offset": [
-            0,
-            0
-        ]
+  "animations": [
+    {
+      "loop": false,
+      "offsets": [0, 0],
+      "anim": "idle",
+      "fps": 24,
+      "name": "Senpai Idle instance 10",
+      "indices": []
     },
-    "image": "characters/senpai.webp"
+    {
+      "loop": false,
+      "offsets": [6.6, 0],
+      "anim": "singLEFT",
+      "fps": 24,
+      "name": "SENPAI LEFT NOTE instance 10",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [2.33, 0],
+      "anim": "singDOWN",
+      "fps": 24,
+      "name": "SENPAI DOWN NOTE instance 10",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [0.83, 6.16],
+      "anim": "singUP",
+      "fps": 24,
+      "name": "SENPAI UP NOTE instance 10",
+      "indices": []
+    },
+    {
+      "loop": false,
+      "offsets": [0, 0],
+      "anim": "singRIGHT",
+      "fps": 24,
+      "name": "SENPAI RIGHT NOTE instance 10",
+      "indices": []
+    }
+  ],
+  "flip_x": false,
+  "scale": 5,
+  "health": {
+    "id": "senpai",
+    "scale": 4,
+    "antialiasing": false,
+    "type": "legacy",
+    "offset": [0, 0]
+  },
+  "antialiasing": false,
+
+  "image": "characters/senpai.webp"
 }

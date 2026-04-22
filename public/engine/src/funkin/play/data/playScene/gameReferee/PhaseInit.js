@@ -4,8 +4,7 @@ funkin.play.data = funkin.play.data || {};
 funkin.play.data.referee = funkin.play.data.referee || {};
 
 /**
- * @class PhaseInit
- * @description Construye el entorno gráfico y de datos de la PlayScene.
+ * Construye el entorno gráfico y de datos de la PlayScene.
  */
 class PhaseInit {
     constructor(referee) {
@@ -14,198 +13,170 @@ class PhaseInit {
     }
 
     async enter() {
-        const scene = this.scene;
-        funkin.play.currentScene = scene;
+        funkin.play.currentScene = this.scene;
 
-        this._initDebuggers(scene);
-        this._initCameras(scene);
-        this._initSession(scene);
+        this._initDebuggers();
+        this._initCameras();
+        this._initSession();
 
-        const chartLoaded = await this._loadChartData(scene);
-        if (!chartLoaded) return;
+        if (!(await this._loadChartData())) return;
 
-        const stageName = funkin.play.chart.get("metadata.stage") || "stage";
-        await this._loadAssets(scene, stageName);
+        const stageName = funkin.play.chart?.get("metadata.stage") || "stage";
+        await this._loadAssets(stageName);
 
-        if (funkin.play.data.clean && funkin.play.data.clean.GPUWarming) {
-            await funkin.play.data.clean.GPUWarming.execute(scene);
-        }
+        await funkin.play.data.clean?.GPUWarming?.execute?.(this.scene);
 
-        await this._buildStageAndCharacters(scene, stageName);
-        this._buildNotesAndUI(scene);
-        this._initHealthSystem(scene);
+        await this._buildStageAndCharacters(stageName);
+        this._buildNotesAndUI();
+        this._initHealthSystem();
         this._setupConductor();
 
-        scene.isReady = true;
-        scene.lastBeat = 0;
+        this.scene.isReady = true;
+        this.scene.lastBeat = 0;
         this.referee.changePhase("countdown");
     }
 
-    _initDebuggers(scene) {
-        if (!funkin.playDebugging) return;
-        if (funkin.playDebugging.CameraDebugController) scene.cameraDebug = new funkin.playDebugging.CameraDebugController(scene);
-        if (funkin.playDebugging.SongDebugger) scene.songDebugger = new funkin.playDebugging.SongDebugger(scene);
+    _initDebuggers() {
+        const dbg = funkin.playDebugging;
+        if (dbg?.CameraDebugController) this.scene.cameraDebug = new dbg.CameraDebugController(this.scene);
+        if (dbg?.SongDebugger) this.scene.songDebugger = new dbg.SongDebugger(this.scene);
     }
 
-    _initCameras(scene) {
-        const cameras = funkin.play.data?.camera;
-        if (!cameras) return;
-        if (cameras.GameCamera) scene.gameCam = new cameras.GameCamera(scene);
-        if (cameras.UICamera) scene.uiCam = new cameras.UICamera(scene);
-        if (cameras.MainCamera) scene.mainCam = new cameras.MainCamera(scene);
+    _initCameras() {
+        const cams = funkin.play.data?.camera;
+        if (cams?.GameCamera) this.scene.gameCam = new cams.GameCamera(this.scene);
+        if (cams?.UICamera) this.scene.uiCam = new cams.UICamera(this.scene);
+        if (cams?.MainCamera) this.scene.mainCam = new cams.MainCamera(this.scene);
     }
 
-    _initSession(scene) {
-        if (!funkin.play.session) {
-            funkin.play.session = {
-                generateNewSession: () => { scene.fallbackSessionId = "session_" + Date.now(); return scene.fallbackSessionId; },
-                getKey: (originalKey) => `${scene.fallbackSessionId || "fallback"}_${originalKey}`,
-                setCustomData: () => {},
-                getCustomData: () => null,
-                clearCustomData: () => {},
-            };
-        }
+    _initSession() {
+        funkin.play.session = funkin.play.session || {
+            generateNewSession: () => (this.scene.fallbackSessionId = "session_" + Date.now()),
+            getKey: (k) => `${this.scene.fallbackSessionId || "fallback"}_${k}`,
+            setCustomData: () => {}, getCustomData: () => null, clearCustomData: () => {},
+        };
         funkin.play.session.generateNewSession();
     }
 
-    async _loadChartData(scene) {
-        if (!funkin.play.chart?.loadChart) {
-            funkin.play.chart = { loadChart: async () => false, get: () => null };
-        }
-
-        const success = await funkin.play.chart.loadChart(scene.playData);
+    async _loadChartData() {
+        funkin.play.chart = funkin.play.chart || { loadChart: async () => false, get: () => null };
+        const success = await funkin.play.chart.loadChart(this.scene.playData);
+        
         if (!success) {
-            const sourceScene = scene.playData?.sourceScene || "MainMenuScene";
-            scene.scene.start(sourceScene);
+            this.scene.scene.start(this.scene.playData?.sourceScene || "MainMenuScene");
             return false;
         }
 
-        if (funkin.play.characterLoader?.loadCharacters) await funkin.play.characterLoader.loadCharacters();
+        await funkin.play.characterLoader?.loadCharacters?.();
         return true;
     }
 
-    async _loadAssets(scene, stageName) {
-        if (funkin.play.stageManager) await funkin.play.stageManager.loadStage(stageName);
+    async _loadAssets(stageName) {
+        await funkin.play.stageManager?.loadStage?.(stageName);
 
-        const keyCount = funkin.play.chart.get("metadata.mania") || 4;
-        const notesAPI = funkin.play.visuals?.arrows || {};
+        const keys = funkin.play.chart?.get("metadata.mania") ?? 4;
+        const notesAPI = funkin.play.visuals?.arrows?.notes;
+        if (notesAPI?.NoteDirectionManager) this.scene.noteDirectionManager = new notesAPI.NoteDirectionManager(keys);
+
+        const SkinsClass = funkin.play.visuals?.skins?.PlayUISkins;
+        funkin.play.uiSkins = funkin.play.uiSkins || (SkinsClass ? new SkinsClass() : null);
         
-        if (notesAPI.notes?.NoteDirectionManager) {
-            scene.noteDirectionManager = new notesAPI.notes.NoteDirectionManager(keyCount);
-        }
-
-        if (!funkin.play.uiSkins?.loadSkinData) {
-            const SkinsClass = funkin.play.visuals?.skins?.PlayUISkins;
-            funkin.play.uiSkins = SkinsClass ? new SkinsClass() : {
-                loadSkinData: async () => {}, preloadSkinAssets: async () => {}, getAssetKey: (k) => k, get: () => null
-            };
-        }
-
-        await funkin.play.uiSkins.loadSkinData();
-
-        if (window.funkin.playPreload?.preloadAudio) await window.funkin.playPreload.preloadAudio(scene, scene.playData.actuallyPlaying);
-        if (funkin.play.preload?.characters) funkin.play.preload.characters.preload(scene);
-        if (funkin.play.PreloadStage) await funkin.play.PreloadStage.preload(scene, stageName);
-        
-        await funkin.play.uiSkins.preloadSkinAssets(scene);
+        await funkin.play.uiSkins?.loadSkinData?.();
+        await window.funkin.playPreload?.preloadAudio?.(this.scene, this.scene.playData?.actuallyPlaying);
+        funkin.play.preload?.characters?.preload?.(this.scene);
+        await funkin.play.PreloadStage?.preload?.(this.scene, stageName);
+        await funkin.play.uiSkins?.preloadSkinAssets?.(this.scene);
 
         await new Promise((resolve) => {
-            if (scene.load.totalToLoad === 0 && !scene.load.isLoading()) resolve();
+            if (this.scene.load.totalToLoad === 0 && !this.scene.load.isLoading()) resolve();
             else {
-                scene.load.once("complete", resolve);
-                if (!scene.load.isLoading()) scene.load.start();
+                this.scene.load.once("complete", resolve);
+                if (!this.scene.load.isLoading()) this.scene.load.start();
             }
         });
     }
 
-    async _buildStageAndCharacters(scene, stageName) {
-        const stage = funkin.play.visuals?.stage || {};
-        if (stage.PlayListSprites) funkin.play.playListSprites = new stage.PlayListSprites(scene);
-        if (stage.CreateBG) stage.CreateBG.execute(scene, stageName);
-        if (stage.CreateImages) stage.CreateImages.execute(scene, stageName);
-        if (stage.CreateSprites) stage.CreateSprites.execute(scene, stageName);
+    async _buildStageAndCharacters(stageName) {
+        const stage = funkin.play.visuals?.stage;
+        if (stage?.PlayListSprites) funkin.play.playListSprites = new stage.PlayListSprites(this.scene);
+        stage?.CreateBG?.execute?.(this.scene, stageName);
+        stage?.CreateImages?.execute?.(this.scene, stageName);
+        stage?.CreateSprites?.execute?.(this.scene, stageName);
 
-        const charsManager = funkin.play.visuals?.characters?.charactersManager;
-        if (charsManager && typeof charsManager.execute === 'function') {
-            await charsManager.execute(scene, stageName);
-        }
+        await funkin.play.visuals?.characters?.charactersManager?.execute?.(this.scene, stageName);
 
         const LogicClass = funkin.play.visuals?.characters?.CharacterLogic || funkin.play.visuals?.characters?.AnimateCharacters;
-        if (LogicClass) {
-            scene.animateCharacters = new LogicClass(scene);
-        }
+        if (LogicClass) this.scene.animateCharacters = new LogicClass(this.scene);
     }
 
-    _buildNotesAndUI(scene) {
-        const notesAPI = funkin.play.visuals?.arrows || {};
-        const strumAPI = notesAPI.strumelines || notesAPI.strumlines || {};
-        
-        if (notesAPI.ArrowsSpawner?.clearExisting) notesAPI.ArrowsSpawner.clearExisting(scene);
+    _buildNotesAndUI() {
+        const arrows = funkin.play.visuals?.arrows;
+        const strumAPI = arrows?.strumelines || arrows?.strumlines;
+        const notesAPI = arrows?.notes;
+        const ui = funkin.play.visuals?.ui;
 
-        if (strumAPI.Strumlines) scene.strumlines = new strumAPI.Strumlines(scene);
-        if (notesAPI.notes?.SustainNotesManager && scene.strumlines) scene.sustainNotesManager = new notesAPI.notes.SustainNotesManager(scene, scene.strumlines);
-        if (notesAPI.notes?.NotesManager && scene.strumlines) scene.notesManager = new notesAPI.notes.NotesManager(scene, scene.strumlines);
+        arrows?.ArrowsSpawner?.clearExisting?.(this.scene);
 
-        if (notesAPI.ArrowsSpawner) {
-            if (scene.strumlines) notesAPI.ArrowsSpawner.spawnStrumlines(scene, scene.strumlines);
-            if (scene.notesManager) notesAPI.ArrowsSpawner.spawnChartNotes(scene, scene.notesManager);
+        if (strumAPI?.Strumlines) this.scene.strumlines = new strumAPI.Strumlines(this.scene);
+        if (notesAPI?.SustainNotesManager && this.scene.strumlines) this.scene.sustainNotesManager = new notesAPI.SustainNotesManager(this.scene, this.scene.strumlines);
+        if (notesAPI?.NotesManager && this.scene.strumlines) this.scene.notesManager = new notesAPI.NotesManager(this.scene, this.scene.strumlines);
+
+        if (arrows?.ArrowsSpawner) {
+            if (this.scene.strumlines) arrows.ArrowsSpawner.spawnStrumlines(this.scene, this.scene.strumlines);
+            if (this.scene.notesManager) arrows.ArrowsSpawner.spawnChartNotes(this.scene, this.scene.notesManager);
         }
 
-        if (funkin.play.data.clean?.AntiLagSystem) scene.antiLag = new funkin.play.data.clean.AntiLagSystem(scene);
+        if (funkin.play.data?.clean?.AntiLagSystem) this.scene.antiLag = new funkin.play.data.clean.AntiLagSystem(this.scene);
 
-        const ui = funkin.play.visuals?.ui || {};
-        if (ui.PlayerStatics) scene.playerStatics = new ui.PlayerStatics();
-        if (ui.JudgmentPopUpManager) scene.judgmentPopUpManager = new ui.JudgmentPopUpManager(scene);
-        if (ui.ComboPopUpManager) scene.comboPopUpManager = new ui.ComboPopUpManager(scene);
+        if (ui?.PlayerStatics) this.scene.playerStatics = new ui.PlayerStatics();
+        if (ui?.JudgmentPopUpManager) this.scene.judgmentPopUpManager = new ui.JudgmentPopUpManager(this.scene);
+        if (ui?.ComboPopUpManager) this.scene.comboPopUpManager = new ui.ComboPopUpManager(this.scene);
         
-        if (notesAPI.notes?.NoteSplashesManager) scene.noteSplashesManager = new notesAPI.notes.NoteSplashesManager(scene);
-        if (notesAPI.notes?.HoldCoversManager) scene.holdCoversManager = new notesAPI.notes.HoldCoversManager(scene);
+        if (notesAPI?.NoteSplashesManager) this.scene.noteSplashesManager = new notesAPI.NoteSplashesManager(this.scene);
+        if (notesAPI?.HoldCoversManager) this.scene.holdCoversManager = new notesAPI.HoldCoversManager(this.scene);
         
-        if (funkin.play.input?.PlayInput) scene.inputHandler = new funkin.play.input.PlayInput(scene);
+        if (funkin.play.input?.PlayInput) this.scene.inputHandler = new funkin.play.input.PlayInput(this.scene);
         
-        if (ui.HealthBar) scene.healthBar = new ui.HealthBar(scene);
-        if (ui.ScoreText) scene.scoreText = new ui.ScoreText(scene);
-        if (ui.BotplayText) scene.botplayText = new ui.BotplayText(scene);
-        if (ui.CountDown) scene.countDown = new ui.CountDown(scene);
+        if (ui?.HealthBar) this.scene.healthBar = new ui.HealthBar(this.scene);
+        if (ui?.ScoreText) this.scene.scoreText = new ui.ScoreText(this.scene);
+        if (ui?.BotplayText) this.scene.botplayText = new ui.BotplayText(this.scene);
+        if (ui?.CountDown) this.scene.countDown = new ui.CountDown(this.scene);
 
-        if (funkin.play.data.song?.PlaySongPlaylist) scene.songPlaylist = new funkin.play.data.song.PlaySongPlaylist(scene);
+        if (funkin.play.data?.song?.PlaySongPlaylist) this.scene.songPlaylist = new funkin.play.data.song.PlaySongPlaylist(this.scene);
+
+        // SEÑAL VITAL: Obliga a todas las notas, strumlines y UI a aplicarse la skin correcta.
+        this.scene.events?.emit("ui_skin_changed");
     }
 
-    _initHealthSystem(scene) {
+    _initHealthSystem() {
         funkin.play.health = {
-            health: 1.0,
-            healthLerp: 1.0,
-            add: function (val) { this.health = Math.min(2.0, this.health + val); },
-            subtract: function (val) { this.health = Math.max(0.0, this.health - val); },
-            update: function (time, delta) {
+            health: 1.0, healthLerp: 1.0,
+            add: function(val) { this.health = Math.min(2.0, this.health + val); },
+            subtract: function(val) { this.health = Math.max(0.0, this.health - val); },
+            update: function(time, delta) {
                 if (window.autoplay) this.health = 2.0;
-                const lerpFactor = Math.min(1, (delta / 1000) * 10.5);
-                this.healthLerp = Phaser.Math.Linear(this.healthLerp, this.health, lerpFactor);
+                this.healthLerp = Phaser.Math.Linear(this.healthLerp, this.health, Math.min(1, (delta / 1000) * 10.5));
             },
         };
 
-        scene.events.on("noteHit", (data) => {
-            if (data.isPlayer && !window.autoplay) {
-                let bonus = data.judgment === "good" ? 0.02 : (data.judgment === "bad" ? 0.0 : (data.judgment === "shit" ? -0.05 : 0.04));
-                funkin.play.health.add(bonus);
+        this.scene.events?.on("noteHit", (d) => !window.autoplay && d.isPlayer && funkin.play.health.add(d.judgment === "good" ? 0.02 : (d.judgment === "shit" ? -0.05 : 0.04)));
+        this.scene.events?.on("noteMiss", (d) => {
+            if (window.autoplay || !d.isPlayer) return;
+            funkin.play.health.subtract(0.0475);
+            
+            // CORRECCIÓN: Validar que el audio exista en caché antes de reproducir
+            const missKey = `missnote${Phaser.Math.Between(1, 3)}`;
+            if (this.scene.cache.audio.exists(missKey)) {
+                this.scene.sound?.play(missKey, { volume: Phaser.Math.FloatBetween(0.7, 0.9) });
             }
-        });
-
-        scene.events.on("noteMiss", (data) => {
-            if (!window.autoplay && data.isPlayer) {
-                funkin.play.health.subtract(0.0475);
-                const missSound = "missnote" + Phaser.Math.Between(1, 3);
-                if (scene.cache.audio.exists(missSound)) scene.sound.play(missSound, { volume: Phaser.Math.FloatBetween(0.7, 0.9) });
-                
-                if (scene.songPlaylist?.vocalManager) scene.songPlaylist.vocalManager.handleMiss(data);
-            }
+            
+            this.scene.songPlaylist?.vocalManager?.handleMiss?.(d);
         });
     }
 
     _setupConductor() {
-        const bpm = funkin.play.chart ? funkin.play.chart.get("metadata.audio.bpm") || 120 : 120;
         if (window.funkin.conductor) {
-            window.funkin.conductor.bpm = bpm;
+            window.funkin.conductor.bpm = funkin.play.chart?.get("metadata.audio.bpm") ?? 120;
             window.funkin.conductor.songPosition = 0;
         }
     }
