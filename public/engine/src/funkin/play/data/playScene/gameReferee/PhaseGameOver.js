@@ -1,7 +1,8 @@
 /**
  * @file PhaseGameOver.js
  * Fase de fracaso definitiva. Desactiva cámaras de UI, destruye strumlines, 
- * verifica agresivamente la existencia de animaciones y aplica el Fallback de BF si es necesario.
+ * verifica agresivamente la existencia de animaciones, aplica el Fallback de BF
+ * y corrige el "flash" del spritesheet completo.
  */
 
 window.funkin = window.funkin || {};
@@ -123,6 +124,9 @@ class PhaseGameOver {
             const fallbackKey = 'characters/BOYFRIEND';
 
             if (this.scene.textures.exists(fallbackKey)) {
+                // FIX: Ocultar para evitar el flash de 1 frame del spritesheet
+                this.controlledChar.setVisible(false);
+
                 // Forzar textura, restaurar escala original y color
                 this.controlledChar.setTexture(fallbackKey);
                 this.controlledChar.setScale(1.0); // Evitar que herede escalas locas de otros personajes
@@ -168,6 +172,24 @@ class PhaseGameOver {
                 ensureAnim(this.firstDeathData);
                 ensureAnim(this.deathLoopData);
                 ensureAnim(this.deathConfirmData);
+
+                // FIX: Asignar el primer frame exacto de la muerte ANTES de que el hilo se pause
+                const tex = this.scene.textures.get(fallbackKey);
+                if (tex && tex.frames) {
+                    const framesList = Object.keys(tex.frames)
+                        .filter(f => f.startsWith(this.firstDeathData.name))
+                        .sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+                        
+                    if (framesList.length > 0) {
+                        this.controlledChar.setFrame(framesList[0]);
+                        // Aplicar los offsets del primer frame para que no brinque
+                        const off = this.firstDeathData.offsets || [0,0];
+                        this.controlledChar.setPosition(this.controlledChar.baseX - off[0], this.controlledChar.baseY - off[1]);
+                    }
+                }
+
+                // Ahora sí podemos mostrarlo con seguridad
+                this.controlledChar.setVisible(true);
             } else {
                 console.error("El Fallback de BOYFRIEND no está en la caché.");
             }
@@ -180,6 +202,8 @@ class PhaseGameOver {
             this.scene.anims.get(loopKey).repeat = -1;
         }
 
+        // Al hacer await aquí, el juego hace un render. 
+        // Como ya pusimos el primer frame explícitamente, ya no habrá flash.
         await Promise.all([
             this.loadAudio(this.firstDeathData),
             this.loadAudio(this.deathLoopData),
