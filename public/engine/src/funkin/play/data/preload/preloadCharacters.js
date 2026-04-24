@@ -2,6 +2,7 @@
  * @file preloadCharacters.js
  * Optimizado: Detecta extensiones personalizadas (.webp, .png) tanto en la imagen principal 
  * como en las animaciones. Usa .png por defecto. Se limpia al iniciar nueva carga.
+ * Modificado: Precarga de Boyfriend en formato .webp para el Fallback de Muerte.
  */
 class PreloadCharacters {
     static loadedKeys = { opponents: [], players: [], spectator: [] };
@@ -9,6 +10,18 @@ class PreloadCharacters {
     static async preload(scene) {
         // SIEMPRE reiniciar las llaves para evitar acumular personajes de canciones pasadas
         this.loadedKeys = { opponents: [], players: [], spectator: [] };
+
+        const baseUrl = window.BASE_URL || "";
+
+        // --- CORRECCIÓN: PRECARGA OBLIGATORIA DE BF EN .WEBP PARA EL FALLBACK ---
+        const fallbackKey = 'characters/BOYFRIEND';
+        const fallbackExt = '.webp'; // ¡Aquí estaba el error! Ahora usa .webp
+
+        if (!scene.textures.exists(fallbackKey)) {
+            scene.load.image(fallbackKey, `${baseUrl}assets/images/${fallbackKey}${fallbackExt}`);
+            scene.load.text(`${fallbackKey}_xml`, `${baseUrl}assets/images/${fallbackKey}.xml`);
+        }
+        // -----------------------------------------------------------------------
 
         if (funkin.play.options?.simpleMode) {
             return;
@@ -19,8 +32,7 @@ class PreloadCharacters {
         }
 
         const charsData = funkin.play.characterLoader.charactersData;
-        const baseUrl = window.BASE_URL || "";
-
+        
         const loadGroup = (group, groupName) => {
             if (!group) return;
 
@@ -28,7 +40,7 @@ class PreloadCharacters {
                 const char = group[index];
                 if (!char?.image) continue;
 
-                // NUEVO: Detectar extensión de la imagen principal
+                // Detectar extensión desde el JSON (ej. "characters/BOYFRIEND.webp")
                 let rawImage = char.image;
                 let mainExtIndex = rawImage.lastIndexOf('.');
                 let mainKey = rawImage;
@@ -46,7 +58,6 @@ class PreloadCharacters {
                 const iconKey = `icon_${iconId}`;
                 const iconPath = `${baseUrl}assets/images/icons/${iconId}.png`;
 
-                // Encolar textura principal del personaje
                 if (!scene.textures.exists(mainKey)) {
                     scene.load.image(mainKey, imagePath);
                     scene.load.text(`${mainKey}_xml`, xmlPath);
@@ -56,13 +67,12 @@ class PreloadCharacters {
                     scene.load.image(iconKey, iconPath);
                 }
 
-                // Buscar animaciones propias (optimizadas) con rutas personalizadas
                 if (char.animations && Array.isArray(char.animations)) {
                     char.animations.forEach(anim => {
                         if (anim.path) {
                             let extIndex = anim.path.lastIndexOf('.');
                             let customKey = anim.path;
-                            let ext = '.png'; // POR DEFECTO
+                            let ext = '.png'; 
                             
                             if (extIndex !== -1 && (anim.path.length - extIndex <= 5)) {
                                 customKey = anim.path.substring(0, extIndex);

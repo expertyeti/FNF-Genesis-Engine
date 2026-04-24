@@ -210,6 +210,14 @@
       "fps": 24,
       "loop": true,
       "offsets": [80, 10]
+    },
+    {
+      "loop": false,
+      "offsets": [0, 0],
+      "anim": "special4",
+      "fps": 24,
+      "name": "boyfriend dodge",
+      "indices": []
     }
   ],
   "flip_x": true,

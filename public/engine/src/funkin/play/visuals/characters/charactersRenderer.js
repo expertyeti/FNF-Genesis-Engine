@@ -1,12 +1,11 @@
+/**
+ * @file charactersRenderer.js
+ */
 window.funkin = window.funkin || {};
 funkin.play = funkin.play || {};
 funkin.play.visuals = funkin.play.visuals || {};
 funkin.play.visuals.characters = funkin.play.visuals.characters || {};
 
-/**
- * Constructor de renders visuales para personajes.
- * Resuelve XMLs, animaciones (incluyendo FPS específicos y paths custom), offsets y métricas posicionales de escena.
- */
 class CharacterRenderer {
     static async execute(scene, stageName) {
         if (scene.charactersRendered) return;
@@ -20,7 +19,6 @@ class CharacterRenderer {
         
         const stageData = funkin.play.stageManager?.get() || { scale: 1.0, stage: [{ player: { position: [770, 100] } }, { enemy: { position: [100, 100] } }, { playergf: { position: [400, 130] } }] };
 
-        // Helper para resolver el nombre por defecto en caso de fallback usando arrays
         const getCharName = (role) => {
             if (role === 'opponent') return chart?.get('characters.opponents')?.[0] || chart?.get('metadata.characters.opponents')?.[0] || chart?.get('metadata.characters.opponent') || "dad";
             if (role === 'spectator') return chart?.get('characters.spectator')?.[0] || chart?.get('metadata.characters.spectator')?.[0] || chart?.get('metadata.characters.spectator') || "gf";
@@ -60,11 +58,20 @@ class CharacterRenderer {
         if (missingKeys.length > 0) {
             await new Promise(resolve => {
                 let loadedCount = 0;
+                let targetCount = missingKeys.length * 2; // FIX: Esperar imagen y texto por separado
+                
+                const check = () => { if (++loadedCount >= targetCount) resolve(); };
+
                 missingKeys.forEach(key => {
-                    scene.load.atlas(key, textureMap.get(key).imgPath, textureMap.get(key).xmlPath);
-                    const check = () => { if (++loadedCount >= missingKeys.length) resolve(); };
-                    scene.load.once(`filecomplete-atlas-${key}`, check);
-                    scene.load.once('loaderror', (f) => { if (f.key === key) check(); });
+                    // FIX DEL ERROR: Cargar imagen y XML(texto) en vez de atlas() que esperaba JSON
+                    scene.load.image(key, textureMap.get(key).imgPath);
+                    scene.load.text(`${key}_xml`, textureMap.get(key).xmlPath);
+                    
+                    scene.load.once(`filecomplete-image-${key}`, check);
+                    scene.load.once(`filecomplete-text-${key}_xml`, check);
+                    scene.load.once('loaderror', (f) => { 
+                        if (f.key === key || f.key === `${key}_xml`) check(); 
+                    });
                 });
                 scene.load.start();
             });
@@ -176,12 +183,7 @@ class CharacterRenderer {
             const fullAnimKey = `${targetAssetKey}_${anim.anim}`;
             charSprite.animKeys.set(anim.anim, fullAnimKey); 
             
-            // 🚨 EL ARREGLO: Eliminar la animación global de Phaser si ya existe.
-            // Esto asegura que la animación se recree apuntando a la nueva textura cargada
-            // y no a la textura destruida del memory wipe de PlayCleanUp.js
-            if (scene.anims.exists(fullAnimKey)) {
-                scene.anims.remove(fullAnimKey);
-            }
+            if (scene.anims.exists(fullAnimKey)) scene.anims.remove(fullAnimKey);
 
             const matched = frames.filter(n => n.startsWith(prefix) && /^[\s_\-a-zA-Z]*\d*$/.test(n.substring(prefix.length)))
                                   .sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
@@ -190,12 +192,7 @@ class CharacterRenderer {
                                   .map(f => ({ key: targetAssetKey, frame: f }));
 
             if (finalFrames.length > 0) {
-                scene.anims.create({ 
-                    key: fullAnimKey, 
-                    frames: finalFrames, 
-                    frameRate: anim.fps ?? 24, 
-                    repeat: anim.loop ? -1 : 0 
-                });
+                scene.anims.create({ key: fullAnimKey, frames: finalFrames, frameRate: anim.fps ?? 24, repeat: anim.loop ? -1 : 0 });
             }
         });
     }
@@ -221,12 +218,10 @@ class CharacterRenderer {
 
     static playAnim(charSprite, animName, forced = false) {
         if (!charSprite?.active) return;
-        
         const fullAnimKey = charSprite.animKeys?.get(animName) || (charSprite.scene.anims.exists(`${charSprite.texture.key}_${animName}`) ? `${charSprite.texture.key}_${animName}` : null);
         
         if (fullAnimKey && charSprite.scene.anims.exists(fullAnimKey)) {
             charSprite.play(fullAnimKey, !forced);
-            
             const offset = charSprite.animOffsets?.get(animName) || [0, 0];
             charSprite.setPosition(charSprite.baseX - offset[0], charSprite.baseY - offset[1]);
             charSprite.currentAnim = animName;
