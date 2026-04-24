@@ -36,7 +36,7 @@ class SoundTrayVisual {
 
   init(scene) {
     if (this.scene) return; // Evitar inicialización doble
-    console.log("[SoundTrayVisual] Initializing visual plugin...");
+    console.log(" Initializing visual plugin...");
     this.scene = scene;
 
     this.loadAssetsDynamically();

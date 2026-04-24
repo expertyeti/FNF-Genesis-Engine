@@ -1,17 +1,20 @@
+/**
+ * @file PhaseInit.js
+ * Construye el entorno gráfico y de datos de la PlayScene.
+ */
+
 window.funkin = window.funkin || {};
 funkin.play = funkin.play || {};
 funkin.play.data = funkin.play.data || {};
 funkin.play.data.referee = funkin.play.data.referee || {};
 
-/**
- * Construye el entorno gráfico y de datos de la PlayScene.
- */
 class PhaseInit {
     constructor(referee) {
         this.referee = referee;
         this.scene = referee.scene;
     }
 
+    // BUSCA EL MÉTODO enter() y reemplázalo por esto:
     async enter() {
         funkin.play.currentScene = this.scene;
 
@@ -33,6 +36,20 @@ class PhaseInit {
 
         this.scene.isReady = true;
         this.scene.lastBeat = 0;
+
+        // --- SISTEMAS DE MODDING Y EVENTOS ---
+        // 1. Iniciamos el inyector de dependencias global
+        if (funkin.play.scripts?.api?.APIManager) {
+            this.scene.apiManager = new funkin.play.scripts.api.APIManager(this.scene);
+        }
+        
+        // 2. Iniciamos el compilador de scripts y descargamos los archivos del events.json
+        if (funkin.play.scripts?.EventManager) {
+            this.scene.eventManager = new funkin.play.scripts.EventManager(this.scene);
+            await this.scene.eventManager.preloadEvents(); // Precarga todo antes del contador
+        }
+        // --------------------------------------
+
         this.referee.changePhase("countdown");
     }
 
@@ -144,7 +161,6 @@ class PhaseInit {
 
         if (funkin.play.data?.song?.PlaySongPlaylist) this.scene.songPlaylist = new funkin.play.data.song.PlaySongPlaylist(this.scene);
 
-        // SEÑAL VITAL: Obliga a todas las notas, strumlines y UI a aplicarse la skin correcta.
         this.scene.events?.emit("ui_skin_changed");
     }
 
@@ -164,7 +180,6 @@ class PhaseInit {
             if (window.autoplay || !d.isPlayer) return;
             funkin.play.health.subtract(0.0475);
             
-            // CORRECCIÓN: Validar que el audio exista en caché antes de reproducir
             const missKey = `missnote${Phaser.Math.Between(1, 3)}`;
             if (this.scene.cache.audio.exists(missKey)) {
                 this.scene.sound?.play(missKey, { volume: Phaser.Math.FloatBetween(0.7, 0.9) });

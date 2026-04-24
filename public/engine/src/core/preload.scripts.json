@@ -35,6 +35,7 @@
   "src/funkin/ui/mainMenu/MenuInputHandler.js",
   "src/funkin/ui/mainMenu/MainMenuSelection.js",
   "src/funkin/ui/mainMenu/MainMenuScene.js",
+
   "src/funkin/ui/storyMode/StoryModeData.js",
   "src/funkin/ui/storyMode/StoryModeInput.js",
   "src/funkin/ui/storyMode/StoryModeTitles.js",
@@ -44,13 +45,20 @@
   "src/funkin/ui/storyMode/StoryModeCharacterProps.js",
   "src/funkin/ui/storyMode/StoryModeUpBar.js",
   "src/funkin/ui/storyMode/StoryModeScene.js",
+
   "src/funkin/ui/freeplay/FreePlayBG.js",
   "src/funkin/ui/freeplay/FreePlayDiff.js",
   "src/funkin/ui/freeplay/FreePlayInput.js",
   "src/funkin/ui/freeplay/FreePlaySongs.js",
   "src/funkin/ui/freeplay/FreePlayScene.js",
+
+  "src/funkin/play/scripts/API/APIManager.js",
+  "src/funkin/play/scripts/API/camera.js",
+  "src/funkin/play/scripts/events.js",
+
   "src/funkin/play/visuals/UI/judgment/PBOTConstants.js",
   "src/funkin/play/visuals/UI/judgment/playerStatics.js",
+
   "src/funkin/play/data/preload/sessionID.js",
   "src/funkin/play/data/playScene/anti-lag.js",
   "src/funkin/play/data/playScene/GPUWarming.js",

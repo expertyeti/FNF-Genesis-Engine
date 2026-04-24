@@ -1,23 +1,16 @@
 {
   "songName": "Bopeebo",
+  "events": true,
   "base": {
     "stage": "mainStage",
     "scrollSpeed": 1,
     "lanes": 4,
     "characters": {
-      "players": [
-        "bf"
-      ],
-      "opponents": [
-        "dad"
-      ],
-      "spectator": [
-        "gf"
-      ]
+      "players": ["bf"],
+      "opponents": ["dad"],
+      "spectator": ["gf"]
     },
-    "credits": [
-      "Artist: Kawai Sprite"
-    ],
+    "credits": ["Artist: Kawai Sprite"],
     "skins": {
       "ui": "funkin",
       "pause": "funkin"
@@ -56,6 +49,7 @@
     },
     "erect": {
       "scrollSpeed": 2.2,
+      "events": true,
       "stage": "mainStageErect",
       "audio": {
         "instrumental": {
@@ -78,6 +72,7 @@
     },
     "nightmare": {
       "scrollSpeed": 2.2,
+      "events": true,
       "stage": "mainStageErect",
       "audio": {
         "instrumental": {

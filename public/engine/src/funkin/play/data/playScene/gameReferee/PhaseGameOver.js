@@ -1,8 +1,7 @@
 /**
  * @file PhaseGameOver.js
- * Fase de fracaso definitiva. Desactiva cámaras de UI, destruye strumlines, 
- * verifica agresivamente la existencia de animaciones, aplica el Fallback de BF
- * y corrige el "flash" del spritesheet completo.
+ * Fase de fracaso definitiva. Desactiva cámaras de UI, detiene managers de entrada,
+ * limpia APIs y maneja la secuencia de muerte (con fallback seguro a Boyfriend).
  */
 
 window.funkin = window.funkin || {};
@@ -28,7 +27,7 @@ class PhaseGameOver {
         this.isConfirming = false;
         this.isExiting = false;
         
-        // 1. Detener música y sonidos globales
+        // 1. Detener música y sonidos
         if (this.scene.songPlaylist && typeof this.scene.songPlaylist.stopAll === 'function') {
             this.scene.songPlaylist.stopAll();
         }
@@ -36,7 +35,7 @@ class PhaseGameOver {
             this.scene.sound.stopAll();
         }
 
-        // 2. Seleccionar personaje controlado
+        // 2. Determinar personaje y anular dance
         const playAsOpponent = funkin.play.options?.playAsOpponent === true;
         this.controlledChar = playAsOpponent ? this.scene.opponent : this.scene.player;
 
@@ -66,29 +65,31 @@ class PhaseGameOver {
         this.scene.events.off("noteMiss");
         this.scene.events.off("sustainActive");
 
-        // 5. PURGA VISUAL: Ocultar todo excepto el jugador
+        // 5. PURGA VISUAL: Ocultar todo lo que no sea el jugador muerto
         this.scene.children.list.forEach(child => {
             if (child !== this.controlledChar && child.type !== 'Camera') {
                 if (typeof child.setVisible === 'function') child.setVisible(false);
             }
         });
 
-        // 6. ENFOCAR CÁMARA
+        // 6. CONFIGURACIÓN DE CÁMARA JUEGO
         const targetCam = this.scene.gameCam?.cameras?.main || this.scene.cameras.main;
         targetCam.setBackgroundColor('#000000');
+
         const midX = this.controlledChar.x + (this.controlledChar.displayWidth / 2);
         const midY = this.controlledChar.y + (this.controlledChar.displayHeight / 2);
         const camOffsetX = this.controlledChar.cameraPosition?.[0] || 0;
         const camOffsetY = this.controlledChar.cameraPosition?.[1] || 0;
+        
         targetCam.pan(midX + camOffsetX, midY + camOffsetY, 1200, 'Expo.easeOut');
         targetCam.zoomTo(0.95, 1200, 'Expo.easeOut');
 
-        // Detener cualquier animación actual para evitar que se quede congelado
+        // Impedir animaciones parásitas
         if (this.controlledChar.stop) this.controlledChar.stop();
         this.controlledChar.isDead = true;
         this.controlledChar.dance = () => {}; 
 
-        // 7. EXTRACCIÓN DE DATOS Y VERIFICACIÓN AGRESIVA
+        // 7. EXTRACCIÓN DE DATOS Y FALLBACK
         const charsData = funkin.play.characterLoader?.charactersData;
         const rawCharData = playAsOpponent ? charsData?.opponents?.[0] : charsData?.players?.[0];
         const anims = rawCharData?.animations || [];
@@ -97,7 +98,6 @@ class PhaseGameOver {
         this.deathLoopData = anims.find(a => a.anim === "deathLoop");
         this.deathConfirmData = anims.find(a => a.anim === "deathConfirm");
 
-        // Verificamos si las animaciones REALMENTE existen en la memoria de Phaser
         let needsFallback = false;
         
         if (!this.firstDeathData || !this.deathLoopData || !this.deathConfirmData) {
@@ -107,16 +107,12 @@ class PhaseGameOver {
                 const key = this.controlledChar.animKeys?.get(animName);
                 return key && this.scene.anims.exists(key);
             };
-            // Si el JSON dice que las tiene, pero Phaser no pudo crearlas (frames rotos o faltantes en XML)
             if (!checkAnimExists("firstDeath") || !checkAnimExists("deathLoop") || !checkAnimExists("deathConfirm")) {
                 needsFallback = true;
             }
         }
 
-        // --- INYECCIÓN DEL FALLBACK ---
         if (needsFallback) {
-            console.warn("Animaciones de muerte rotas o ausentes. Forzando Fallback de Boyfriend.");
-            
             this.firstDeathData = { loop: false, offsets: [-37, 11], anim: "firstDeath", fps: 24, name: "BF dies", sound: { path: "bf/fnf_loss_sfx.ogg", volume: 0.5, loop: false }, indices: [] };
             this.deathLoopData = { loop: false, offsets: [-37, 5], anim: "deathLoop", fps: 24, name: "BF Dead Loop", sound: { path: "bf/gameOver.ogg", volume: 0.5, loop: true }, indices: [] };
             this.deathConfirmData = { loop: false, offsets: [-37, 69], anim: "deathConfirm", fps: 24, name: "BF Dead confirm", sound: { path: "bf/gameOverEnd.ogg", volume: 0.5, loop: false }, indices: [] };
@@ -124,20 +120,16 @@ class PhaseGameOver {
             const fallbackKey = 'characters/BOYFRIEND';
 
             if (this.scene.textures.exists(fallbackKey)) {
-                // FIX: Ocultar para evitar el flash de 1 frame del spritesheet
-                this.controlledChar.setVisible(false);
+                this.controlledChar.setVisible(false); // Ocultar temporalmente para evitar Flash
 
-                // Forzar textura, restaurar escala original y color
                 this.controlledChar.setTexture(fallbackKey);
-                this.controlledChar.setScale(1.0); // Evitar que herede escalas locas de otros personajes
+                this.controlledChar.setScale(1.0);
                 this.controlledChar.setTint(0xffffff);
                 this.controlledChar.setAlpha(1);
                 
-                // Parseo manual a prueba de fallos
                 const xmlKey = `${fallbackKey}_xml`;
                 if (this.scene.cache.text.exists(xmlKey)) {
                     const tex = this.scene.textures.get(fallbackKey);
-                    // Solo parsear si Phaser no lo hizo como Atlas
                     if (tex && Object.keys(tex.frames).length <= 1) { 
                         if (funkin.utils?.animations?.sparrow) {
                             funkin.utils.animations.sparrow.SparrowParser.fixPhaserSparrow(this.scene, fallbackKey, this.scene.cache.text.get(xmlKey));
@@ -148,7 +140,6 @@ class PhaseGameOver {
                 if (!this.controlledChar.animKeys) this.controlledChar.animKeys = new Map();
                 if (!this.controlledChar.animOffsets) this.controlledChar.animOffsets = new Map();
 
-                // Crear y anclar las animaciones
                 const ensureAnim = (data) => {
                     const globalKey = `${fallbackKey}_${data.anim}`;
                     if (!this.scene.anims.exists(globalKey)) {
@@ -156,9 +147,7 @@ class PhaseGameOver {
                         const texture = this.scene.textures.get(fallbackKey);
                         if (texture && texture.frames) {
                             const allFrames = Object.keys(texture.frames);
-                            const animFrames = allFrames.filter(f => f.startsWith(data.name)).sort(
-                                (a, b) => a.localeCompare(b, undefined, {numeric: true})
-                            );
+                            const animFrames = allFrames.filter(f => f.startsWith(data.name)).sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
                             frames = animFrames.map(f => ({ key: fallbackKey, frame: f }));
                         }
                         if (frames.length > 0) {
@@ -173,7 +162,7 @@ class PhaseGameOver {
                 ensureAnim(this.deathLoopData);
                 ensureAnim(this.deathConfirmData);
 
-                // FIX: Asignar el primer frame exacto de la muerte ANTES de que el hilo se pause
+                // Setear primer frame exacto para evitar parpadeos visuales
                 const tex = this.scene.textures.get(fallbackKey);
                 if (tex && tex.frames) {
                     const framesList = Object.keys(tex.frames)
@@ -182,28 +171,20 @@ class PhaseGameOver {
                         
                     if (framesList.length > 0) {
                         this.controlledChar.setFrame(framesList[0]);
-                        // Aplicar los offsets del primer frame para que no brinque
                         const off = this.firstDeathData.offsets || [0,0];
                         this.controlledChar.setPosition(this.controlledChar.baseX - off[0], this.controlledChar.baseY - off[1]);
                     }
                 }
 
-                // Ahora sí podemos mostrarlo con seguridad
                 this.controlledChar.setVisible(true);
-            } else {
-                console.error("El Fallback de BOYFRIEND no está en la caché.");
             }
         }
-        // ------------------------------
 
-        // Asegurar comportamiento del loop
         const loopKey = this.controlledChar.animKeys?.get("deathLoop");
         if (loopKey && this.scene.anims.exists(loopKey)) {
             this.scene.anims.get(loopKey).repeat = -1;
         }
 
-        // Al hacer await aquí, el juego hace un render. 
-        // Como ya pusimos el primer frame explícitamente, ya no habrá flash.
         await Promise.all([
             this.loadAudio(this.firstDeathData),
             this.loadAudio(this.deathLoopData),
@@ -244,7 +225,6 @@ class PhaseGameOver {
             }
         }
         
-        // Si no hay sonido, esperar a que termine la animación
         this.controlledChar.once('animationcomplete', (anim) => {
             if (!this.isConfirming && !this.isExiting && anim.key.toLowerCase().includes("firstdeath")) {
                 this.playLoopSequence(deathLoopData);
@@ -276,13 +256,11 @@ class PhaseGameOver {
 
         window.funkin.controls?.update();
 
-        // 1. ACEPTAR
         if (window.funkin.controls?.ACCEPT) {
             this.isConfirming = true;
             this.confirmAndRestart();
         }
 
-        // 2. SALIR
         if (window.funkin.controls?.BACK) {
             this.isExiting = true;
             this.exitToMenu();
@@ -294,6 +272,13 @@ class PhaseGameOver {
             this.currentSound.stop();
             this.currentSound.destroy();
         }
+
+        // --- INTEGRACIÓN APIManager ---
+        if (this.scene.apiManager) {
+            this.scene.apiManager.destroy();
+            this.scene.apiManager = null;
+        }
+        // ------------------------------
 
         const charRenderer = funkin.play.visuals.characters.charactersManager;
         charRenderer.playAnim(this.controlledChar, "deathConfirm", true);
@@ -318,6 +303,14 @@ class PhaseGameOver {
 
     exitToMenu() {
         if (this.currentSound) this.currentSound.stop();
+        
+        // --- INTEGRACIÓN APIManager ---
+        if (this.scene.apiManager) {
+            this.scene.apiManager.destroy();
+            this.scene.apiManager = null;
+        }
+        // ------------------------------
+
         if (funkin.play.data.clean?.PlayCleanUp) {
             funkin.play.data.clean.PlayCleanUp.execute(this.scene);
         }

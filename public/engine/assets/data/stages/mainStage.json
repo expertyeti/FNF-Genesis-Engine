@@ -98,8 +98,8 @@
                     855
                 ],
                 "camera_Offset": [
-                    -100,
-                    -100
+                    1000,
+                    1000
                 ],
                 "flip_x": false,
                 "flip_y": false,

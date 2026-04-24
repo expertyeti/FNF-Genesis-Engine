@@ -1,5 +1,6 @@
 {
   "songName": "Blammed",
+  "events": true,
   "base": {
     "stage": "phillyTrain",
     "scrollSpeed": 1,
@@ -55,6 +56,7 @@
       "scrollSpeed": 2.3
     },
     "erect": {
+      "events": true,
       "scrollSpeed": 2.5,
       "stage": "phillyTrainErect",
       "audio": {
@@ -77,6 +79,7 @@
       }
     },
     "nightmare": {
+      "events": true,
       "scrollSpeed": 2.6,
       "stage": "phillyTrainErect",
       "audio": {

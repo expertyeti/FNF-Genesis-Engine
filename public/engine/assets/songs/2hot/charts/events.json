@@ -1,0 +1,596 @@
+{
+  "events": [
+    {
+      "time": 1,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 3956.044,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 8901.099,
+      "script": "camera",
+      "scroll": {
+        "target": "spectator",
+        "duration": 1,
+        "offsetX": 100,
+        "offsetY": 105,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 8901.099,
+      "script": "camera",
+      "zoom": {
+        "amount": 0.65,
+        "duration": 4,
+        "ease": "Elastic.easeInOut"
+      }
+    },
+    {
+      "time": 10549.451,
+      "script": "camera",
+      "zoom": {
+        "amount": 0.95,
+        "duration": 12,
+        "ease": "Quad.easeInOut"
+      }
+    },
+    {
+      "time": 10549.451,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 4,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 15824.176,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 21098.901,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 26373.626,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 31648.352,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 36923.077,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 40549.099,
+      "script": "camera",
+      "zoom": {
+        "amount": 0.65,
+        "duration": 4,
+        "ease": "Elastic.easeInOut"
+      }
+    },
+    {
+      "time": 40549.099,
+      "script": "camera",
+      "scroll": {
+        "target": "spectator",
+        "duration": 1,
+        "offsetX": 100,
+        "offsetY": 105,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 42197.802,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 4,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 42197.802,
+      "script": "camera",
+      "zoom": {
+        "amount": 0.95,
+        "duration": 12,
+        "ease": "Quad.easeInOut"
+      }
+    },
+    {
+      "time": 43516.484,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 44835.165,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 46153.846,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 51098.099,
+      "script": "camera",
+      "zoom": {
+        "amount": 0.65,
+        "duration": 4,
+        "ease": "Elastic.easeInOut"
+      }
+    },
+    {
+      "time": 51098.099,
+      "script": "camera",
+      "scroll": {
+        "target": "spectator",
+        "duration": 1,
+        "offsetX": 100,
+        "offsetY": 105,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 52746.451,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 6,
+        "offsetX": -120,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 52747.253,
+      "script": "camera",
+      "zoom": {
+        "amount": 1,
+        "duration": 12,
+        "ease": "Quad.easeInOut"
+      }
+    },
+    {
+      "time": 55384.615,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 60659.341,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 63296.703,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 65934.066,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 67252.747,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 68571.429,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 69890.11,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 71208.791,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 72527.473,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 73846.154,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 75164.835,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 80109.89,
+      "script": "camera",
+      "zoom": {
+        "amount": 0.65,
+        "duration": 4,
+        "ease": "Elastic.easeInOut"
+      }
+    },
+    {
+      "time": 80109.89,
+      "script": "camera",
+      "scroll": {
+        "target": "spectator",
+        "duration": 1,
+        "offsetX": 100,
+        "offsetY": 105,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 81758.242,
+      "script": "camera",
+      "zoom": {
+        "amount": 0.95,
+        "duration": 12,
+        "ease": "Quad.easeInOut"
+      }
+    },
+    {
+      "time": 81758.242,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 4,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 84395.604,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 85384.099,
+      "script": "camera",
+      "zoom": {
+        "amount": 0.65,
+        "duration": 4,
+        "ease": "Elastic.easeInOut"
+      }
+    },
+    {
+      "time": 85384.099,
+      "script": "camera",
+      "scroll": {
+        "target": "spectator",
+        "duration": 1,
+        "offsetX": 100,
+        "offsetY": 105,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 87032.967,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 4,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 87032.967,
+      "script": "camera",
+      "zoom": {
+        "amount": 0.95,
+        "duration": 12,
+        "ease": "Quad.easeInOut"
+      }
+    },
+    {
+      "time": 88351.648,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 89670.33,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 90989.011,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 92307.692,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 93626.374,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 94945.055,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 96263.736,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 97582.418,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 101538.462,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 113406.593,
+      "script": "camera",
+      "scroll": {
+        "target": "player",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 114725.275,
+      "script": "camera",
+      "scroll": {
+        "target": "enemy",
+        "duration": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 117032.099,
+      "script": "camera",
+      "zoom": {
+        "amount": 0.65,
+        "duration": 4,
+        "ease": "Elastic.easeInOut"
+      }
+    },
+    {
+      "time": 117032.099,
+      "script": "camera",
+      "scroll": {
+        "target": "spectator",
+        "duration": 1,
+        "offsetX": 100,
+        "offsetY": 105,
+        "ease": "Linear"
+      }
+    },
+    {
+      "time": 118681.451,
+      "script": "camera",
+      "zoom": {
+        "amount": 0.77,
+        "duration": 1,
+        "ease": "Linear"
+      }
+    }
+  ]
+}

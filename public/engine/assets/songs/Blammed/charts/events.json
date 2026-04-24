@@ -1,0 +1,998 @@
+{
+  "events": [
+    {
+      "time": 11818,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 17636,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 23454,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 29272,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 35090,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 40909,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 46545,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 52363,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 58181.818,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 64000,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 69818,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 75818,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 81636,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 87454,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    }
+  ],
+  "nightmare": [
+    {
+      "time": 1,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 1,
+      "script": "camera",
+      "zoom": { "amount": 0.9, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 88.235,
+      "script": "camera",
+      "booping": { "beats": 2, "intensity": 0.6 }
+    },
+    {
+      "time": 2823.529,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 5647.059,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 8470.588,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 10764.706,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 11029.412,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 4, "ease": "Elastic.easeInOut" }
+    },
+    {
+      "time": 11205.361,
+      "script": "camera",
+      "booping": { "beats": 4, "intensity": 1 }
+    },
+    {
+      "time": 16941.176,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 19764,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 20470,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 21176,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 22764.706,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 22764.706,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 28235.824,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 29647,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 31058,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 33794.361,
+      "script": "camera",
+      "booping": { "beats": 2, "intensity": 1.1 }
+    },
+    {
+      "time": 34058.824,
+      "script": "camera",
+      "zoom": { "amount": 0.9, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 34058.882,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 39529.176,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 40941,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 42529,
+      "script": "camera",
+      "zoom": { "amount": 0.9, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 44911.412,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 4, "ease": "Elastic.easeInOut" }
+    },
+    {
+      "time": 45088.361,
+      "script": "camera",
+      "booping": { "beats": 2, "intensity": 1.6 }
+    },
+    {
+      "time": 45176.634,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 45882,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 46235,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 46941,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 47294,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 48000,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 48529,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 48705,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 49058,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 49764,
+      "script": "camera",
+      "zoom": { "amount": 1.25, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 50117,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 50823.529,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 50823.634,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 51529,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 51882,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 52588,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 52941,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 53647,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 54176,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 54352,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 54705,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 55411,
+      "script": "camera",
+      "zoom": { "amount": 1.25, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 55764,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 56470.588,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 56470.634,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 57176,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 57529,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 58235,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 58588,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 59294,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 59823,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 59999,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 60352,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 61058,
+      "script": "camera",
+      "zoom": { "amount": 1.25, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 61411,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 62117.634,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 62117.647,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 62823,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 63176,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 63882,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 64235,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 64941,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 65470,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 65646,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 65999,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 66705,
+      "script": "camera",
+      "zoom": { "amount": 1.25, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 67058,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 67676.361,
+      "script": "camera",
+      "booping": { "beats": 2, "intensity": 1.1 }
+    },
+    {
+      "time": 67941.176,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 67941.634,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 73411.634,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 74823,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 76411,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 77647,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 79235.294,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 79235.634,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 84705.634,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 84705.882,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 86117,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 87529,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 88941,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 90264.361,
+      "script": "camera",
+      "booping": { "beats": 2, "intensity": 0.6 }
+    },
+    {
+      "time": 90352,
+      "script": "camera",
+      "zoom": { "amount": 0.9, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 101294.361,
+      "script": "camera",
+      "booping": { "beats": 4, "intensity": 0 }
+    },
+    {
+      "time": 101382.412,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 4, "ease": "Elastic.easeInOut" }
+    },
+    {
+      "time": 101823,
+      "script": "camera",
+      "zoom": { "amount": 0.9, "duration": 64, "ease": "Sine.easeInOut" }
+    }
+  ],
+  "erect": [
+    {
+      "time": 1,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 1,
+      "script": "camera",
+      "zoom": { "amount": 0.9, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 88.235,
+      "script": "camera",
+      "booping": { "beats": 2, "intensity": 0.6 }
+    },
+    {
+      "time": 2823.529,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 5647.059,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 8470.588,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 10764.706,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 11029.412,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 4, "ease": "Elastic.easeInOut" }
+    },
+    {
+      "time": 11205.361,
+      "script": "camera",
+      "booping": { "beats": 4, "intensity": 1 }
+    },
+    {
+      "time": 16941.176,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 1, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 19764,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 20470,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 21176,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 22764.706,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 22764.706,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 28235.824,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 29647,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 31058,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 33794.361,
+      "script": "camera",
+      "booping": { "beats": 2, "intensity": 1.1 }
+    },
+    {
+      "time": 34058.824,
+      "script": "camera",
+      "zoom": { "amount": 0.9, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 34058.882,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 39529.176,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 40941,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 42529,
+      "script": "camera",
+      "zoom": { "amount": 0.9, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 44911.412,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 4, "ease": "Elastic.easeInOut" }
+    },
+    {
+      "time": 45088.361,
+      "script": "camera",
+      "booping": { "beats": 2, "intensity": 1.6 }
+    },
+    {
+      "time": 45176.634,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 45882,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 46235,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 46941,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 47294,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 48000,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 48529,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 48705,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 49058,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 49764,
+      "script": "camera",
+      "zoom": { "amount": 1.25, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 50117,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 50823.529,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 50823.634,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 51529,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 51882,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 52588,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 52941,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 53647,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 54176,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 54352,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 54705,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 55411,
+      "script": "camera",
+      "zoom": { "amount": 1.25, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 55764,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 56470.588,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 56470.634,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 57176,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 57529,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 58235,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 58588,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 59294,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 59823,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 59999,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 60352,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 61058,
+      "script": "camera",
+      "zoom": { "amount": 1.25, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 61411,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 62117.634,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 62117.647,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 62823,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 63176,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 63882,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 64235,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 64941,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 65470,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 65646,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 65999,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 66705,
+      "script": "camera",
+      "zoom": { "amount": 1.25, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 67058,
+      "script": "camera",
+      "zoom": { "amount": 1.2, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 67676.361,
+      "script": "camera",
+      "booping": { "beats": 2, "intensity": 1.1 }
+    },
+    {
+      "time": 67941.176,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 67941.634,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 73411.634,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 74823,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 76411,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 77647,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 79235.294,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 79235.634,
+      "script": "camera",
+      "scroll": { "target": "player", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 84705.634,
+      "script": "camera",
+      "scroll": { "target": "enemy", "duration": 4, "offsetX": 0, "offsetY": 0, "ease": "Linear" }
+    },
+    {
+      "time": 84705.882,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 86117,
+      "script": "camera",
+      "zoom": { "amount": 1.05, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 87529,
+      "script": "camera",
+      "zoom": { "amount": 1.1, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 88941,
+      "script": "camera",
+      "zoom": { "amount": 1.15, "duration": 8, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 90264.361,
+      "script": "camera",
+      "booping": { "beats": 2, "intensity": 0.6 }
+    },
+    {
+      "time": 90352,
+      "script": "camera",
+      "zoom": { "amount": 0.9, "duration": 32, "ease": "Expo.easeOut" }
+    },
+    {
+      "time": 101294.361,
+      "script": "camera",
+      "booping": { "beats": 4, "intensity": 0 }
+    },
+    {
+      "time": 101382.412,
+      "script": "camera",
+      "zoom": { "amount": 1, "duration": 4, "ease": "Elastic.easeInOut" }
+    },
+    {
+      "time": 101823,
+      "script": "camera",
+      "zoom": { "amount": 0.9, "duration": 64, "ease": "Sine.easeInOut" }
+    }
+  ]
+}

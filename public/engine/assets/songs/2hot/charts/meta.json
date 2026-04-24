@@ -1,5 +1,6 @@
 {
   "songName": "2hot",
+  "events": true,
   "base": {
     "stage": "phillyStreets",
     "scrollSpeed": 1,

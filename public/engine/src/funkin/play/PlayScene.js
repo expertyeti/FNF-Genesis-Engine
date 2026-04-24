@@ -45,6 +45,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
+    this.apiManager = new funkin.play.scripts.api.APIManager(this);
     if (this.load.isLoading()) {
       this.load.once("complete", this.initGame, this);
       this.load.start();

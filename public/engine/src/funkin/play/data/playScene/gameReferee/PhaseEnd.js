@@ -2,6 +2,12 @@
  * @file PhaseEnd.js
  * Fase 4: Finaliza la canción y coordina la transición hacia menús o siguientes canciones.
  */
+
+window.funkin = window.funkin || {};
+funkin.play = funkin.play || {};
+funkin.play.data = funkin.play.data || {};
+funkin.play.data.referee = funkin.play.data.referee || {};
+
 class PhaseEnd {
     constructor(referee) {
         this.referee = referee;
@@ -10,6 +16,14 @@ class PhaseEnd {
 
     async enter() {
         const scene = this.scene;
+
+        // --- INTEGRACIÓN APIManager ---
+        // Destruir APIs para limpiar memoria y eventos
+        if (scene.apiManager) {
+            scene.apiManager.destroy();
+            scene.apiManager = null;
+        }
+        // ------------------------------
         
         const currentList = scene.playData.songPlayList || [];
         const currentIndex = currentList.indexOf(scene.playData.actuallyPlaying);

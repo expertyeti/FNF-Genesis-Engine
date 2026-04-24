@@ -31,7 +31,7 @@ class SoundTrayLogic {
 
   async init(scene) {
     if (this.scene) return; // Evitar inicialización doble
-    console.log("[SoundTrayLogic] Logic online and listening to buttons");
+    console.log(" Logic online and listening to buttons");
     this.scene = scene;
 
     const currentEnv = window.funkin && window.funkin.device && window.funkin.device.get ? window.funkin.device.get() : "web";
