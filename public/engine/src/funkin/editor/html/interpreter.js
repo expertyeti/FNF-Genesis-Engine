@@ -15,7 +15,6 @@ class XMLInterpreter {
       const attr = (name) => node.getAttribute(name);
       const tagName = node.tagName.toLowerCase();
 
-      // --- INYECCIÓN DE ESTILOS (XSS) ---
       if (tagName === "link" && attr("style")) {
         const href = `${baseUrl}assets/ui/editor/css/${attr("style")}`;
         if (!document.querySelector(`link[href="${href}"]`)) {
@@ -27,16 +26,19 @@ class XMLInterpreter {
         return ""; 
       }
 
-      // --- INYECCIÓN DE SCRIPTS (JS) ---
+      // --- LÓGICA DE REINYECCIÓN DE EVENTOS ---
       if (tagName === "window" && attr("script")) {
         const src = `${baseUrl}assets/ui/editor/js/${attr("script")}`;
-        // Timeout para asegurar que el DOM de Phaser ya existe
         setTimeout(() => {
           if (!document.querySelector(`script[src="${src}"]`)) {
             const script = document.createElement("script");
             script.src = src;
             script.type = "text/javascript";
             document.body.appendChild(script);
+          } else {
+            // El script ya existe (la escena se reinició).
+            // Avisamos globalmente que hay un nuevo DOM listo para recibir eventos.
+            document.dispatchEvent(new Event("genesis:ui-rebuilt"));
           }
         }, 50);
       }
@@ -48,38 +50,27 @@ class XMLInterpreter {
 
       if (tagName === "window") {
         const anchored = attr("anchored") || "none";
-        // Si borderless es "false", ocultamos la barra de título
-        const showTitleBar = attr("borderless") !== "false";
+        let h = attr("height") || "35px";
+
+        styles += `width: 100%; height: ${h}; background: #1a1a1a; color: #FFFFFF; font-family: sans-serif; display: flex; flex-direction: column; pointer-events: auto; position: absolute; left: 0; z-index: 10000; overflow: visible; `;
+        if (anchored === "top") styles += "top: 0; ";
         
-        let w = "100%";
-        let h = attr("height") || "45px";
-
-        styles += `width: ${w}; height: ${h}; background: #FFFFFF; color: #000000; font-family: sans-serif; display: flex; flex-direction: column; pointer-events: auto; position: absolute; left: 0; z-index: 10000; `;
-
-        if (anchored === "top") styles += "top: 0; border-bottom: 2px solid #000000; ";
-
-        if (showTitleBar) {
-          contentPrefix = `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 12px; background: #FFFFFF; border-bottom: 1px solid #000000; width: 100%; box-sizing: border-box;">
-              <span style="font-weight: bold; font-size: 13px;">${attr("title") || ""}</span>
-            </div>`;
-        }
-        
-        // El contenedor interno tiene padding para que los items no toquen los bordes de la ventana
-        contentPrefix += `<div class="window-content" style="padding: 0 15px; flex-grow: 1; display: flex; align-items: center; gap: 0; overflow: visible; width: 100%; box-sizing: border-box;">`;
+        contentPrefix += `<div class="window-content" style="flex-grow: 1; display: flex; align-items: center; gap: 2px; padding: 0 8px; width: 100%; box-sizing: border-box;">`;
         contentSuffix = `</div>`;
       }
 
-      // Filtramos 'title' para evitar el tooltip del navegador
       const attributes = Array.from(node.attributes)
-        .filter(a => a.name !== "title" && a.name !== "style" && a.name !== "script")
+        .filter(a => !["title", "style", "script", "shortcut"].includes(a.name))
         .map(a => `${a.name}="${a.value}"`)
         .join(" ");
 
       let innerHTML = "";
       for (let child of node.childNodes) innerHTML += convertNode(child);
 
-      // Combinamos estilos XML con estilos del intérprete
+      if (attr("shortcut")) {
+        innerHTML += `<span class="shortcut-text">${attr("shortcut")}</span>`;
+      }
+
       const finalStyles = styles + (attr("style") || "");
 
       return `<${htmlTag} ${attributes} style="${finalStyles}">

@@ -2090,3 +2090,19 @@ ERROR 2026-04-25 14:33:06,185 NE_RS_UNBLDRE: Unable to load application resource
 ERROR 2026-04-25 14:35:19,269 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/stages/tankmanBattlefieldErect.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-25 14:36:40,248 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-25 14:37:31,965 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 15:59:20,921 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 15:59:26,152 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 16:00:20,607 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/ui/editor/css/toolbar.xss api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 16:03:46,038 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 16:37:59,378 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 16:38:07,619 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 16:41:01,330 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/ui/editor/css/toolbar.css api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 16:41:01,603 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/ui/editor/js/toolbar.js api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 16:44:14,453 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 16:45:11,214 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/ui/editor/css/toolbar.css api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 16:45:50,291 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 16:48:31,884 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 16:51:11,316 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 16:57:01,212 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 17:08:14,921 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 17:11:45,567 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T

@@ -1,26 +1,52 @@
-<window 
-    anchored="top" 
-    height="42px" 
-    borderless="false" 
-    script="toolbar.js">
+<window anchored="top" height="36px" script="toolbar.js">
+    <link style="toolbar.css" />
     
-    <link style="toolbar.xss" />
-    
-    <div class="menu-item" expand="true">File</div>
-    <div class="menu-item" expand="true">Edit</div>
-    
-    <div class="menu-item" expand="true" id="view-menu">
-        View
-        <div class="submenu" id="view-submenu">
-            <div class="submenu-item">Modes</div>
-            <div class="submenu-item">Grid Settings</div>
-            <div class="submenu-item">Show Stats</div>
+    <div class="menu-item" expand="true">
+        File
+        <div class="submenu">
+            <div class="submenu-item" shortcut="Ctrl+N">New Project</div>
+            <div class="submenu-item" shortcut="Ctrl+O">Open Song</div>
+            
+            <div class="submenu-item" expand="true">
+                Save As
+                <div class="submenu">
+                    <div class="submenu-item" shortcut="Ctrl+S">Genesis Project</div>
+                    <div class="submenu-item" shortcut="Ctrl+Shift+S">Chart Only (.json)</div>
+                </div>
+            </div>
+            
+            <div class="submenu-item" shortcut="Ctrl+E">Export JSON</div>
         </div>
     </div>
-    
-    <div class="menu-item" expand="true">Panels</div>
-    <div class="menu-item" expand="false">Test</div>
-    <div class="menu-item" expand="true">Help</div>
 
-    <div class="config-label" id="config-btn">CONFIG</div>
+    <div class="menu-item" expand="true">
+        Edit
+        <div class="submenu">
+            <div class="submenu-item" shortcut="Ctrl+Z">Undo</div>
+            <div class="submenu-item" shortcut="Ctrl+Y">Redo</div>
+            <div class="submenu-item" shortcut="Ctrl+,">Preferences</div>
+        </div>
+    </div>
+
+    <div class="menu-item" expand="true">
+        Modes
+        <div class="submenu">
+            <div class="submenu-item" expand="true">
+                Stage
+                <div class="submenu">
+                    <div class="submenu-item">Edit Props</div>
+                    <div class="submenu-item">Lighting Data</div>
+                </div>
+            </div>
+            
+            <div class="submenu-item">Chart</div>
+            <div class="submenu-item">Animation</div>
+            <div class="submenu-item">Skins</div>
+        </div>
+    </div>
+
+    <div class="menu-item" expand="false">View</div>
+    <div class="menu-item" expand="false">Help</div>
+
+    <div class="config-label">GENESIS ENGINE</div>
 </window>
