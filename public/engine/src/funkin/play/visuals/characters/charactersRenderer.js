@@ -58,12 +58,11 @@ class CharacterRenderer {
         if (missingKeys.length > 0) {
             await new Promise(resolve => {
                 let loadedCount = 0;
-                let targetCount = missingKeys.length * 2; // FIX: Esperar imagen y texto por separado
+                let targetCount = missingKeys.length * 2; 
                 
                 const check = () => { if (++loadedCount >= targetCount) resolve(); };
 
                 missingKeys.forEach(key => {
-                    // FIX DEL ERROR: Cargar imagen y XML(texto) en vez de atlas() que esperaba JSON
                     scene.load.image(key, textureMap.get(key).imgPath);
                     scene.load.text(`${key}_xml`, textureMap.get(key).xmlPath);
                     
@@ -136,9 +135,7 @@ class CharacterRenderer {
                 charSprite.isSpecialAnim = charSprite.isSinging = false;
                 return charSprite.dance(true);
             }
-            if (!anim.key.toLowerCase().includes('idle') && !anim.key.toLowerCase().includes('dance') && !charSprite.isSinging) {
-                charSprite.dance(true); 
-            }
+            // fix: ya no forzamos el idle nativo desde aqui pa q no pelee con el logic principal
         });
 
         const extractDir = (data) => data?.direction ?? data?.noteData ?? data?.note?.direction ?? data?.dir ?? (typeof data === "number" ? data : 0);
@@ -157,7 +154,7 @@ class CharacterRenderer {
 
             sprite.singTimeout = scene.time?.delayedCall(holdMs, () => {
                 sprite.isSinging = false;
-                sprite.dance(true);
+                // fix: el personaje se queda congelado en la pose hasta q la logica global lo actualice
             });
         };
 
@@ -221,6 +218,16 @@ class CharacterRenderer {
         const fullAnimKey = charSprite.animKeys?.get(animName) || (charSprite.scene.anims.exists(`${charSprite.texture.key}_${animName}`) ? `${charSprite.texture.key}_${animName}` : null);
         
         if (fullAnimKey && charSprite.scene.anims.exists(fullAnimKey)) {
+            
+            if (!forced && charSprite.anims.currentAnim?.key === fullAnimKey) {
+                if (!charSprite.anims.isPlaying || charSprite.anims.getProgress() === 1) {
+                    const offset = charSprite.animOffsets?.get(animName) || [0, 0];
+                    charSprite.setPosition(charSprite.baseX - offset[0], charSprite.baseY - offset[1]);
+                    charSprite.currentAnim = animName;
+                    return; 
+                }
+            }
+
             charSprite.play(fullAnimKey, !forced);
             const offset = charSprite.animOffsets?.get(animName) || [0, 0];
             charSprite.setPosition(charSprite.baseX - offset[0], charSprite.baseY - offset[1]);

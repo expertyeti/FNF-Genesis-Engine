@@ -2073,3 +2073,12 @@ INFO 2026-04-25 13:12:21,082 Reloading the application... api\debug\debug.cpp:17
 ERROR 2026-04-25 13:12:21,367 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 INFO 2026-04-25 13:14:47,590 Reloading the application... api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-25 13:14:47,803 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 13:15:14,540 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:15:18,590 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:15:39,373 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/stages/tankmanBattlefieldErect.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:17:13,894 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/stages/phillyStreetsErect.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:20:02,513 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/stages/schoolEvilErect.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:22:46,486 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/index.html api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:25:20,133 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:32:08,732 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:34:50,118 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/index.html api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
