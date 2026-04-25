@@ -1,4 +1,5 @@
 [
+  "src/core/native/pc/neutralino.js",
   "src/core/namespaces.js",
   "src/utils/conductor.js",
   "src/utils/alphabet/AlphabetData.js",
@@ -46,6 +47,10 @@
   "src/funkin/ui/storyMode/StoryModeUpBar.js",
   "src/funkin/ui/storyMode/StoryModeScene.js",
 
+  "src/funkin/editor/editor.js",
+  "src/funkin/editor/html/preload.js",
+  "src/funkin/editor/html/interpreter.js",
+
   "src/funkin/ui/freeplay/FreePlayBG.js",
   "src/funkin/ui/freeplay/FreePlayDiff.js",
   "src/funkin/ui/freeplay/FreePlayInput.js",
@@ -62,6 +67,7 @@
   "src/funkin/play/data/preload/sessionID.js",
   "src/funkin/play/data/playScene/anti-lag.js",
   "src/funkin/play/data/playScene/GPUWarming.js",
+
   "src/funkin/play/data/playScene/clean/CleanCore.js",
   "src/funkin/play/data/playScene/clean/CleanAudio.js",
   "src/funkin/play/data/playScene/clean/CleanCameras.js",
@@ -69,14 +75,17 @@
   "src/funkin/play/data/playScene/clean/CleanUI.js",
   "src/funkin/play/data/playScene/clean/playCleanUp.js",
   "src/funkin/play/data/playScene/TwoPlayerLocal.js",
+
   "src/funkin/play/data/camera/mainCamera.js",
   "src/funkin/play/data/camera/gameCamera.js",
   "src/funkin/play/data/camera/UICamera.js",
   "src/funkin/play/data/camera/cameraBooping.js",
+
   "src/funkin/play/visuals/stage/createImages.js",
   "src/funkin/play/visuals/stage/createSprites.js",
   "src/funkin/play/visuals/stage/createBG.js",
-  "src/funkin/play/visuals/stage/playListSprites.js",  
+  "src/funkin/play/visuals/stage/playListSprites.js", 
+
   "src/funkin/play/visuals/skins/SkinPathResolver.js",
   "src/funkin/play/visuals/skins/SkinDataLoader.js",
   "src/funkin/play/visuals/skins/playUISkins.js",

@@ -1,18 +1,10 @@
-/**
- * @file ArrowsSpawner.js
- * Clase centralizada que contiene toda la lógica de instanciación de notas y strumlines.
- * (Sustituye por completo al antiguo ArrowsData.js y ArrowsSpawner.js)
- */
-
+// src/funkin/play/visuals/arrows/core/ArrowsSpawner.js
 window.funkin = window.funkin || {};
 window.funkin.play = window.funkin.play || {};
 window.funkin.play.visuals = window.funkin.play.visuals || {};
 window.funkin.play.visuals.arrows = window.funkin.play.visuals.arrows || {};
 
 class ArrowsSpawner {
-  // ============================================================================
-  // UTILIDADES Y CÁLCULOS
-  // ============================================================================
   static calculateOptimalPoolSize(chartData, screenHeight, scrollSpeed, scrollConstant = 0.45, safetyMargin = 1.15) {
     if (!chartData || !Array.isArray(chartData) || chartData.length === 0) return 0;
 
@@ -48,6 +40,10 @@ class ArrowsSpawner {
       scene.strumlines = null;
     }
     if (scene.notesManager) {
+      if (scene.notesManager.notePool) {
+        scene.notesManager.notePool.clear(true, true);
+        scene.notesManager.notePool.destroy();
+      }
       scene.notesManager.destroy();
       scene.notesManager = null;
     }
@@ -65,9 +61,6 @@ class ArrowsSpawner {
     }
   }
 
-  // ============================================================================
-  // CREACIÓN DE ANIMACIONES Y FRAMES
-  // ============================================================================
   static createNoteFallbackFrames(scene, assetKey, prefixes) {
     const frameNames = scene.textures.get(assetKey).getFrameNames();
     const notesAPI = funkin.play.visuals.arrows.notes || {};
@@ -108,7 +101,6 @@ class ArrowsSpawner {
 
   static createStrumAnimations(scene, assetKey, animsData, directions) {
     const frameNames = scene.textures.get(assetKey).getFrameNames();
-    // 🚨 FALLBACK PROTECTOR EXTRA por si directions vuelve a ser falsy
     const safeDirections = directions || ["left", "down", "up", "right"];
 
     safeDirections.forEach((dir) => {
@@ -160,8 +152,6 @@ class ArrowsSpawner {
     arrow.resetTime = 0;
     arrow.animsOffsets = skinData.offsets || { static: [0, 0], press: [0, 0], confirm: [0, 0] };
 
-    // Si la inyección del animador en prototipos funcionó, esto tal vez no sea estrictamente necesario,
-    // pero lo dejamos por seguridad si algo lo llama de forma externa.
     const strumlinesNamespace = funkin.play.visuals.arrows.strumelines || {};
     if (strumlinesNamespace.Strumlines && strumlinesNamespace.Strumlines.prototype.setupAnimator) {
         strumlinesNamespace.Strumlines.prototype.setupAnimator.call({scene: scene}, arrow);
@@ -174,9 +164,6 @@ class ArrowsSpawner {
     return arrow;
   }
 
-  // ============================================================================
-  // LÓGICA DE SPAWN (GENERACIÓN)
-  // ============================================================================
   static spawnNotesArray(scene, notesManager, chartNotesArray, assetKey, skinData, fallbackFrames) {
     const scale = skinData.scale !== undefined ? skinData.scale : 0.7;
     const alpha = skinData.alpha !== undefined ? skinData.alpha : 1.0;
@@ -185,6 +172,23 @@ class ArrowsSpawner {
 
     const notesAPI = funkin.play.visuals.arrows.notes || {};
     const NoteDirection = window.funkin.NoteDirection || notesAPI.NoteDirection;
+
+    notesManager.notePool = scene.add.group({
+        classType: Phaser.GameObjects.Sprite,
+        runChildUpdate: false 
+        // quitamos el maxsize pa q la vdd pueda crecer si la rola tiene puro spam
+    });
+
+    notesManager.notePool.createMultiple({
+        key: assetKey,
+        frame: universalFallbackFrame,
+        quantity: notesManager.poolSize,
+        active: false,
+        visible: false
+    });
+
+    notesManager.noteDataQueue = [];
+    notesManager.notes = []; 
 
     chartNotesArray.forEach((noteData) => {
       const time = noteData.t;
@@ -211,9 +215,47 @@ class ArrowsSpawner {
       const dirName = NoteDirection ? NoteDirection.getDirectionName(lane) : "left";
       const frameToUse = fallbackFrames[dirName] || universalFallbackFrame;
 
-      const note = scene.add.sprite(-5000, -5000, assetKey, frameToUse);
-      note.setScale(scale);
-      note.setAlpha(alpha);
+      notesManager.noteDataQueue.push({
+        noteTime: time,
+        pType: p,
+        isPlayer: isPlayer,
+        isOpponent: isOpponent,
+        isSpectator: isSpectator,
+        lane: lane,
+        length: length,
+        kind: kind,
+        skinOffset: skinOffset,
+        baseAlpha: alpha,
+        baseScale: scale,
+        dirName: dirName,
+        frameToUse: frameToUse,
+        assetKey: assetKey
+      });
+    });
+
+    notesManager.noteDataQueue.sort((a, b) => a.noteTime - b.noteTime);
+
+    if (notesAPI && typeof notesAPI.emit === "function") {
+      notesAPI.emit("allLoaded", { total: notesManager.noteDataQueue.length });
+    }
+  }
+
+  static spawnNoteFromPool(scene, notesManager, data) {
+      let note = notesManager.notePool.get();
+      
+      // si el pool base se acabo pq hay muchas notas, generamos una al vuelo
+      if (!note) {
+          note = new Phaser.GameObjects.Sprite(scene, -5000, -5000, data.assetKey, data.frameToUse);
+          notesManager.notePool.add(note);
+      }
+
+      note.setActive(true);
+      note.setVisible(true);
+      note.setPosition(-5000, -5000);
+      note.setTexture(data.assetKey, data.frameToUse);
+
+      note.setScale(data.baseScale);
+      note.setAlpha(data.baseAlpha);
       note.setOrigin(0, 0);
       note.setDepth(2500);
 
@@ -223,39 +265,28 @@ class ArrowsSpawner {
         note.setScrollFactor(0);
       }
 
-      if (scene.anims.exists(`${assetKey}_note_${dirName}`)) {
-        note.play(`${assetKey}_note_${dirName}`);
+      if (scene.anims.exists(`${data.assetKey}_note_${data.dirName}`)) {
+        note.play(`${data.assetKey}_note_${data.dirName}`);
       }
 
-      note.noteTime = time;
-      note.pType = p; 
-      note.isPlayer = isPlayer; 
-      note.isOpponent = isOpponent;
-      note.isSpectator = isSpectator;
+      note.noteTime = data.noteTime;
+      note.pType = data.pType; 
+      note.isPlayer = data.isPlayer; 
+      note.isOpponent = data.isOpponent;
+      note.isSpectator = data.isSpectator;
       
-      note.lane = lane;
-      note.length = length;
-      note.kind = kind;
-      note.skinOffset = skinOffset;
+      note.lane = data.lane;
+      note.length = data.length;
+      note.kind = data.kind;
+      note.skinOffset = data.skinOffset;
 
-      note.baseAlpha = alpha;
-      note.baseScale = scale;
+      note.baseAlpha = data.baseAlpha;
+      note.baseScale = data.baseScale;
       note.hasMissed = false;
       note.wasHit = false;
-      note.active = true;
 
       notesManager.notes.push(note);
-
-      if (notesAPI && typeof notesAPI.emit === "function") {
-        notesAPI.emit("spawn", { note: note });
-      }
-    });
-
-    notesManager.notes.sort((a, b) => a.noteTime - b.noteTime);
-
-    if (notesAPI && typeof notesAPI.emit === "function") {
-      notesAPI.emit("allLoaded", { total: notesManager.notes.length });
-    }
+      return note;
   }
 
   static spawnChartNotes(scene, notesManager) {
@@ -296,18 +327,12 @@ class ArrowsSpawner {
     ArrowsSpawner.checkSparrowXML(scene, assetKey);
     ArrowsSpawner.createStrumAnimations(scene, assetKey, skinData.animations, strumlines.directions);
 
-    // En nuestra nueva clase Strumlines (monolítica) la propia clase instancia los
-    // strums (sprites y texturas) vía this.initStrums(). Así que solo delegamos:
     if (typeof strumlines.initStrums === 'function') {
-        // En StrumlinesRenderer los inicializa y posiciona.
-        // Si ya están inicializados, podemos omitir este paso, pero para
-        // asegurar consistencia con el viejo Spawner:
         if (strumlines.opponentStrums.length === 0) {
             strumlines.initStrums();
         }
     }
     
-    // Y finalmente aplicamos el layout (espaciado y posiciones)
     if (typeof strumlines.applyLayout === 'function') {
         strumlines.applyLayout();
     }

@@ -20,7 +20,7 @@ funkin.play.missSoundsAssets = [
 class PlayPreload {
     static async preloadGeneralAssets(scene) {
         // Optimización 1: Evitar procesamientos de texturas innecesarios
-        scene.load.imageBitmapFormat = false;
+        scene.load.imageBitmapFormat = true;
         
         // Optimización 2: Aumentar la concurrencia de descargas paralelas (XP: Performance)
         scene.load.maxParallelDownloads = 8; 

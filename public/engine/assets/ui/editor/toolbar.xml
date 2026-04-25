@@ -1,0 +1,26 @@
+<window 
+    anchored="top" 
+    height="42px" 
+    borderless="false" 
+    script="toolbar.js">
+    
+    <link style="toolbar.xss" />
+    
+    <div class="menu-item" expand="true">File</div>
+    <div class="menu-item" expand="true">Edit</div>
+    
+    <div class="menu-item" expand="true" id="view-menu">
+        View
+        <div class="submenu" id="view-submenu">
+            <div class="submenu-item">Modes</div>
+            <div class="submenu-item">Grid Settings</div>
+            <div class="submenu-item">Show Stats</div>
+        </div>
+    </div>
+    
+    <div class="menu-item" expand="true">Panels</div>
+    <div class="menu-item" expand="false">Test</div>
+    <div class="menu-item" expand="true">Help</div>
+
+    <div class="config-label" id="config-btn">CONFIG</div>
+</window>

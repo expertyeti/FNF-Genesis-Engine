@@ -1,6 +1,5 @@
 {
   "songName": "Bopeebo",
-  "events": true,
   "base": {
     "stage": "mainStage",
     "scrollSpeed": 1,
@@ -49,7 +48,6 @@
     },
     "erect": {
       "scrollSpeed": 2.2,
-      "events": true,
       "stage": "mainStageErect",
       "audio": {
         "instrumental": {
@@ -72,7 +70,6 @@
     },
     "nightmare": {
       "scrollSpeed": 2.2,
-      "events": true,
       "stage": "mainStageErect",
       "audio": {
         "instrumental": {

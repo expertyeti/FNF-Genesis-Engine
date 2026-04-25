@@ -1,7 +1,4 @@
-/**
- * @file NoteRenderer.js
- * Sistema de Renderizado Visual y Skins de las notas regulares.
- */
+// src/funkin/play/visuals/arrows/notes/NoteRenderer.js
 
 window.funkin = window.funkin || {};
 funkin.play = funkin.play || {};
@@ -26,11 +23,9 @@ class NoteSkin {
 		const assetKey = funkin.play.uiSkins.getAssetKey(skinData.assetPath);
 		if (!this.scene.textures.exists(assetKey)) return;
 
-		// --- APLICAR FILTRO ANTIALIASING ---
 		const isAntialiased = typeof funkin.play.uiSkins.getAntialiasing === 'function' ? funkin.play.uiSkins.getAntialiasing() : true;
 		const filterMode = isAntialiased ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST;
 		this.scene.textures.get(assetKey).setFilter(filterMode);
-		// ------------------------------------
 
 		if (skinData.chromaKey && funkin.play.uiSkins) {
 			funkin.play.uiSkins.applyChromaKey(this.scene, assetKey, skinData.chromaKey);
@@ -70,11 +65,9 @@ class NoteSkin {
 		const assetKey = funkin.play.uiSkins.getAssetKey(skinData.assetPath);
 		if (!this.scene.textures.exists(assetKey)) return;
 
-		// --- APLICAR FILTRO ANTIALIASING ---
 		const isAntialiased = typeof funkin.play.uiSkins.getAntialiasing === 'function' ? funkin.play.uiSkins.getAntialiasing() : true;
 		const filterMode = isAntialiased ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST;
 		this.scene.textures.get(assetKey).setFilter(filterMode);
-		// ------------------------------------
 
 		if (skinData.chromaKey && funkin.play.uiSkins) {
 			funkin.play.uiSkins.applyChromaKey(this.scene, assetKey, skinData.chromaKey);
@@ -96,6 +89,7 @@ class NoteSkin {
 		const skinOffset = skinData.Offset || [0, 0];
 		const universalFallbackFrame = this.scene.textures.get(assetKey).getFrameNames()[0];
 
+        // 1. Actualiza las notas fisicas activas en pantalla
 		this.manager.notes.forEach((note) => {
 			if (note.anims) note.stop();
 
@@ -119,6 +113,17 @@ class NoteSkin {
 				note.play(`${assetKey}_note_${dirName}`);
 			}
 		});
+
+        // 2. IMPORTANTISIMO: Actualizar la queue de espera pa q las q sigan saliendo del pool salgan con el skin nuevo
+        if (this.manager.noteDataQueue) {
+            this.manager.noteDataQueue.forEach(data => {
+                data.assetKey = assetKey;
+                data.frameToUse = fallbackFrames[data.dirName] || universalFallbackFrame;
+                data.baseScale = scale;
+                data.baseAlpha = alpha;
+                data.skinOffset = skinOffset;
+            });
+        }
 	}
 }
 funkin.play.visuals.arrows.notes.NoteSkin = NoteSkin;

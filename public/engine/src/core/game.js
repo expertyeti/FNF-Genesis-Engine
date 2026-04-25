@@ -1,6 +1,6 @@
 /**
- * Calcula el ancho panorámico ideal basado en el aspect ratio actual de la ventana.
- * @returns {number} El ancho calculado para el juego.
+ * calcula el ancho panoramico ideal basado en el aspect ratio actual de la ventana.
+ * @returns {number} el ancho calculado para el juego.
  */
 function calculatePanoramicWidth() {
   const gameHeight = 720;
@@ -13,10 +13,10 @@ function calculatePanoramicWidth() {
 
   if (windowRatio > baseRatio) {
     if (isMobile) {
-      // Mobile
+      // mobile
       return Math.ceil(gameHeight * windowRatio);
     } else {
-      // PC
+      // pc
       const maxAspectRatio = 20 / 9;
       const clampedRatio = Math.min(windowRatio, maxAspectRatio);
       return Math.ceil(gameHeight * clampedRatio);
@@ -52,3 +52,17 @@ const config = {
 
 window.GAME_COMMIT = "";
 window.game = new Phaser.Game(config);
+
+// inicializacion de neutralino y fix del crash de memoria al salir
+if (typeof Neutralino !== 'undefined') {
+    Neutralino.init();
+
+    Neutralino.events.on('windowClose', () => {
+        if (window.game) {
+            // forzamos a phaser a destruir todo y soltar webgl
+            window.game.destroy(true);
+        }
+        // cerramos el proceso de pc seguro
+        Neutralino.app.exit();
+    });
+}

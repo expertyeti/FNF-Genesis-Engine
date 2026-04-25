@@ -66,6 +66,16 @@ class InputDebugg {
           console.log("Score Text Position: " + modes[nextIdx].toUpperCase());
         }
       }
+
+      // NUEVO: Alt + 7 para abrir el EditorScene
+      if (e.altKey && !e.ctrlKey && !e.shiftKey && e.code === "Digit9") {
+        e.preventDefault();
+        // Evita abrir la escena múltiples veces si ya está activa
+        if (!this.scene.scene.isActive("EditorScene")) {
+          console.log("Abriendo EditorScene...");
+          this.scene.scene.launch("EditorScene");
+        }
+      }
     };
 
     window.addEventListener("keydown", this.debugKeyHandler);

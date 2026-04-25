@@ -1,17 +1,16 @@
+// src/funkin/play/visuals/arrows/notes/NoteLogic.js
 window.funkin = window.funkin || {};
 funkin.play = funkin.play || {};
 funkin.play.visuals = funkin.play.visuals || {};
 funkin.play.visuals.arrows = funkin.play.visuals.arrows || {};
 funkin.play.visuals.arrows.notes = funkin.play.visuals.arrows.notes || {};
 
-/**
- * Gestor principal de notas. Controla la instanciación, movimiento, colisiones y la recreación al reiniciar/retroceder.
- */
 class NotesManager {
     constructor(scene, strumlines) {
         this.scene = scene;
         this.strumlines = strumlines;
         this.notes = [];
+        this.noteDataQueue = []; 
         this.lastSongPos = 0;
         this.globalYOffset = 0;
 
@@ -83,26 +82,65 @@ class NotesManager {
         this.lastSongPos = songPos;
 
         if (isRewinding) return this.recreateAllNotes();
-        if (this.notes.length === 0) return;
 
         const chartSpeed = funkin.play?.chart?.get("metadata.scrollSpeed") ?? funkin.play?.chart?.get("metadata.speed");
         if (chartSpeed !== undefined) this.scrollSpeed = chartSpeed;
+
+        const screenHeight = this.scene.scale?.height || 720;
+        const spawnDistance = screenHeight * 1.5; 
+        const spawnWindow = spawnDistance / (0.45 * (this.scrollSpeed || 1)); 
+
+        if (this.noteDataQueue && this.noteDataQueue.length > 0) {
+            while (this.noteDataQueue.length > 0 && (this.noteDataQueue[0].noteTime - songPos) <= spawnWindow) {
+                const data = this.noteDataQueue.shift();
+                const spawner = funkin.play.visuals.arrows.ArrowsSpawner;
+                if (spawner && spawner.spawnNoteFromPool) {
+                    spawner.spawnNoteFromPool(this.scene, this, data);
+                }
+            }
+        }
+
+        if (this.notes.length === 0 && (!this.noteDataQueue || this.noteDataQueue.length === 0)) return;
 
         this.processHitDetection(songPos, playAsOpponent, time);
         this.updateMovement(songPos, playAsOpponent, isTimeJumping, time);
     }
 
-    recreateAllNotes() {
-        for (let i = this.notes.length - 1; i >= 0; i--) {
-            if (this.notes[i]) {
-                this.notes[i].stop?.();
-                this.notes[i].destroy?.();
-            }
+    removeNoteFromGame(note, arrayIndex) {
+        if (arrayIndex !== undefined && arrayIndex >= 0) {
+            this.notes.splice(arrayIndex, 1);
+        } else {
+            const idx = this.notes.indexOf(note);
+            if (idx !== -1) this.notes.splice(idx, 1);
         }
+        
+        if (this.notePool && this.notePool.scene) {
+            this.notePool.killAndHide(note);
+            note.active = false;
+        } else {
+            note.destroy?.();
+        }
+    }
+
+    recreateAllNotes() {
+        this.notes.forEach(note => {
+            if (note && note.anims) note.stop();
+        });
+
+        if (this.notePool) {
+            if (this.notePool.scene) {
+                this.notePool.destroy(true, true);
+            }
+            this.notePool = null;
+        } else {
+            this.notes.forEach(note => note?.destroy?.());
+        }
+        
         this.notes = [];
+        this.noteDataQueue = [];
 
         funkin.play.visuals?.arrows?.ArrowsSpawner?.spawnChartNotes?.(this.scene, this);
-        this.skin.reloadSkin(); // OBLIGATORIO para aplicar la skin a las notas recién recreadas.
+        this.skin.reloadSkin(); 
     }
 
     updateMovement(songPos, playAsOpponent, isTimeJumping, time) {
@@ -141,8 +179,7 @@ class NotesManager {
             if (distance > 5000 || distance < -2000) {
                 note.visible = false;
                 if (distance < -2000) {
-                    this.notes.splice(i, 1);
-                    note.destroy?.();
+                    this.removeNoteFromGame(note, i);
                 }
                 continue;
             }
@@ -165,12 +202,7 @@ class NotesManager {
         this.scene?.events?.emit("noteHit", hitData);
         if (isMyNoteAuto) navigator?.vibrate?.(15);
 
-        if (arrayIndex !== undefined && arrayIndex >= 0) this.notes.splice(arrayIndex, 1);
-        else {
-            const idx = this.notes.indexOf(note);
-            if (idx !== -1) this.notes.splice(idx, 1);
-        }
-        note.destroy?.();
+        this.removeNoteFromGame(note, arrayIndex);
     }
 
     syncNotePosition(note, distance, fallbackDownscroll) {
@@ -270,12 +302,7 @@ class NotesManager {
         navigator?.vibrate?.(15);
         this.strumlines?.playConfirm?.(lane, closestNote.isPlayer, time, 150);
 
-        if (arrayIndex !== undefined && arrayIndex >= 0) this.notes.splice(arrayIndex, 1);
-        else {
-            const idx = this.notes.indexOf(closestNote);
-            if (idx !== -1) this.notes.splice(idx, 1);
-        }
-        closestNote.destroy?.();
+        this.removeNoteFromGame(closestNote, arrayIndex);
     }
 
     registerMiss(isPlayerSide, lane) {
@@ -296,7 +323,6 @@ class NotesManager {
         if (getOpt("twoPlayerLocal") || isPlayerSide) {
             const missKey = `missnote${Phaser.Math.Between(1, 3)}`;
             
-            // CORRECCIÓN: Se cambió a .exists() que es el método nativo correcto de Phaser para verificar audios en la caché
             if (targetScene.cache.audio.exists(missKey)) targetScene.sound.play(missKey, { volume: 0.6 });
             else if (targetScene.cache.audio.exists("missnote1")) targetScene.sound.play("missnote1", { volume: 0.6 });
             else if (!targetScene.sys.isLoadingEmergencyMiss) {
@@ -320,8 +346,22 @@ class NotesManager {
 
     destroy() {
         this.scene?.events?.off("ui_skin_changed", this.skin.reloadSkin, this);
-        this.notes.forEach(note => { if (note?.active) { note.stop?.(); note.destroy?.(); } });
+        
+        this.notes.forEach(note => {
+            if (note && note.anims) note.stop();
+        });
+        
+        if (this.notePool) {
+            if (this.notePool.scene) {
+                this.notePool.destroy(true, true);
+            }
+            this.notePool = null;
+        } else {
+            this.notes.forEach(note => note?.destroy?.());
+        }
+        
         this.notes = [];
+        this.noteDataQueue = [];
         this.destroyAPI();
     }
 }
