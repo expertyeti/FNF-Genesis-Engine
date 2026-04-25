@@ -1,15 +1,14 @@
-/**
- * @file FreePlayDiff.js
- * Componente de interfaz de usuario para el selector de dificultad
- * y la visualización de puntaje local en Freeplay.
- */
+// src/funkin/ui/freeplay/FreePlayDiff.js
+
+window.funkin = window.funkin || {};
+window.funkin.ui = window.funkin.ui || {};
+window.funkin.ui.freeplay = window.funkin.ui.freeplay || {};
+
 class FreePlayDiff {
   constructor(scene) {
     this.scene = scene;
-    this.difficulties = ["EASY", "NORMAL", "HARD"];
-
-    const savedDiff = this.scene.game.registry.get("freeplayDiffIndex");
-    this.currentIndex = savedDiff !== undefined ? savedDiff : 1;
+    this.difficulties = ["EASY", "NORMAL", "HARD"]; 
+    this.currentIndex = 1;
 
     const width = this.scene.scale.width;
 
@@ -19,7 +18,7 @@ class FreePlayDiff {
       .setDepth(99);
 
     this.diffText = this.scene.add
-      .text(width - 20, 20, `< ${this.difficulties[this.currentIndex]} >`, {
+      .text(width - 20, 20, `< Cargando >`, {
         fontFamily: "vcr",
         fontSize: "32px",
         color: "#FFFFFF",
@@ -63,72 +62,47 @@ class FreePlayDiff {
       .setDepth(100);
   }
 
-  // Nueva función para actualizar la lista de dificultades de forma dinámica
-  updateDifficultiesList(newList) {
-    const oldDiffName = this.difficulties[this.currentIndex];
-
-    if (!newList || newList.length === 0) {
-      newList = ["easy", "normal", "hard"];
+  initGlobalDifficulties(diffList) {
+    this.difficulties = diffList;
+    
+    const savedDiff = this.scene.game.registry.get("freeplayGlobalDiff") || "NORMAL";
+    this.currentIndex = this.difficulties.indexOf(savedDiff);
+    
+    if (this.currentIndex === -1) {
+        this.currentIndex = this.difficulties.indexOf("NORMAL");
+        if (this.currentIndex === -1) this.currentIndex = 0;
     }
 
-    this.difficulties = newList.map(d => d.toUpperCase());
+    this.updateUI();
 
-    // Intentamos mantener la misma dificultad si la nueva canción también la tiene
-    if (oldDiffName) {
-      const newIndex = this.difficulties.indexOf(oldDiffName);
-      if (newIndex !== -1) {
-        this.currentIndex = newIndex;
-      } else {
-        // Si no existe, buscamos "NORMAL" por defecto, o la primera.
-        const normalIndex = this.difficulties.indexOf("NORMAL");
-        this.currentIndex = normalIndex !== -1 ? normalIndex : 0;
-      }
-    } else {
-      this.currentIndex = 0;
+    if (this.scene.songsManager) {
+        this.scene.songsManager.applyDifficultyFilter(this.difficulties[this.currentIndex]);
     }
+  }
 
-    this.scene.game.registry.set("freeplayDiffIndex", this.currentIndex);
+  updateUI() {
+    this.scene.game.registry.set("freeplayGlobalDiff", this.difficulties[this.currentIndex]);
     this.diffText.setText(`< ${this.difficulties[this.currentIndex]} >`);
 
-    // Actualizar hitbox táctil si aplica
     if (!this.scene.sys.game.device.os.desktop && this.diffText.input) {
       const padding = 20;
       this.diffText.input.hitArea.width = this.diffText.width + padding * 2;
     }
-
-    // Refrescar el puntaje visual
-    if (this.scene.songsManager) {
-      const currentSong = this.scene.songsManager.getCurrentSong();
-      const songName =
-        typeof currentSong === "string"
-          ? currentSong
-          : currentSong && (currentSong.songName || currentSong.name);
-      if (songName) this.updateScoreDisplay(songName);
-    }
   }
 
   changeDifficulty(change) {
+    if (this.diffText.text === "< Cargando >") return;
+
     this.currentIndex += change;
 
     if (this.currentIndex < 0) this.currentIndex = this.difficulties.length - 1;
     else if (this.currentIndex >= this.difficulties.length)
       this.currentIndex = 0;
 
-    this.scene.game.registry.set("freeplayDiffIndex", this.currentIndex);
-    this.diffText.setText(`< ${this.difficulties[this.currentIndex]} >`);
-
-    if (!this.scene.sys.game.device.os.desktop && this.diffText.input) {
-      const padding = 20;
-      this.diffText.input.hitArea.width = this.diffText.width + padding * 2;
-    }
+    this.updateUI();
 
     if (this.scene.songsManager) {
-      const currentSong = this.scene.songsManager.getCurrentSong();
-      const songName =
-        typeof currentSong === "string"
-          ? currentSong
-          : currentSong && (currentSong.songName || currentSong.name);
-      if (songName) this.updateScoreDisplay(songName);
+      this.scene.songsManager.applyDifficultyFilter(this.difficulties[this.currentIndex]);
     }
   }
 
@@ -147,7 +121,6 @@ class FreePlayDiff {
       this.scoreText.setText(`SCORE: ${formatScore}`);
       this.accuracyText.setText(`ACCURACY: ${accStr}%`);
     } catch (e) {
-      console.warn(`Error recuperando puntaje para ${songName}`);
       this.scoreText.setText(`SCORE: 0`);
       this.accuracyText.setText(`ACCURACY: 0%`);
     }

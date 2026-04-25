@@ -2046,3 +2046,30 @@ INFO 2026-04-24 23:05:18,507 Auth info was exported to ./.tmp/auth_info.json api
 ERROR 2026-04-24 23:05:34,157 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 INFO 2026-04-24 23:08:07,313 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-24 23:08:11,822 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 12:45:07,188 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:45:12,316 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:49:05,951 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/characters/sserafim-kazuha.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:49:05,971 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/characters/sserafim-sakura.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:49:06,019 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/characters/sserafim-gf.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:49:12,178 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/sserafim-kazuha.png api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:49:12,381 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/sserafim-kazuha.xml api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 12:51:42,708 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:51:53,584 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:54:39,849 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:55:08,415 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/songs/test/charts/meta.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:55:08,422 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/songs/test/charts/notes.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:55:52,805 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:56:45,519 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/songs/test/charts/meta.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:56:45,521 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/songs/test/charts/notes.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:57:48,790 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:59:00,504 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/songs/test/charts/meta.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 12:59:00,506 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/songs/test/charts/notes.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:02:38,543 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:04:02,605 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/stages/tankmanBattlefieldErect.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:05:44,842 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/stages/phillyStreetsErect.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 13:10:36,784 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:10:53,132 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 13:12:21,082 Reloading the application... api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:12:21,367 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 13:14:47,590 Reloading the application... api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 13:14:47,803 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T

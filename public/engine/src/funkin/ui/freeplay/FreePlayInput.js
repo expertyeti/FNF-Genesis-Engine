@@ -1,7 +1,9 @@
-/**
- * @file FreePlayInput.js
- * Manejador unificado de entradas (teclado, ratón, táctil, rueda) para el menú Freeplay.
- */
+// src/funkin/ui/freeplay/FreePlayInput.js
+
+window.funkin = window.funkin || {};
+window.funkin.ui = window.funkin.ui || {};
+window.funkin.ui.freeplay = window.funkin.ui.freeplay || {};
+
 class FreePlayInput {
   constructor(scene) {
     this.scene = scene;
@@ -75,14 +77,16 @@ class FreePlayInput {
 
       if (gameObjects.length > 0 && this.scene.songsManager) {
         const clickedObj = gameObjects[0];
+        
         const index = this.scene.songsManager.songTexts.indexOf(clickedObj);
 
         if (index !== -1) {
           if (index === this.scene.songsManager.selectedIndex) {
             this.confirmSelection();
           } else {
-            const diff = index - this.scene.songsManager.selectedIndex;
-            this.scene.songsManager.updateSelection(diff);
+            if (typeof this.scene.songsManager.selectExactSong === "function") {
+                this.scene.songsManager.selectExactSong(index);
+            }
           }
         }
       }
@@ -124,7 +128,6 @@ class FreePlayInput {
     if (this.isTransitioning || !this.scene.canInteract) return;
 
     if (!this.scene.scene.manager.keys.hasOwnProperty("PlayScene")) {
-      console.warn(`[Genesis Engine] PlayScene no registrada.`);
       if (this.scene.cancelSound) this.scene.cancelSound.play();
       this.scene.cameras.main.shake(100, 0.01);
       return;
@@ -144,15 +147,12 @@ class FreePlayInput {
     let selectedSong = "Test";
     let diffString = "normal";
 
-    if (
-      this.scene.songsManager &&
-      this.scene.songsManager.songs &&
-      this.scene.songsManager.selectedIndex !== undefined
-    ) {
-      let s =
-        this.scene.songsManager.songs[this.scene.songsManager.selectedIndex];
-      selectedSong =
-        typeof s === "string" ? s : s.songName || s.name || s[0] || "Test";
+    // fix: obtenemos la cancion directo del gestor maestro
+    if (this.scene.songsManager) {
+        const currentSong = this.scene.songsManager.getCurrentSong();
+        if (currentSong) {
+            selectedSong = currentSong.name || currentSong.songName || currentSong[0] || "Test";
+        }
     }
 
     if (

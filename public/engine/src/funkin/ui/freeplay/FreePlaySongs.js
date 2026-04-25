@@ -1,16 +1,17 @@
-/**
- * @file FreePlaySongs.js
- * Carga las listas de canciones de las semanas y dibuja el alfabeto dinámico.
- */
+// src/funkin/ui/freeplay/FreePlaySongs.js
+
+window.funkin = window.funkin || {};
+window.funkin.ui = window.funkin.ui || {};
+window.funkin.ui.freeplay = window.funkin.ui.freeplay || {};
+
 class FreePlaySongs {
   constructor(scene) {
     this.scene = scene;
-    this.songs = [];
+    this.masterSongs = []; 
     this.songTexts = [];
+    this.visibleIndices = [];
 
-    const savedIndex = this.scene.game.registry.get("freeplaySongIndex");
-    this.selectedIndex = savedIndex !== undefined ? savedIndex : 0;
-
+    this.selectedIndex = 0;
     this.isConfirming = false;
     this.flickerTimer = null;
 
@@ -27,39 +28,44 @@ class FreePlaySongs {
 
   async loadSongs() {
     try {
-      const response = await fetch(
-        `${window.BASE_URL}assets/data/ui/weeks.txt?t=${Date.now()}`,
-      );
+      // si ya cargaron en esta sesion, las sacamos d vdd d la ram
+      if (window.funkin.masterSongList && window.funkin.allDifficulties) {
+        this.masterSongs = window.funkin.masterSongList;
+        this.allDifficulties = window.funkin.allDifficulties;
+        
+        // ntp, esperamos 50ms pa q FreePlayScene logre instanciar FreePlayDiff
+        this.scene.time.delayedCall(50, () => {
+            this.createUI();
+            this.onDataReady();
+        });
+        return;
+      }
+
+      const response = await fetch(`${window.BASE_URL}assets/data/ui/weeks.txt?t=${Date.now()}`);
       if (!response.ok) throw new Error("No se pudo cargar weeks.txt");
 
       const text = await response.text();
-      const weekIds = text
-        .split("\n")
-        .map((line) => line.trim())
-        .filter((line) => line.length > 0);
+      const weekIds = text.split("\n").map(line => line.trim()).filter(line => line.length > 0);
 
       for (const weekId of weekIds) {
         try {
-          const jsonRes = await fetch(
-            `${window.BASE_URL}assets/data/weeks/${weekId}.json?t=${Date.now()}`,
-          );
+          const jsonRes = await fetch(`${window.BASE_URL}assets/data/weeks/${weekId}.json?t=${Date.now()}`);
           if (!jsonRes.ok) continue;
 
           const json = await jsonRes.json();
           if (json.visible === false) continue;
 
           let weekColor = json.weekBackground || "#F9CF51";
-
           const tracksList = json.tracks || json.songs;
+
           if (tracksList && Array.isArray(tracksList)) {
             const trackPromises = tracksList.map(async (trackData) => {
               let folderName = "???";
               if (typeof trackData === "string") folderName = trackData;
-              else if (Array.isArray(trackData) && trackData.length > 0)
-                folderName = trackData[0];
+              else if (Array.isArray(trackData) && trackData.length > 0) folderName = trackData[0];
 
               let displayName = folderName;
-              let songDifficulties = ["easy", "normal", "hard"]; // Fallback por defecto
+              let songDifficulties = ["easy", "normal", "hard"]; 
 
               if (folderName !== "???") {
                 try {
@@ -67,45 +73,44 @@ class FreePlaySongs {
                   if (metaRes.ok) {
                     const metaJson = await metaRes.json();
                     displayName = metaJson.songName || folderName;
-                    
-                    // Extraemos las dificultades disponibles del meta.json
                     if (metaJson.difficulties && typeof metaJson.difficulties === 'object') {
                       songDifficulties = Object.keys(metaJson.difficulties);
                     }
                   }
-                } catch (e) {
-                  // Fallback silencioso
-                }
+                } catch (e) {}
               }
 
               return { 
                 name: folderName, 
                 displayName: displayName, 
                 color: weekColor,
-                difficulties: songDifficulties 
+                difficulties: songDifficulties.map(d => d.toUpperCase()) 
               };
             });
 
             const resolvedTracks = await Promise.all(trackPromises);
-            this.songs.push(...resolvedTracks);
+            this.masterSongs.push(...resolvedTracks);
           }
-        } catch (e) {
-          console.warn(`[FreePlaySongs] Error cargando semana ${weekId}:`, e);
-        }
+        } catch (e) {}
       }
 
-      if (this.selectedIndex >= this.songs.length) this.selectedIndex = 0;
+      let diffSet = new Set(["EASY", "NORMAL", "HARD"]); 
+      this.masterSongs.forEach(s => s.difficulties.forEach(d => diffSet.add(d)));
+      this.allDifficulties = Array.from(diffSet);
+
+      window.funkin.masterSongList = this.masterSongs;
+      window.funkin.allDifficulties = this.allDifficulties;
+
       this.createUI();
-    } catch (error) {
-      console.error("[FreePlaySongs] Error fatal cargando canciones:", error);
-    }
+      this.onDataReady();
+    } catch (error) {}
   }
 
   createUI() {
     const centerY = this.scene.cameras.main.height / 2;
     const screenWidth = this.scene.scale.width;
 
-    this.songs.forEach((songData, i) => {
+    this.masterSongs.forEach((songData, i) => {
       const textItem = new window.Alphabet(
         this.scene,
         100,
@@ -114,12 +119,12 @@ class FreePlaySongs {
         true,
         this.alphabetScale,
       );
+      
       textItem.setDepth(10);
-      textItem.targetY =
-        centerY +
-        (i - this.selectedIndex) * this.itemSpacing -
-        (this.baseLetterHeight * this.alphabetScale) / 2;
+      textItem.targetY = centerY;
       textItem.y = textItem.targetY;
+      textItem.visible = false;
+      textItem.active = false;
 
       const hitWidth = screenWidth;
       const hitHeight = this.itemSpacing;
@@ -132,53 +137,116 @@ class FreePlaySongs {
       this.songTexts.push(textItem);
     });
 
-    this.updateSelection(0);
+    const lastSong = this.scene.game.registry.get("freeplayLastSong");
+    if (lastSong) {
+      const foundIndex = this.masterSongs.findIndex(s => s.name === lastSong);
+      if (foundIndex !== -1) {
+        this.selectedIndex = foundIndex;
+      }
+    }
+  }
+
+  onDataReady() {
+    if (this.scene.diffManager) {
+        this.scene.diffManager.initGlobalDifficulties(this.allDifficulties);
+    } else {
+        this.applyDifficultyFilter(this.scene.game.registry.get("freeplayGlobalDiff") || "NORMAL");
+    }
+  }
+
+  applyDifficultyFilter(diffString) {
+    if (!diffString) return;
+    this.currentDiff = diffString.toUpperCase();
+
+    this.visibleIndices = [];
+    this.masterSongs.forEach((s, i) => {
+      if (s.difficulties.includes(this.currentDiff)) {
+        this.visibleIndices.push(i);
+      }
+    });
+
+    if (this.visibleIndices.length === 0) {
+      this.visibleIndices = this.masterSongs.map((_, i) => i);
+    }
+
+    if (!this.visibleIndices.includes(this.selectedIndex)) {
+      this.selectedIndex = this.visibleIndices.length > 0 ? this.visibleIndices[0] : 0;
+    }
+
+    this.updateLayout();
   }
 
   updateSelection(change) {
-    if (this.songs.length === 0 || this.isConfirming) return;
+    if (this.visibleIndices.length === 0 || this.isConfirming) return;
 
-    this.selectedIndex += change;
+    let currentVisualIndex = this.visibleIndices.indexOf(this.selectedIndex);
+    currentVisualIndex += change;
 
-    if (this.selectedIndex < 0) this.selectedIndex = this.songs.length - 1;
-    else if (this.selectedIndex >= this.songs.length) this.selectedIndex = 0;
+    if (currentVisualIndex < 0) currentVisualIndex = this.visibleIndices.length - 1;
+    else if (currentVisualIndex >= this.visibleIndices.length) currentVisualIndex = 0;
 
-    this.scene.game.registry.set("freeplaySongIndex", this.selectedIndex);
+    this.selectedIndex = this.visibleIndices[currentVisualIndex];
 
     if (change !== 0 && this.scene.cache.audio.exists("scrollMenu")) {
       this.scene.sound.play("scrollMenu", { volume: 1 });
     }
 
-    const centerY = this.scene.cameras.main.height / 2;
+    this.updateLayout();
+  }
 
-    this.songTexts.forEach((textItem, i) => {
-      textItem.targetY =
-        centerY +
-        (i - this.selectedIndex) * this.itemSpacing -
-        (this.baseLetterHeight * this.alphabetScale) / 2;
-      textItem.setAlpha(i === this.selectedIndex ? 1 : 0.6);
+  selectExactSong(masterIndex) {
+    if (!this.visibleIndices.includes(masterIndex) || this.isConfirming) return;
+    this.selectedIndex = masterIndex;
+    
+    if (this.scene.cache.audio.exists("scrollMenu")) {
+      this.scene.sound.play("scrollMenu", { volume: 1 });
+    }
+    
+    this.updateLayout();
+  }
+
+  updateLayout() {
+    const centerY = this.scene.cameras.main.height / 2;
+    const currentVisualIndex = this.visibleIndices.indexOf(this.selectedIndex);
+
+    this.songTexts.forEach((textItem, masterIdx) => {
+      if (this.visibleIndices.includes(masterIdx)) {
+        textItem.setVisible(true);
+        textItem.setActive(true);
+        const visualPos = this.visibleIndices.indexOf(masterIdx);
+        const offset = visualPos - currentVisualIndex;
+
+        textItem.targetY = centerY + offset * this.itemSpacing - (this.baseLetterHeight * this.alphabetScale) / 2;
+        textItem.setAlpha(masterIdx === this.selectedIndex ? 1 : 0.6);
+      } else {
+        textItem.setVisible(false);
+        textItem.setActive(false);
+        textItem.targetY = centerY - 2000;
+        textItem.y = textItem.targetY;
+      }
     });
 
-    const currentSongData = this.songs[this.selectedIndex];
+    const currentSongData = this.masterSongs[this.selectedIndex];
     if (currentSongData) {
+      this.scene.game.registry.set("freeplayLastSong", currentSongData.name);
+
       if (this.scene.bgManager) {
         this.scene.bgManager.updateColor(currentSongData.color);
       }
-      
-      // Actualizamos dinámicamente las dificultades en el UI
-      if (this.scene.diffManager && currentSongData.difficulties) {
-        this.scene.diffManager.updateDifficultiesList(currentSongData.difficulties);
+      if (this.scene.diffManager) {
+        this.scene.diffManager.updateScoreDisplay(currentSongData.name);
       }
     }
   }
 
   confirmSelection() {
-    if (this.isConfirming || this.songs.length === 0) return;
+    if (this.isConfirming || this.visibleIndices.length === 0) return;
     this.isConfirming = true;
 
     const selectedText = this.songTexts[this.selectedIndex];
-    let flickers = 0;
+    if (!selectedText) return;
 
+    let flickers = 0;
     this.flickerTimer = this.scene.time.addEvent({
       delay: 90,
       repeat: 11,
@@ -191,8 +259,8 @@ class FreePlaySongs {
   }
 
   getCurrentSong() {
-    return this.songs && this.songs.length > 0
-      ? this.songs[this.selectedIndex]
+    return this.masterSongs && this.masterSongs.length > 0
+      ? this.masterSongs[this.selectedIndex]
       : null;
   }
 
@@ -200,11 +268,13 @@ class FreePlaySongs {
     if (this.songTexts.length > 0) {
       const lerpFactor = Phaser.Math.Clamp(delta * 0.015, 0, 1);
       this.songTexts.forEach((textItem) => {
-        textItem.y = Phaser.Math.Linear(
-          textItem.y,
-          textItem.targetY,
-          lerpFactor,
-        );
+        if (textItem.visible) {
+            textItem.y = Phaser.Math.Linear(
+            textItem.y,
+            textItem.targetY,
+            lerpFactor,
+            );
+        }
       });
     }
   }

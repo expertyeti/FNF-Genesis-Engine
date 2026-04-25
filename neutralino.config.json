@@ -12,6 +12,7 @@
   "singleInstance": true,
   "nativeAllowList": [
     "app.*",
+    "debug.*",
     "os.*",
     "window.*",
     "events.*",
@@ -34,12 +35,6 @@
       "webviewArgs": "--autoplay-policy=no-user-gesture-required --disable-features=PreloadMediaEngagementData,MediaEngagementBypassAutoplayPolicies"
     }
   },
-  "extensions": [
-    {
-      "id": "js.neutralino.discordrpc",
-      "command": "node extensions/index.js"
-    }
-  ],
   "cli": {
     "binaryName": "Genesis Engine",
     "resourcesPath": "/public/engine/",
