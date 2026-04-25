@@ -2082,3 +2082,11 @@ ERROR 2026-04-25 13:22:46,486 NE_RS_UNBLDRE: Unable to load application resource
 ERROR 2026-04-25 13:25:20,133 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-25 13:32:08,732 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-25 13:34:50,118 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/images/stages/mall/erect/index.html api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 14:18:35,713 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 14:18:43,340 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 14:24:33,730 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 14:27:49,122 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 14:33:06,185 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 14:35:19,269 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/assets/data/stages/tankmanBattlefieldErect.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 14:36:40,248 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 14:37:31,965 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T

@@ -11,8 +11,14 @@ class NotesManager {
         this.strumlines = strumlines;
         this.notes = [];
         this.noteDataQueue = []; 
+        this.queueIndex = 0; // d vdd esto evita el shift()
         this.lastSongPos = 0;
         this.globalYOffset = 0;
+
+        // objetos reusables (zero-allocation runtime)
+        this.hitEventData = { pressed: true, ms: 0, absMs: 0, judgment: "perfect", score: 0, direction: 0, isPlayer: false, isAuto: false, note: null };
+        this.missEventData = { pressed: true, ms: 0, absMs: 0, judgment: "miss", score: -10, direction: 0, isPlayer: false, isAuto: false, note: null };
+        this.ghostEventData = { direction: 0, isPlayer: false };
 
         const chart = funkin.play?.chart;
         this.scrollSpeed = chart?.get("base.scrollSpeed") ?? chart?.get("metadata.scrollSpeed") ?? chart?.get("metadata.speed") ?? 1.0;
@@ -43,15 +49,32 @@ class NotesManager {
                 funkin.playNotes._listeners[eventName].push(callback);
             },
             emit: (eventName, data) => {
-                funkin.playNotes._listeners[eventName]?.forEach(cb => cb(data));
-                funkin.playNotes._globalListeners.forEach(cb => cb(eventName, data));
+                const listeners = funkin.playNotes._listeners[eventName];
+                if (listeners) {
+                    for (let i = 0; i < listeners.length; i++) listeners[i](data);
+                }
+                for (let i = 0; i < funkin.playNotes._globalListeners.length; i++) {
+                    funkin.playNotes._globalListeners[i](eventName, data);
+                }
             },
             get: {
                 all: () => this.notes,
-                byLane: (laneIndex, isPlayer) => this.notes.filter(n => n?.scene && n.lane === laneIndex && n.isPlayer === isPlayer && n.active),
+                byLane: (laneIndex, isPlayer) => {
+                    const res = [];
+                    for (let i = 0; i < this.notes.length; i++) {
+                        const n = this.notes[i];
+                        if (n && n.scene && n.lane === laneIndex && n.isPlayer === isPlayer && n.active) res.push(n);
+                    }
+                    return res;
+                },
                 upcoming: (isPlayer = true, timeWindowMs = 1500) => {
                     const currentPos = funkin.conductor?.songPosition ?? 0;
-                    return this.notes.filter(n => n?.scene && n.isPlayer === isPlayer && n.active && n.noteTime >= currentPos && n.noteTime <= currentPos + timeWindowMs);
+                    const res = [];
+                    for (let i = 0; i < this.notes.length; i++) {
+                        const n = this.notes[i];
+                        if (n && n.scene && n.isPlayer === isPlayer && n.active && n.noteTime >= currentPos && n.noteTime <= currentPos + timeWindowMs) res.push(n);
+                    }
+                    return res;
                 }
             }
         };
@@ -78,7 +101,7 @@ class NotesManager {
         }
 
         const isRewinding = songPos < (this.lastSongPos - 300);
-        const isTimeJumping = Math.abs(songPos - (this.lastSongPos ?? songPos)) > 300;
+        const isTimeJumping = songPos - (this.lastSongPos ?? songPos) > 300 || isRewinding;
         this.lastSongPos = songPos;
 
         if (isRewinding) return this.recreateAllNotes();
@@ -91,16 +114,17 @@ class NotesManager {
         const spawnWindow = spawnDistance / (0.45 * (this.scrollSpeed || 1)); 
 
         if (this.noteDataQueue && this.noteDataQueue.length > 0) {
-            while (this.noteDataQueue.length > 0 && (this.noteDataQueue[0].noteTime - songPos) <= spawnWindow) {
-                const data = this.noteDataQueue.shift();
+            while (this.queueIndex < this.noteDataQueue.length && (this.noteDataQueue[this.queueIndex].noteTime - songPos) <= spawnWindow) {
+                const data = this.noteDataQueue[this.queueIndex];
                 const spawner = funkin.play.visuals.arrows.ArrowsSpawner;
                 if (spawner && spawner.spawnNoteFromPool) {
                     spawner.spawnNoteFromPool(this.scene, this, data);
                 }
+                this.queueIndex++;
             }
         }
 
-        if (this.notes.length === 0 && (!this.noteDataQueue || this.noteDataQueue.length === 0)) return;
+        if (this.notes.length === 0 && (!this.noteDataQueue || this.queueIndex >= this.noteDataQueue.length)) return;
 
         this.processHitDetection(songPos, playAsOpponent, time);
         this.updateMovement(songPos, playAsOpponent, isTimeJumping, time);
@@ -123,21 +147,22 @@ class NotesManager {
     }
 
     recreateAllNotes() {
-        this.notes.forEach(note => {
-            if (note && note.anims) note.stop();
-        });
-
-        if (this.notePool) {
-            if (this.notePool.scene) {
-                this.notePool.destroy(true, true);
+        for (let i = 0; i < this.notes.length; i++) {
+            const note = this.notes[i];
+            if (note) {
+                if (note.anims) note.stop();
+                if (this.notePool && this.notePool.scene) {
+                    this.notePool.killAndHide(note);
+                    note.active = false;
+                } else {
+                    note.destroy?.();
+                }
             }
-            this.notePool = null;
-        } else {
-            this.notes.forEach(note => note?.destroy?.());
         }
         
         this.notes = [];
         this.noteDataQueue = [];
+        this.queueIndex = 0;
 
         funkin.play.visuals?.arrows?.ArrowsSpawner?.spawnChartNotes?.(this.scene, this);
         this.skin.reloadSkin(); 
@@ -192,14 +217,24 @@ class NotesManager {
     executeAutoHitFallback(note, timeDiff, isTimeJumping, time, isMyNoteAuto, arrayIndex) {
         if (!isTimeJumping) this.strumlines?.playConfirm?.(note.lane, note.isPlayer, time, note.length || 150);
 
-        const hitData = { pressed: true, ms: timeDiff, absMs: Math.abs(timeDiff), judgment: "perfect", score: isMyNoteAuto ? 500 : 0, direction: note.lane, isPlayer: note.isPlayer, isAuto: true, note };
+        const absMs = timeDiff < 0 ? -timeDiff : timeDiff;
+        
+        this.hitEventData.pressed = true;
+        this.hitEventData.ms = timeDiff;
+        this.hitEventData.absMs = absMs;
+        this.hitEventData.judgment = "perfect";
+        this.hitEventData.score = isMyNoteAuto ? 500 : 0;
+        this.hitEventData.direction = note.lane;
+        this.hitEventData.isPlayer = note.isPlayer;
+        this.hitEventData.isAuto = true;
+        this.hitEventData.note = note;
 
         if (funkin.playNotes) {
-            funkin.playNotes.lastHit = hitData;
-            funkin.playNotes.emit("noteHit", hitData);
+            funkin.playNotes.lastHit = this.hitEventData;
+            funkin.playNotes.emit("noteHit", this.hitEventData);
         }
         
-        this.scene?.events?.emit("noteHit", hitData);
+        this.scene?.events?.emit("noteHit", this.hitEventData);
         if (isMyNoteAuto) navigator?.vibrate?.(15);
 
         this.removeNoteFromGame(note, arrayIndex);
@@ -256,49 +291,68 @@ class NotesManager {
         const kb = this.scene?.input?.keyboard;
         if (kb && kb.addKey(17).isDown && kb.addKey(16).isDown && kb.addKey(18).isDown) return;
 
-        const processSideHits = (isMySide, prevKeys) => {
-            const currentKeys = isMySide ? this.strumlines?.keyStates?.player : this.strumlines?.keyStates?.opponent;
-            if (!currentKeys) return;
+        if (isTwoPlayer) { 
+            this._processSideHits(true, this.prevKeysP1, this.strumlines?.keyStates?.player, songPos, time, ghostTappingEnabled); 
+            this._processSideHits(false, this.prevKeysP2, this.strumlines?.keyStates?.opponent, songPos, time, ghostTappingEnabled); 
+        } else {
+            this._processSideHits(!playAsOpponent, this.prevKeysP1, !playAsOpponent ? this.strumlines?.keyStates?.player : this.strumlines?.keyStates?.opponent, songPos, time, ghostTappingEnabled);
+        }
+    }
 
-            for (let lane = 0; lane < this.keyCount; lane++) {
-                if (currentKeys[lane] && !prevKeys[lane]) {
-                    let closestNote = null, closestTime = 166, closestIndex = -1;
+    _processSideHits(isMySide, prevKeys, currentKeys, songPos, time, ghostTappingEnabled) {
+        if (!currentKeys) return;
 
-                    for (let i = 0; i < this.notes.length; i++) {
-                        const n = this.notes[i];
-                        if (n?.scene && n.active && n.isPlayer === isMySide && n.lane === lane && !n.wasHit && !n.hasMissed) {
-                            const diff = n.noteTime - songPos;
-                            if (Math.abs(diff) <= 166.0 && Math.abs(diff) < Math.abs(closestTime)) {
-                                closestNote = n; closestTime = diff; closestIndex = i;
-                            }
+        for (let lane = 0; lane < this.keyCount; lane++) {
+            if (currentKeys[lane] && !prevKeys[lane]) {
+                let closestNote = null, closestTime = 166, closestIndex = -1;
+
+                for (let i = 0; i < this.notes.length; i++) {
+                    const n = this.notes[i];
+                    if (n && n.scene && n.active && n.isPlayer === isMySide && n.lane === lane && !n.wasHit && !n.hasMissed) {
+                        const diff = n.noteTime - songPos;
+                        const absDiff = diff < 0 ? -diff : diff;
+
+                        if (absDiff <= 166.0 && absDiff < (closestTime < 0 ? -closestTime : closestTime)) {
+                            closestNote = n; closestTime = diff; closestIndex = i;
                         }
                     }
-
-                    if (closestNote) this.registerHit(closestNote, closestTime, lane, time, closestIndex);
-                    else if (!ghostTappingEnabled) this.registerMiss(isMySide, lane);
-                    else funkin.playNotes?.emit("directionPressed", { direction: lane, isPlayer: isMySide });
                 }
-                prevKeys[lane] = currentKeys[lane];
-            }
-        };
 
-        if (isTwoPlayer) { processSideHits(true, this.prevKeysP1); processSideHits(false, this.prevKeysP2); } 
-        else processSideHits(!playAsOpponent, this.prevKeysP1);
+                if (closestNote) {
+                    this.registerHit(closestNote, closestTime, lane, time, closestIndex);
+                } else if (!ghostTappingEnabled) {
+                    this.registerMiss(isMySide, lane);
+                } else if (funkin.playNotes) {
+                    this.ghostEventData.direction = lane;
+                    this.ghostEventData.isPlayer = isMySide;
+                    funkin.playNotes.emit("directionPressed", this.ghostEventData);
+                }
+            }
+            prevKeys[lane] = currentKeys[lane];
+        }
     }
 
     registerHit(closestNote, closestTime, lane, time, arrayIndex) {
-        const absMs = Math.abs(closestTime);
+        const absMs = closestTime < 0 ? -closestTime : closestTime;
         const judgment = absMs <= 5.0 ? "perfect" : absMs <= 45.0 ? "sick" : absMs <= 90.0 ? "good" : absMs <= 135.0 ? "bad" : "shit";
         const score = absMs <= 5.0 ? 500 : absMs <= 45.0 ? 350 : absMs <= 90.0 ? 200 : absMs <= 135.0 ? 100 : 50;
 
-        const hitData = { pressed: true, ms: closestTime, absMs, judgment, score, direction: lane, isPlayer: closestNote.isPlayer, isAuto: false, note: closestNote };
+        this.hitEventData.pressed = true;
+        this.hitEventData.ms = closestTime;
+        this.hitEventData.absMs = absMs;
+        this.hitEventData.judgment = judgment;
+        this.hitEventData.score = score;
+        this.hitEventData.direction = lane;
+        this.hitEventData.isPlayer = closestNote.isPlayer;
+        this.hitEventData.isAuto = false;
+        this.hitEventData.note = closestNote;
 
         if (funkin.playNotes) {
-            funkin.playNotes.lastHit = hitData;
-            funkin.playNotes.emit("noteHit", hitData);
+            funkin.playNotes.lastHit = this.hitEventData;
+            funkin.playNotes.emit("noteHit", this.hitEventData);
         }
 
-        this.scene?.events?.emit("noteHit", hitData);
+        this.scene?.events?.emit("noteHit", this.hitEventData);
         navigator?.vibrate?.(15);
         this.strumlines?.playConfirm?.(lane, closestNote.isPlayer, time, 150);
 
@@ -306,12 +360,21 @@ class NotesManager {
     }
 
     registerMiss(isPlayerSide, lane) {
-        const missData = { pressed: true, ms: 0, absMs: 0, judgment: "miss", score: -10, direction: lane, isPlayer: isPlayerSide, isAuto: false };
+        this.missEventData.pressed = true;
+        this.missEventData.ms = 0;
+        this.missEventData.absMs = 0;
+        this.missEventData.judgment = "miss";
+        this.missEventData.score = -10;
+        this.missEventData.direction = lane;
+        this.missEventData.isPlayer = isPlayerSide;
+        this.missEventData.isAuto = false;
+        this.missEventData.note = null;
+
         if (funkin.playNotes) {
-            funkin.playNotes.lastHit = missData;
-            funkin.playNotes.emit("noteMiss", missData);
+            funkin.playNotes.lastHit = this.missEventData;
+            funkin.playNotes.emit("noteMiss", this.missEventData);
         }
-        this.scene?.events?.emit("noteMiss", missData);
+        this.scene?.events?.emit("noteMiss", this.missEventData);
         this.playMissSound(isPlayerSide);
     }
 
@@ -347,21 +410,23 @@ class NotesManager {
     destroy() {
         this.scene?.events?.off("ui_skin_changed", this.skin.reloadSkin, this);
         
-        this.notes.forEach(note => {
-            if (note && note.anims) note.stop();
-        });
-        
-        if (this.notePool) {
-            if (this.notePool.scene) {
-                this.notePool.destroy(true, true);
+        for (let i = 0; i < this.notes.length; i++) {
+            const note = this.notes[i];
+            if (note && note.active) {
+                if (note.anims) note.stop();
+                if (this.notePool) this.notePool.killAndHide(note);
+                else note.destroy?.();
             }
+        }
+        
+        if (this.notePool && this.notePool.scene) {
+            this.notePool.destroy(true, true);
             this.notePool = null;
-        } else {
-            this.notes.forEach(note => note?.destroy?.());
         }
         
         this.notes = [];
         this.noteDataQueue = [];
+        this.queueIndex = 0;
         this.destroyAPI();
     }
 }
