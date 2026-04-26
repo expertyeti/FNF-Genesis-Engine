@@ -2106,3 +2106,23 @@ ERROR 2026-04-25 16:51:11,316 NE_RS_UNBLDRE: Unable to load application resource
 ERROR 2026-04-25 16:57:01,212 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-25 17:08:14,921 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
 ERROR 2026-04-25 17:11:45,567 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 20:09:47,912 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 20:09:59,216 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 20:15:51,353 Reloading the application... api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 20:15:51,820 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 20:16:38,355 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 20:16:45,475 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 20:18:13,193 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 20:25:08,253 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 20:39:53,287 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 20:42:20,909 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 20:45:34,791 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 20:52:32,158 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 20:56:35,151 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 21:04:10,832 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 21:44:59,795 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 21:45:07,969 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 21:54:30,409 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 21:54:42,815 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T
+INFO 2026-04-25 22:06:42,002 Auth info was exported to ./.tmp/auth_info.json api\debug\debug.cpp:17 leive@DESKTOP-ESCKB7T
+ERROR 2026-04-25 22:06:48,671 NE_RS_UNBLDRE: Unable to load application resource file /public/engine/.well-known/appspecific/com.chrome.devtools.json api\debug\debug.cpp:20 leive@DESKTOP-ESCKB7T

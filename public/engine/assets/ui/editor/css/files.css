@@ -1,0 +1,156 @@
+/* Variables y contenedor principal */
+.window-content {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --hover-bg: #2d2d2d;
+    --hover-text: #ffffff;
+    --border-color: #333333;
+    --scrollbar-bg: #121212;
+    --scrollbar-thumb: #444444;
+    --scrollbar-thumb-hover: #666666;
+    background-color: var(--bg-color);
+}
+
+/* Custom Scrollbar */
+.file-explorer::-webkit-scrollbar { width: 8px; height: 8px; }
+.file-explorer::-webkit-scrollbar-track { background: var(--scrollbar-bg); }
+.file-explorer::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+.file-explorer::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
+/* Header */
+.sidebar-header {
+    padding: 10px 15px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-color);
+    flex-shrink: 0;
+}
+
+.header-title-container {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    flex: 1;
+    margin-right: 10px;
+}
+
+#root-folder-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    color: #fff;
+}
+
+.action-icon {
+    cursor: pointer;
+    margin-left: 10px;
+    color: #888;
+    transition: color 0.2s;
+    display: none;
+}
+.action-icon:hover { color: var(--text-color); }
+
+.upload-btn {
+    background: transparent;
+    color: #888;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: color 0.2s;
+}
+.upload-btn:hover { color: var(--text-color); }
+
+/* Dropzone */
+.dropzone-container {
+    margin: 20px;
+    border: 2px dashed #444;
+    padding: 30px 10px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+.dropzone-container:hover, .dropzone-container.dragover {
+    border-color: #fff;
+    background: rgba(255,255,255,0.05);
+}
+.dropzone-content p { margin: 5px 0; color: #aaa; font-size: 12px; }
+
+/* Explorador (Listas) */
+.file-explorer {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 5px 0;
+}
+
+.file-explorer ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.file-explorer ul ul {
+    padding-left: 12px;
+    border-left: 1px solid transparent;
+    display: none;
+}
+
+.file-explorer ul ul.open { display: block; }
+.file-explorer ul ul:hover { border-left: 1px solid var(--border-color); }
+
+.file-explorer li { margin: 0; }
+
+.item {
+    display: flex;
+    align-items: center;
+    padding: 4px 10px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    color: #cccccc;
+}
+
+.item:hover {
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
+}
+
+/* Unificamos el color y comportamiento de los iconos (monocromo) */
+.item i:not(.caret) {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+    color: #aaaaaa; /* Color unificado para todos los iconos */
+}
+
+/* Al pasar el ratón, los iconos brillan junto con el texto */
+.item:hover i:not(.caret) {
+    color: #ffffff; 
+}
+
+.item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+}
+
+.caret {
+    margin-right: 5px !important;
+    font-size: 0.8em;
+    visibility: hidden;
+    flex-shrink: 0;
+    width: 12px !important;
+    color: #666666;
+}
+
+.is-folder .caret { visibility: visible; }

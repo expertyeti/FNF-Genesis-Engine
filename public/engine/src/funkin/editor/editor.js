@@ -17,13 +17,24 @@ class EditorScene extends Phaser.Scene {
   }
 
   async buildUI() {
-    const cache = await funkin.editor.html.XMLPreloader.loadXMLs(["toolbar"]);
-    const xmlContent = cache["toolbar"];
-    if (!xmlContent) return;
+    const xmlFiles = ["toolbar", "files"];
+    // Cargamos los archivos desde el preloader
+    const cache = await funkin.editor.html.XMLPreloader.loadXMLs(xmlFiles);
+    
+    let htmlContent = "";
 
-    const htmlContent = funkin.editor.html.XMLInterpreter.parse(xmlContent);
+    // Iteramos y parseamos CADA archivo de forma individual
+    for (const file of xmlFiles) {
+        if (cache[file]) {
+            htmlContent += funkin.editor.html.XMLInterpreter.parse(cache[file]);
+        }
+    }
 
-    this.domElement = this.add.dom(0, 0).createFromHTML(htmlContent);
+    // Si no se generó nada, salimos
+    if (htmlContent === "") return;
+
+    // Envolvemos todo en un div contenedor para que Phaser lo maneje como un solo DOMElement
+    this.domElement = this.add.dom(0, 0).createFromHTML(`<div>${htmlContent}</div>`);
     this.domElement.setOrigin(0, 0);
     
     if (this.domElement.node) {
@@ -31,6 +42,11 @@ class EditorScene extends Phaser.Scene {
       this.domElement.node.style.width = this.scale.width + 'px';
       this.domElement.node.style.height = this.scale.height + 'px';
       this.domElement.node.style.pointerEvents = 'none';
+      
+      // Crítico: Aseguramos que el contenedor padre sirva de ancla absoluta para las ventanas
+      this.domElement.node.style.position = 'absolute';
+      this.domElement.node.style.top = '0';
+      this.domElement.node.style.left = '0';
     }
 
     this.scene.bringToTop();

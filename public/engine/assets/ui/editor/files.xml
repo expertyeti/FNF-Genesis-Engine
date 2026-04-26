@@ -1,0 +1,25 @@
+<window anchored="left" width="280px" resizable="true" script="files.js">
+    <link style="files.css" />
+    
+    <div class="sidebar-header">
+        <div class="header-title-container">
+            <span id="root-folder-name">EXPLORADOR</span>
+            <i class="fas fa-compress-arrows-alt action-icon" id="collapse-all-btn" title="Colapsar todas las carpetas"></i>
+        </div>
+        <label for="folder-input" class="upload-btn" title="Abrir carpeta">
+            <i class="fas fa-folder-plus"></i>
+        </label>
+        <input type="file" id="folder-input" webkitdirectory="true" directory="true" multiple="true" style="display: none;" />
+    </div>
+
+    <div class="dropzone-container" id="project-dropzone">
+        <div class="dropzone-content">
+            <i class="fas fa-upload" style="font-size: 24px; margin-bottom: 10px; color: #888;"></i>
+            <p class="main-text">Arrastra una carpeta aquí</p>
+            <p class="sub-text">o usa el botón superior</p>
+        </div>
+    </div>
+
+    <div class="file-explorer" id="file-list-container">
+        </div>
+</window>
