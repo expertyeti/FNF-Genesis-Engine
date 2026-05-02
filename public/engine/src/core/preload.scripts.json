@@ -59,6 +59,7 @@
 
   "src/funkin/play/scripts/API/APIManager.js",
   "src/funkin/play/scripts/API/camera.js",
+  "src/funkin/play/scripts/API/song.js",
   "src/funkin/play/scripts/events.js",
 
   "src/funkin/play/visuals/UI/judgment/PBOTConstants.js",

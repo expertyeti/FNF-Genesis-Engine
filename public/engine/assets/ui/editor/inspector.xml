@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window title="Inspector" anchored="right" resizable="true" width="280px" script="inspector.js">
+    <link style="inspector.css" />
+    <div class="inspector-header">PROPERTIES</div>
+    <div class="inspector-scroll">
+        <div class="inspector-section">
+            <div class="section-label">Transform</div>
+            <div class="property-group">
+                <div class="prop-row"><span>X</span><input type="number" value="0"/></div>
+                <div class="prop-row"><span>Y</span><input type="number" value="0"/></div>
+            </div>
+        </div>
+        <div class="inspector-section">
+            <div class="section-label">Appearance</div>
+            <div class="prop-row"><span>Alpha</span><input type="range" min="0" max="1" step="0.1"/></div>
+        </div>
+    </div>
+</window>

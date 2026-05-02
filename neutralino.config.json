@@ -28,7 +28,6 @@
       "minWidth": 400,
       "minHeight": 200,
       "center": true,
-      "icon": "/public/engine/assets/engine_app_icon.png",
       "enableInspector": true,
       "resizable": true,
       "exitProcessOnClose": true,

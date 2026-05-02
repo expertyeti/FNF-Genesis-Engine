@@ -1,0 +1,65 @@
+<window anchored="bottom" height="260px" resizable="true" script="timeline.js">
+    <link style="timeline.css" />
+    
+    <div class="timeline-container">
+        <div class="timeline-header">
+            <div class="timeline-timecode">
+                <span id="tl-time">00:00:00:00</span>
+                <span class="tl-separator">|</span>
+                <div class="bpm-control" title="bpm de la cancion">
+                    <input type="number" id="tl-bpm" value="120" min="1" max="999" />
+                    <span>bpm</span>
+                </div>
+            </div>
+            
+            <div class="timeline-controls">
+                <i class="fas fa-step-backward control-btn" id="tl-prev" title="atrasar 10s"></i>
+                <i class="fas fa-play control-btn" id="tl-play" title="reproducir"></i>
+                <i class="fas fa-pause control-btn" id="tl-pause" title="pausar" style="display:none;"></i>
+                <i class="fas fa-step-forward control-btn" id="tl-next" title="adelantar 10s"></i>
+            </div>
+            
+            <div class="timeline-tools">
+                <i class="fas fa-cut tool-btn" title="cortar"></i>
+                <i class="fas fa-copy tool-btn" title="copiar"></i>
+                <i class="fas fa-paste tool-btn" title="pegar"></i>
+                <div class="zoom-container">
+                    <i class="fas fa-search-minus" style="font-size:10px;"></i>
+                    <input type="range" class="zoom-slider" min="10" max="150" value="50" id="tl-zoom" title="zoom de tiempo" />
+                    <i class="fas fa-search-plus" style="font-size:10px;"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="timeline-body">
+            <div class="track-headers" id="track-headers">
+                <div class="track-headers-toolbar">
+                    <span>tracks</span>
+                    <i class="fas fa-plus action-icon" id="btn-add-track" title="add track"></i>
+                </div>
+                <div id="track-headers-list" class="track-headers-list">
+                </div>
+            </div>
+            
+            <div class="track-content-wrapper" id="track-content-wrapper">
+                <div class="time-ruler" id="time-ruler">
+                    <div class="playhead" id="playhead">
+                        <div class="playhead-top"><i class="fas fa-caret-down"></i></div>
+                        <div class="playhead-line"></div>
+                    </div>
+                </div>
+                <div class="track-lanes" id="track-lanes">
+                </div>
+            </div>
+        </div>
+        
+        <div id="tl-context-menu" class="tl-context-menu" style="display: none;">
+            <div class="tl-menu-item" id="cmenu-add-track">
+                <i class="fas fa-plus"></i> add track
+            </div>
+            <div class="tl-menu-item">
+                <i class="fas fa-trash"></i> delete track
+            </div>
+        </div>
+    </div>
+</window>
