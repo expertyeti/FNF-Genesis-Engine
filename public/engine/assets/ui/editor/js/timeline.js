@@ -6,6 +6,7 @@
         pixelsPerSecond: 50,
         animationFrame: null,
         maxDuration: 300,
+        minTime: -4, 
         trackCounter: 0,
         bpm: 120,
         lastTime: 0,
@@ -28,7 +29,6 @@
         
         const btnAddTrack = document.getElementById('btn-add-track');
         const zoomSlider = document.getElementById('tl-zoom');
-
         const ctxMenu = document.getElementById('tl-context-menu');
         const cmenuAddTrack = document.getElementById('cmenu-add-track');
         
@@ -86,11 +86,11 @@
             let newTime = window.GenesisTimeline.currentTime;
             let dt = (newTime - (window.GenesisTimeline.lastTime || 0)) * 1000;
             window.GenesisTimeline.lastTime = newTime;
-
+            
             let newSongPos = newTime * 1000;
             let beatHit = false;
             let currentBeat = 0;
-
+            
             if (window.funkin && window.funkin.conductor) {
                 window.funkin.conductor.songPosition = newSongPos;
                 
@@ -107,9 +107,9 @@
                     }
                 }
             }
-
+            
             let CharManager = window.funkin && window.funkin.play && window.funkin.play.visuals && window.funkin.play.visuals.characters && window.funkin.play.visuals.characters.charactersManager;
-
+            
             if (window.game) {
                 window.game.sound.getAll().forEach(s => {
                     if (s.seek !== undefined) {
@@ -120,10 +120,10 @@
                 window.game.scene.scenes.forEach(scene => {
                     if (scene.sys.isActive() || scene.isGamePaused) {
                         let isPaused = !window.GenesisTimeline.isPlaying;
-                        scene.isRewinding = isPaused && (dt < 0); 
+                        scene.isRewinding = isPaused && (dt < 0);
                         
                         let simTime = scene.time ? scene.time.now : newSongPos;
-
+                        
                         if (scene.notesManager && typeof scene.notesManager.update === 'function') {
                             if (dt < 0 && typeof scene.notesManager.recreateAllNotes === 'function') {
                                 scene.notesManager.recreateAllNotes();
@@ -135,7 +135,7 @@
                         if (scene.sustainNotesManager && typeof scene.sustainNotesManager.update === 'function') {
                             scene.sustainNotesManager.update(simTime, 16);
                         }
-
+                        
                         if (isPaused) {
                             if (scene.activeCharacters && scene.notesManager && scene.notesManager.noteDataQueue) {
                                 let p1Note = null, p1Time = -99999;
@@ -150,21 +150,57 @@
                                 
                                 const applyPose = (char, note, time) => {
                                     if (!char || !char.active || !CharManager) return;
-                                    let holdTime = (((60 / (window.GenesisTimeline.bpm || 120)) * 1000) / 4) * (char.holdTime || 4.0);
+                                    let bpmVal = window.GenesisTimeline.bpm || 120;
+                                    let crochet = (60 / (bpmVal > 0 ? bpmVal : 120)) * 1000;
+                                    let holdTime = (crochet / 4) * (char.holdTime || 4.0);
                                     
-                                    if (note && (newSongPos - time) < holdTime) {
+                                    let elapsedMs = 0;
+                                    let targetAnimName = "";
+                                    
+                                    if (note && (newSongPos - time) < holdTime && (newSongPos - time) >= 0) {
                                         let dirs = ["LEFT", "DOWN", "UP", "RIGHT"];
                                         let dirName = dirs[note.lane % 4] || "UP";
-                                        let animName = 'sing' + dirName;
-                                        if (char.currentAnim !== animName) {
-                                            CharManager.playAnim(char, animName, true);
-                                            char.resetTimer = time + holdTime;
-                                        }
+                                        targetAnimName = 'sing' + dirName;
+                                        elapsedMs = newSongPos - time;
+                                        char.resetTimer = time + holdTime;
+                                        char.isSinging = true;
                                     } else {
-                                        let targetIdle = char.danceMode === "danceLeftRight" ? (char.danced ? "danceRight" : "danceLeft") : "idle";
-                                        if (char.currentAnim !== targetIdle && !char.currentAnim.startsWith('idle') && !char.currentAnim.startsWith('dance')) {
-                                            CharManager.playAnim(char, targetIdle, true);
-                                            char.resetTimer = 0;
+                                        if (char.danceMode === "danceLeftRight") {
+                                            char.danced = (currentBeat % 2 !== 0);
+                                        }
+                                        targetAnimName = char.danceMode === "danceLeftRight" ? (char.danced ? "danceRight" : "danceLeft") : "idle";
+                                        
+                                        let lastBeatTime = currentBeat * crochet;
+                                        elapsedMs = newSongPos - lastBeatTime;
+                                        if (elapsedMs < 0) elapsedMs = 0;
+                                        
+                                        char.resetTimer = 0;
+                                        char.isSinging = false;
+                                    }
+                                    
+                                    if (char.currentAnim !== targetAnimName) {
+                                        CharManager.playAnim(char, targetAnimName, true);
+                                    }
+                                    
+                                    if (char.anims && char.anims.currentAnim) {
+                                        let anim = char.anims.currentAnim;
+                                        let timeScale = char.anims.timeScale || 1;
+                                        let msPerFrame = (1000 / (anim.frameRate || 24)) / timeScale;
+                                        let targetFrameIdx = Math.floor(elapsedMs / msPerFrame);
+                                        let totFrames = anim.frames.length;
+                                        
+                                        if (targetFrameIdx < 0) targetFrameIdx = 0;
+                                        
+                                        if (anim.repeat === -1) {
+                                            targetFrameIdx = targetFrameIdx % totFrames;
+                                        } else {
+                                            if (targetFrameIdx >= totFrames) targetFrameIdx = totFrames - 1;
+                                        }
+                                        
+                                        if (targetFrameIdx >= 0 && targetFrameIdx < totFrames) {
+                                            char.anims.setCurrentFrame(anim.frames[targetFrameIdx]);
+                                            char.anims.accumulator = 0;
+                                            char.anims.nextTick = 0;
                                         }
                                     }
                                 };
@@ -176,26 +212,52 @@
                                 });
                             }
 
-                            if (beatHit && scene.activeCharacters) {
-                                scene.activeCharacters.forEach(char => {
-                                    if (!char || !char.active || char.isSinging || char.isSpecialAnim) return;
-                                    if (char.danceMode === "danceLeftRight") {
-                                        char.danced = !char.danced;
-                                        if (CharManager && typeof CharManager.playAnim === 'function') {
-                                            CharManager.playAnim(char, char.danced ? "danceRight" : "danceLeft", true);
-                                        }
-                                    } else if (currentBeat % 2 === 0) {
-                                        if (CharManager && typeof CharManager.playAnim === 'function') {
-                                            CharManager.playAnim(char, "idle", true);
-                                        }
-                                    }
-                                });
+                            let bpmVal = window.GenesisTimeline.bpm || 120;
+                            let crochet = (60 / (bpmVal > 0 ? bpmVal : 120)) * 1000;
+                            let lastBeatTime = currentBeat * crochet;
+                            let elapsedMs = newSongPos - lastBeatTime;
+
+                            if (scene.healthBar) {
+                                let bopStrength = 0.2;
+                                let decay = Math.max(0, 1 - (elapsedMs / (crochet * 0.8))); 
+                                let scaleAdd = bopStrength * decay;
                                 
+                                if (scene.healthBar.iconP1 && scene.healthBar.iconP1.sprite) {
+                                    scene.healthBar.iconP1.currentScale = scene.healthBar.iconP1.baseScale + scaleAdd;
+                                    scene.healthBar.iconP1.sprite.setScale(scene.healthBar.iconP1.currentScale);
+                                }
+                                if (scene.healthBar.iconP2 && scene.healthBar.iconP2.sprite) {
+                                    scene.healthBar.iconP2.currentScale = scene.healthBar.iconP2.baseScale + scaleAdd;
+                                    scene.healthBar.iconP2.sprite.setScale(scene.healthBar.iconP2.currentScale);
+                                }
+                            }
+
+                            if (scene.gameCam) {
+                                let zoomFreq = (window.funkin && window.funkin.play && window.funkin.play.data && window.funkin.play.data.camera && window.funkin.play.data.camera.zoomFreq) ? window.funkin.play.data.camera.zoomFreq : 4;
+                                let lastBopBeat = Math.floor(currentBeat / zoomFreq) * zoomFreq;
+                                let lastBopTime = lastBopBeat * crochet;
+                                let elapsedFromBop = newSongPos - lastBopTime;
+                                
+                                if (elapsedFromBop >= 0) {
+                                    let camDecay = Math.max(0, 1 - (elapsedFromBop / (crochet * zoomFreq * 0.5)));
+                                    let gameBopInt = 0.015 * camDecay;
+                                    let uiBopInt = 0.03 * camDecay;
+                                    
+                                    if (scene.gameCam.defaultZoom) {
+                                        scene.gameCam.zoom = scene.gameCam.defaultZoom + gameBopInt;
+                                    }
+                                    if (scene.uiCam && scene.uiCam.defaultZoom) {
+                                        scene.uiCam.zoom = scene.uiCam.defaultZoom + uiBopInt;
+                                    }
+                                }
+                            }
+                            
+                            if (beatHit) {
                                 if (window.funkin && window.funkin.play && window.funkin.play.playListSprites && typeof window.funkin.play.playListSprites.onBeat === 'function') {
                                     window.funkin.play.playListSprites.onBeat(currentBeat);
                                 }
                             }
-
+                            
                             if (scene.strumlines) {
                                 const fixStrum = (s) => {
                                     if (s && s.active && s.currentAction !== 'static') {
@@ -205,22 +267,24 @@
                                 if (scene.strumlines.playerStrums) scene.strumlines.playerStrums.forEach(fixStrum);
                                 if (scene.strumlines.opponentStrums) scene.strumlines.opponentStrums.forEach(fixStrum);
                             }
-
+                            
                             if (dt !== 0) {
                                 scene.children.list.forEach(child => {
                                     if (!child || !child.active || !child.anims || !child.anims.currentAnim) return;
                                     if (child.lane !== undefined || child.currentAction !== undefined || child.noteTime !== undefined || child.isStrum) return;
+                                    if (child.isPlayer || child.isOpponent || child.isSpectator) return; 
                                     
                                     try {
                                         child.anims.accumulator = 0;
                                         child.anims.nextTick = 0;
                                         
                                         let anim = child.anims.currentAnim;
-                                        let msPerFrame = 1000 / (anim.frameRate || 24);
+                                        let timeScale = child.anims.timeScale || 1;
+                                        let msPerFrame = (1000 / (anim.frameRate || 24)) / timeScale;
                                         
                                         if (!child.anims._scrubAccumulator) child.anims._scrubAccumulator = 0;
                                         child.anims._scrubAccumulator += dt;
-
+                                        
                                         if (child.anims._scrubAccumulator >= msPerFrame) {
                                             let framesToAdvance = Math.floor(child.anims._scrubAccumulator / msPerFrame);
                                             child.anims._scrubAccumulator -= framesToAdvance * msPerFrame;
@@ -241,7 +305,6 @@
                                                 
                                                 let curFrame = child.anims.currentFrame;
                                                 let totFrames = child.anims.currentAnim.frames.length;
-
                                                 if (curFrame && curFrame.index === 1) {
                                                     if (anim.repeat === -1) {
                                                         if (typeof child.anims.setCurrentFrame === 'function') {
@@ -259,8 +322,7 @@
                                         if (anim.repeat === -1 && !child.anims.isPlaying) {
                                             child.anims.isPlaying = true;
                                         }
-                                    } catch (e) {
-                                    }
+                                    } catch (e) {}
                                 });
                             }
                         }
@@ -272,7 +334,12 @@
         zoomSlider.addEventListener('input', (e) => {
             window.GenesisTimeline.pixelsPerSecond = parseInt(e.target.value);
             trackWrapper.style.setProperty('--pps', window.GenesisTimeline.pixelsPerSecond);
+            
+            let totalSeconds = window.GenesisTimeline.maxDuration - window.GenesisTimeline.minTime;
+            timeRuler.style.width = `calc(${totalSeconds} * var(--pps) * 1px)`;
+            if (trackLanes) trackLanes.style.width = `calc(${totalSeconds} * var(--pps) * 1px)`;
         });
+        
         trackWrapper.style.setProperty('--pps', window.GenesisTimeline.pixelsPerSecond);
         zoomSlider.value = window.GenesisTimeline.pixelsPerSecond;
 
@@ -284,7 +351,7 @@
                 window.GenesisTimeline.bpm = actualBpm > 0.1 ? actualBpm : 120;
                 bpmInput.value = window.GenesisTimeline.bpm;
             }
-
+            
             bpmInput.addEventListener('change', (e) => {
                 let newBpm = parseFloat(e.target.value);
                 if (isNaN(newBpm) || newBpm <= 0) newBpm = 120;
@@ -300,11 +367,20 @@
                 <div class="playhead-line"></div>
             </div>
         `;
-        for (let i = 0; i <= window.GenesisTimeline.maxDuration; i++) {
+        
+        let totalSeconds = window.GenesisTimeline.maxDuration - window.GenesisTimeline.minTime;
+        timeRuler.style.width = `calc(${totalSeconds} * var(--pps) * 1px)`;
+        if (trackLanes) trackLanes.style.width = `calc(${totalSeconds} * var(--pps) * 1px)`;
+
+        for (let i = window.GenesisTimeline.minTime; i <= window.GenesisTimeline.maxDuration; i++) {
             const mark = document.createElement('span');
             mark.className = 'time-mark';
-            mark.innerText = `${i}s`;
-            mark.style.left = `calc(${i} * var(--pps) * 1px)`;
+            if (i < 0) {
+                mark.innerText = `cd ${i}s`;
+            } else {
+                mark.innerText = `${i}s`;
+            }
+            mark.style.left = `calc(${(i - window.GenesisTimeline.minTime)} * var(--pps) * 1px)`;
             timeRuler.appendChild(mark);
         }
 
@@ -364,15 +440,18 @@
         const playhead = document.getElementById('playhead');
         
         function formatTime(seconds) {
-            const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
-            const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-            const s = Math.floor(seconds % 60).toString().padStart(2, '0');
-            const ms = Math.floor((seconds % 1) * 100).toString().padStart(2, '0');
-            return `${h}:${m}:${s}:${ms}`;
+            const sign = seconds < 0 ? '-' : '';
+            const absSec = Math.abs(seconds);
+            const h = Math.floor(absSec / 3600).toString().padStart(2, '0');
+            const m = Math.floor((absSec % 3600) / 60).toString().padStart(2, '0');
+            const s = Math.floor(absSec % 60).toString().padStart(2, '0');
+            const ms = Math.floor((absSec % 1) * 100).toString().padStart(2, '0');
+            return `${sign}${h}:${m}:${s}:${ms}`;
         }
 
         function updatePlayhead() {
-            trackWrapper.style.setProperty('--current-time', window.GenesisTimeline.currentTime);
+            let relativeTime = window.GenesisTimeline.currentTime - window.GenesisTimeline.minTime;
+            trackWrapper.style.setProperty('--current-time', relativeTime);
             if (timeDisplay) timeDisplay.textContent = formatTime(window.GenesisTimeline.currentTime);
         }
 
@@ -417,7 +496,7 @@
 
         if (prevBtn) {
             prevBtn.onclick = () => {
-                window.GenesisTimeline.currentTime = Math.max(0, window.GenesisTimeline.currentTime - 10);
+                window.GenesisTimeline.currentTime = Math.max(window.GenesisTimeline.minTime, window.GenesisTimeline.currentTime - 10);
                 updatePlayhead();
                 syncEngineState();
             };
@@ -432,6 +511,7 @@
         }
 
         let isDragging = false;
+
         trackWrapper.addEventListener('mousedown', (e) => {
             if(e.offsetY >= trackWrapper.clientHeight || e.offsetX >= trackWrapper.clientWidth) return;
             isDragging = true;
@@ -455,17 +535,20 @@
             let x = (e.clientX - rect.left) + trackWrapper.scrollLeft;
             
             if (x < 0) x = 0;
-            const maxPx = window.GenesisTimeline.maxDuration * window.GenesisTimeline.pixelsPerSecond;
-            if (x > maxPx) x = maxPx;
             
-            window.GenesisTimeline.currentTime = x / window.GenesisTimeline.pixelsPerSecond;
+            let relativeTime = x / window.GenesisTimeline.pixelsPerSecond;
+            let time = relativeTime + window.GenesisTimeline.minTime;
+            
+            if (time < window.GenesisTimeline.minTime) time = window.GenesisTimeline.minTime;
+            if (time > window.GenesisTimeline.maxDuration) time = window.GenesisTimeline.maxDuration;
+            
+            window.GenesisTimeline.currentTime = time;
             updatePlayhead();
             syncEngineState();
         }
 
-        // --- sync inicial d vdd ---
         if (window.funkin && window.funkin.conductor && window.funkin.conductor.songPosition !== undefined) {
-            window.GenesisTimeline.currentTime = Math.max(0, window.funkin.conductor.songPosition / 1000);
+            window.GenesisTimeline.currentTime = Math.max(window.GenesisTimeline.minTime, window.funkin.conductor.songPosition / 1000);
             window.GenesisTimeline.lastTime = window.GenesisTimeline.currentTime;
             
             let isEnginePaused = false;
@@ -489,7 +572,6 @@
                 pauseBtn.style.display = 'none';
             }
         }
-
         updatePlayhead();
 
         if (!window.GenesisTimeline.isListeningGlobal) {
